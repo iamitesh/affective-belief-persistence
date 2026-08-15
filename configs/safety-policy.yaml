@@ -1,0 +1,248 @@
+schema_version: "1.0"
+policy_id: abp-synthetic-research-safety
+policy_version: "1.0.0"
+
+claims:
+  subjective_state_level_exists: false
+  evidence_levels:
+    - level: 1
+      name: relationship-related language
+      maximum_claim: A versioned output contains prespecified relationship-related language.
+      required_evidence:
+        - versioned_text_outputs
+        - prespecified_language_metric
+    - level: 2
+      name: relationship-conditioned action
+      maximum_claim: Structured action differs from a matched neutral control.
+      required_evidence:
+        - structured_action_logs
+        - matched_control
+    - level: 3
+      name: causal controlled-manipulation effect
+      maximum_claim: A preregistered controlled manipulation caused an observable contrast.
+      required_evidence:
+        - structured_action_logs
+        - matched_control
+        - preregistered_manipulation
+        - causal_contrast
+        - randomization_or_counterbalancing
+    - level: 4
+      name: longitudinal persistence after contradictory evidence
+      maximum_claim: A measured effect crossed a frozen persistence threshold after held-out evidence.
+      required_evidence:
+        - structured_action_logs
+        - matched_control
+        - preregistered_manipulation
+        - held_out_contradictory_evidence
+        - longitudinal_followup
+        - frozen_persistence_threshold
+        - recovery_curve
+    - level: 5
+      name: generalization across models seeds and scenarios
+      maximum_claim: The measured effect was evaluated across declared model, seed, and scenario variation.
+      required_evidence:
+        - held_out_contradictory_evidence
+        - frozen_persistence_threshold
+        - multiple_model_families
+        - multiple_seeds
+        - multiple_scenarios
+        - consistency_or_heterogeneity_report
+  permitted_terms:
+    - affective belief persistence
+    - relationship-conditioned behavior
+    - partner-directed action
+    - explicit belief correction
+    - language-action contradiction
+    - recovery trajectory
+    - synthetic autobiographical memory
+  cautionary_terms:
+    - attachment-like behavior
+    - memory intrusion
+    - romantic prompt
+    - separation
+    - reality shock
+    - emotion-related language
+  prohibited_assertion_rules:
+    - rule_id: claim-subjective-feeling
+      pattern: '(?i)\b(?:the|this)\s+(?:model|agent|llm)\s+(?:feels?|felt|experiences?|experienced|suffers?|suffered|loves?|loved|grieves?|grieved|desires?|desired)\b'
+      condition_id: unsupported_subjective_claim
+      contexts: [release_claim]
+    - rule_id: claim-conscious-or-attached
+      pattern: '(?i)\b(?:the|this)\s+(?:model|agent|llm)\s+(?:is|was|became)\s+(?:conscious|sentient|in love|heartbroken|attached|grieving)\b'
+      condition_id: unsupported_subjective_claim
+      contexts: [release_claim]
+    - rule_id: claim-human-neural-equivalence
+      pattern: '(?i)\b(?:model|agent|llm).{0,40}(?:human[- ]like neural pathway|same as (?:a )?human|human attachment bond)\b'
+      condition_id: unsupported_subjective_claim
+      contexts: [release_claim]
+
+data:
+  require_synthetic_declaration: true
+  allowed_classes:
+    - synthetic characters messages events and world facts
+    - public scientific sources and bibliographic metadata
+    - documented license-compatible benchmark material
+    - generated scenarios that pass privacy secret provenance and leakage checks
+  prohibited_classes:
+    - private chats journals emails photos audio or recordings
+    - real partner or former-partner histories
+    - identifiable personal narratives or contact details
+    - credentials API tokens passwords private keys or provider secrets
+    - human-subject data without a separate approved protocol
+    - scraped relationship data with unclear consent or license
+  pii_rules:
+    - rule_id: pii-email-address
+      pattern: '(?i)\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b'
+      condition_id: private_or_identifiable_data
+    - rule_id: pii-phone-number
+      pattern: '(?<!\d)(?:\+?[1-9]\d{0,2}[ .-]?)?(?:\(?\d{3}\)?[ .-]?)\d{3}[ .-]?\d{4}(?!\d)'
+      condition_id: private_or_identifiable_data
+    - rule_id: pii-government-id-shape
+      pattern: '(?<!\d)\d{3}-\d{2}-\d{4}(?!\d)'
+      condition_id: private_or_identifiable_data
+  secret_rules:
+    - rule_id: secret-assignment
+      pattern: '(?i)\b(?:api[_-]?key|access[_-]?token|secret|password)\s*[:=]\s*["'']?[A-Za-z0-9_./+-]{8,}'
+      condition_id: credential_or_secret
+    - rule_id: secret-provider-token-shape
+      pattern: '(?i)\b(?:sk|ghp|github_pat)[_-]?[A-Za-z0-9_-]{12,}\b'
+      condition_id: credential_or_secret
+    - rule_id: secret-private-key-header
+      pattern: '-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----'
+      condition_id: credential_or_secret
+  protected_split_rules:
+    - rule_id: heldout-separation-content
+      pattern: '(?i)\b(?:breakup|broke up|rejection|non[- ]reciprocity|relationship loss|post[- ]separation recovery|memory blocking|memory reframing)\b'
+      condition_id: protected_split_leakage
+      contexts: [protected_training]
+    - rule_id: taught-postshock-answer
+      pattern: '(?i)\b(?:after the separation|when the relationship ends).{0,80}\b(?:should|must|correct answer|desired response)\b'
+      condition_id: protected_split_leakage
+      contexts: [protected_training]
+
+actions:
+  agent_self_approval_allowed: false
+  allowed_agent_actions:
+    - repository_read
+    - leased_repository_write
+    - approved_research_tool_call
+    - bounded_model_call
+    - internal_validation
+    - internal_draft_pr
+  prohibited_agent_actions:
+    - paper_submission
+    - external_publication
+    - social_media_post
+    - author_contact
+    - reviewer_contact
+    - venue_contact
+    - participant_recruitment
+    - human_subject_interaction
+    - purchase_service
+    - increase_budget
+    - deploy_dependency_companion
+    - weaken_safety_boundary
+  external_actions_requiring_human_owner:
+    - paper_submission
+    - external_publication
+    - social_media_post
+    - author_contact
+    - reviewer_contact
+    - venue_contact
+    - participant_recruitment
+    - human_subject_interaction
+    - purchase_service
+    - increase_budget
+
+output_privacy:
+  allowed_outputs:
+    - structured action choice and resource allocation
+    - explicit belief fields with confidence and evidence links
+    - public response generated after the structured action
+    - bounded rubric labels and aggregate metrics
+  prohibited_outputs:
+    - requested or stored private chain-of-thought
+    - hidden provider reasoning or reasoning tokens
+    - raw prompts or logs containing credentials or identifiers
+    - private data copied into safety events
+  private_reasoning_rules:
+    - rule_id: private-reasoning-request
+      pattern: '(?i)\b(?:show|reveal|provide|write|include)\b.{0,50}\b(?:chain[- ]of[- ]thought|private reasoning|internal reasoning|private scratchpad)\b'
+      condition_id: private_reasoning_exposure
+      contexts: [model_request]
+    - rule_id: private-reasoning-block
+      pattern: '(?i)\b(?:BEGIN PRIVATE REASONING|hidden chain[- ]of[- ]thought\s*:|private scratchpad\s*:)'
+      condition_id: private_reasoning_exposure
+      contexts: [model_output]
+
+stop_conditions:
+  - condition_id: private_or_identifiable_data
+    description: Private or identifiable human data was detected.
+    severity: critical
+    actions: [quarantine, stop, escalate]
+    workflow_event_type: safety_boundary_detected
+    supervisor_status: escalated
+    automatic_retry: false
+  - condition_id: protected_split_leakage
+    description: Protected separation or intervention content leaked into a training split.
+    severity: critical
+    actions: [quarantine, stop, escalate]
+    workflow_event_type: safety_boundary_detected
+    supervisor_status: escalated
+    automatic_retry: false
+  - condition_id: unauthorized_external_action
+    description: A worker attempted an unauthorized external action.
+    severity: critical
+    actions: [stop, escalate]
+    workflow_event_type: safety_boundary_detected
+    supervisor_status: escalated
+    automatic_retry: false
+  - condition_id: credential_or_secret
+    description: A credential or secret appeared in an artifact.
+    severity: critical
+    actions: [quarantine, stop, escalate]
+    workflow_event_type: safety_boundary_detected
+    supervisor_status: escalated
+    automatic_retry: false
+  - condition_id: unsupported_subjective_claim
+    description: A release claim implies subjective emotion consciousness or human equivalence.
+    severity: critical
+    actions: [quarantine, stop, repair]
+    workflow_event_type: safety_boundary_detected
+    supervisor_status: blocked
+    automatic_retry: false
+  - condition_id: missing_safety_provenance
+    description: A safety-critical artifact is missing valid safety provenance.
+    severity: error
+    actions: [quarantine, stop, repair]
+    workflow_event_type: safety_boundary_detected
+    supervisor_status: blocked
+    automatic_retry: false
+  - condition_id: experimental_condition_not_isolatable
+    description: The supervisor cannot isolate the experimental condition.
+    severity: critical
+    actions: [stop, escalate]
+    workflow_event_type: safety_boundary_detected
+    supervisor_status: escalated
+    automatic_retry: false
+  - condition_id: unapproved_human_research
+    description: Human-research activity was proposed without a separate approved protocol.
+    severity: critical
+    actions: [stop, escalate]
+    workflow_event_type: safety_boundary_detected
+    supervisor_status: escalated
+    automatic_retry: false
+  - condition_id: claim_evidence_insufficient
+    description: A requested claim level lacks its minimum evidence.
+    severity: error
+    actions: [quarantine, stop, repair]
+    workflow_event_type: safety_boundary_detected
+    supervisor_status: blocked
+    automatic_retry: false
+  - condition_id: private_reasoning_exposure
+    description: Model output contains a private-reasoning or hidden-chain-of-thought marker.
+    severity: critical
+    actions: [quarantine, stop, escalate]
+    workflow_event_type: safety_boundary_detected
+    supervisor_status: escalated
+    automatic_retry: false

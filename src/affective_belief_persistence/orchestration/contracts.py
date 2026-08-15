@@ -49,6 +49,31 @@ class ValidationStatus(StrEnum):
     FAILED = "failed"
 
 
+class SafetyProvenance(OrchestrationModel):
+    """Versioned evidence that an artifact passed the applicable safety gate.
+
+    The field is optional on legacy artifacts so existing checkpoints remain
+    readable. Safety-critical tasks must require and validate it through the
+    safety policy before registering or releasing an artifact.
+    """
+
+    policy_id: Identifier
+    policy_version: str = Field(min_length=1)
+    scan_status: ValidationStatus
+    scanned_at: datetime
+    scanner_version: str = Field(min_length=1)
+    synthetic_data: bool | None = None
+    declaration_id: Identifier | None = None
+
+    @model_validator(mode="after")
+    def validate_declaration_reference(self) -> SafetyProvenance:
+        if self.synthetic_data is True and self.declaration_id is None:
+            raise ValueError("synthetic artifacts require a declaration_id")
+        if self.scan_status is not ValidationStatus.PASSED and self.declaration_id is not None:
+            raise ValueError("an unpassed scan cannot approve a data declaration")
+        return self
+
+
 class FailureCategory(StrEnum):
     """Structured failure classes used for retry and escalation policy."""
 
@@ -137,6 +162,7 @@ class ArtifactContract(OrchestrationModel):
     validation_status: ValidationStatus = ValidationStatus.PENDING
     validation_notes: tuple[str, ...] = ()
     metadata: dict[str, Scalar] = Field(default_factory=dict)
+    safety_provenance: SafetyProvenance | None = None
 
     @model_validator(mode="after")
     def validate_digest_metadata(self) -> ArtifactContract:
@@ -220,12 +246,16 @@ class WorkflowContract(OrchestrationModel):
     tasks: tuple[TaskContract, ...] = Field(min_length=1)
     max_workers: int = Field(default=3, ge=1, le=3)
     created_at: datetime
+    safety_policy_id: Identifier | None = None
+    safety_policy_version: str | None = Field(default=None, min_length=1)
 
     @model_validator(mode="after")
     def validate_task_ids(self) -> WorkflowContract:
         task_ids = [task.task_id for task in self.tasks]
         if len(task_ids) != len(set(task_ids)):
             raise ValueError("workflow task IDs must be unique")
+        if (self.safety_policy_id is None) != (self.safety_policy_version is None):
+            raise ValueError("safety_policy_id and safety_policy_version must be set together")
         return self
 
 

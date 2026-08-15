@@ -75,6 +75,17 @@
           "title": "Produced By Task",
           "type": "string"
         },
+        "safety_provenance": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SafetyProvenance"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
         "schema_version": {
           "const": "1.0",
           "default": "1.0",
@@ -244,6 +255,71 @@
         "created_at"
       ],
       "title": "HandoffContract",
+      "type": "object"
+    },
+    "SafetyProvenance": {
+      "additionalProperties": false,
+      "description": "Versioned evidence that an artifact passed the applicable safety gate.\n\nThe field is optional on legacy artifacts so existing checkpoints remain\nreadable. Safety-critical tasks must require and validate it through the\nsafety policy before registering or releasing an artifact.",
+      "properties": {
+        "declaration_id": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Declaration Id"
+        },
+        "policy_id": {
+          "minLength": 1,
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+          "title": "Policy Id",
+          "type": "string"
+        },
+        "policy_version": {
+          "minLength": 1,
+          "title": "Policy Version",
+          "type": "string"
+        },
+        "scan_status": {
+          "$ref": "#/$defs/ValidationStatus"
+        },
+        "scanned_at": {
+          "format": "date-time",
+          "title": "Scanned At",
+          "type": "string"
+        },
+        "scanner_version": {
+          "minLength": 1,
+          "title": "Scanner Version",
+          "type": "string"
+        },
+        "synthetic_data": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Synthetic Data"
+        }
+      },
+      "required": [
+        "policy_id",
+        "policy_version",
+        "scan_status",
+        "scanned_at",
+        "scanner_version"
+      ],
+      "title": "SafetyProvenance",
       "type": "object"
     },
     "TaskLease": {
@@ -444,6 +520,9 @@
         "artifact_registered",
         "handoff_registered",
         "checkpoint_saved",
+        "safety_boundary_detected",
+        "safety_action_applied",
+        "safety_resolved",
         "note"
       ],
       "title": "WorkflowEventType",

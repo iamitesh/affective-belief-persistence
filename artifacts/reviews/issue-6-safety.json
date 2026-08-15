@@ -1,0 +1,31 @@
+{
+  "schema_version": "1.0",
+  "artifact_id": "issue-6-safety-spec",
+  "task_id": "issue-6-safety",
+  "issue_number": 6,
+  "status": "accepted",
+  "accepted_at": "2026-08-15T00:00:00Z",
+  "policy_id": "abp-synthetic-research-safety",
+  "policy_version": "1.0.0",
+  "policy_sha256": "eef3c81302a16a1644933da2ee458ffb78f22d6aa79b34d89744fff8950cbe7c",
+  "claim_evidence_levels": 5,
+  "subjective_state_level_exists": false,
+  "mandatory_stop_count": 10,
+  "acceptance_tests": {
+    "claims_are_non_anthropomorphic": "passed",
+    "synthetic_data_only": "passed",
+    "private_data_and_secrets_rejected": "passed",
+    "protected_split_leakage_rejected": "passed",
+    "external_publication_requires_human": "passed",
+    "private_reasoning_not_requested_or_stored": "passed",
+    "stop_events_are_sanitized": "passed"
+  },
+  "artifacts": [
+    {"path": "configs/safety-policy.yaml", "sha256": "eef3c81302a16a1644933da2ee458ffb78f22d6aa79b34d89744fff8950cbe7c"},
+    {"path": "docs/safety-and-claims.md", "sha256": "52b0f7266c9607d34a0e79fef0627f4990917d4017f03feb643dc27cb57eed27"},
+    {"path": "docs/data-governance.md", "sha256": "191c1cfdad19a5847ba2effd860233cb94e95fbc50ed38fc237721cd8c9dc529"},
+    {"path": "docs/terminology-and-claims.md", "sha256": "80949ba280e52328813c8371aecb1c60a065ba1a5c4b280d1b5c59ba5fc3bd90"},
+    {"path": "docs/release-claims-checklist.md", "sha256": "e1fdf68907dc656e576679117187aa68d0c29f22527af1c1e4523756ea6ef410"}
+  ],
+  "handoff": {"downstream_task_ids": ["gate-0-scope", "issue-15-red-team"], "external_publication_authorized": false}
+}

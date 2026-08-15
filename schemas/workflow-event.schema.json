@@ -25,6 +25,9 @@
         "artifact_registered",
         "handoff_registered",
         "checkpoint_saved",
+        "safety_boundary_detected",
+        "safety_action_applied",
+        "safety_resolved",
         "note"
       ],
       "title": "WorkflowEventType",

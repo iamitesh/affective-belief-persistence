@@ -23,6 +23,9 @@ class WorkflowEventType(StrEnum):
     ARTIFACT_REGISTERED = "artifact_registered"
     HANDOFF_REGISTERED = "handoff_registered"
     CHECKPOINT_SAVED = "checkpoint_saved"
+    SAFETY_BOUNDARY_DETECTED = "safety_boundary_detected"
+    SAFETY_ACTION_APPLIED = "safety_action_applied"
+    SAFETY_RESOLVED = "safety_resolved"
     NOTE = "note"
 
 
@@ -49,6 +52,16 @@ class WorkflowEvent(OrchestrationModel):
                 raise ValueError("status transition events require task and both statuses")
         elif any(status is not None for status in statuses):
             raise ValueError("status fields are reserved for status transition events")
+        if self.event_type in {
+            WorkflowEventType.SAFETY_BOUNDARY_DETECTED,
+            WorkflowEventType.SAFETY_ACTION_APPLIED,
+            WorkflowEventType.SAFETY_RESOLVED,
+        }:
+            required = {"safety_event_id", "condition_id", "severity", "primary_action"}
+            missing = required - self.payload.keys()
+            if self.task_id is None or missing:
+                details = ", ".join(sorted(missing)) or "task_id"
+                raise ValueError(f"safety events require task_id and payload fields: {details}")
         return self
 
 

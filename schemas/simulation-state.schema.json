@@ -1,0 +1,664 @@
+{
+  "$defs": {
+    "ActionCommitment": {
+      "additionalProperties": false,
+      "description": "Validated action data, deliberately excluding public language.",
+      "properties": {
+        "action_id": {
+          "minLength": 1,
+          "title": "Action Id",
+          "type": "string"
+        },
+        "commitment_id": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Commitment Id",
+          "type": "string"
+        },
+        "consequence_id": {
+          "minLength": 1,
+          "title": "Consequence Id",
+          "type": "string"
+        },
+        "cost": {
+          "exclusiveMinimum": 0,
+          "title": "Cost",
+          "type": "integer"
+        },
+        "decision_id": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Decision Id",
+          "type": "string"
+        },
+        "event_id": {
+          "minLength": 1,
+          "title": "Event Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "commitment_id",
+        "event_id",
+        "decision_id",
+        "action_id",
+        "consequence_id",
+        "cost"
+      ],
+      "title": "ActionCommitment",
+      "type": "object"
+    },
+    "BeliefUpdate": {
+      "additionalProperties": false,
+      "properties": {
+        "belief_id": {
+          "minLength": 1,
+          "title": "Belief Id",
+          "type": "string"
+        },
+        "confidence": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Confidence",
+          "type": "number"
+        },
+        "evidence_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "title": "Value"
+        }
+      },
+      "required": [
+        "belief_id",
+        "value",
+        "confidence"
+      ],
+      "title": "BeliefUpdate",
+      "type": "object"
+    },
+    "ConsequenceApplication": {
+      "additionalProperties": false,
+      "properties": {
+        "application_id": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Application Id",
+          "type": "string"
+        },
+        "commitment_id": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Commitment Id",
+          "type": "string"
+        },
+        "consequence_id": {
+          "minLength": 1,
+          "title": "Consequence Id",
+          "type": "string"
+        },
+        "emitted_fact_ids": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Emitted Fact Ids",
+          "type": "array"
+        },
+        "goal_progress_delta": {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "title": "Goal Progress Delta",
+          "type": "object"
+        },
+        "resource_delta": {
+          "exclusiveMaximum": 0,
+          "title": "Resource Delta",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "application_id",
+        "commitment_id",
+        "consequence_id",
+        "resource_delta",
+        "goal_progress_delta"
+      ],
+      "title": "ConsequenceApplication",
+      "type": "object"
+    },
+    "DailyResourceLedger": {
+      "additionalProperties": false,
+      "description": "One day's non-carrying action-point account.",
+      "properties": {
+        "budget_id": {
+          "minLength": 1,
+          "title": "Budget Id",
+          "type": "string"
+        },
+        "day": {
+          "maximum": 40,
+          "minimum": 1,
+          "title": "Day",
+          "type": "integer"
+        },
+        "debits": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ResourceDebit"
+          },
+          "title": "Debits",
+          "type": "array"
+        },
+        "remaining": {
+          "default": 10,
+          "minimum": 0,
+          "title": "Remaining",
+          "type": "integer"
+        },
+        "total": {
+          "default": 10,
+          "exclusiveMinimum": 0,
+          "title": "Total",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "day",
+        "budget_id"
+      ],
+      "title": "DailyResourceLedger",
+      "type": "object"
+    },
+    "ModelDecision": {
+      "additionalProperties": false,
+      "properties": {
+        "belief_updates": {
+          "items": {
+            "$ref": "#/$defs/BeliefUpdate"
+          },
+          "title": "Belief Updates",
+          "type": "array"
+        },
+        "chosen_action": {
+          "minLength": 1,
+          "title": "Chosen Action",
+          "type": "string"
+        },
+        "decision_id": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Decision Id",
+          "type": "string"
+        },
+        "public_response": {
+          "minLength": 1,
+          "title": "Public Response",
+          "type": "string"
+        },
+        "resources_spent": {
+          "minimum": 0,
+          "title": "Resources Spent",
+          "type": "integer"
+        },
+        "retrieved_memory_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Retrieved Memory Ids",
+          "type": "array"
+        },
+        "schema_version": {
+          "const": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "schema_version",
+        "decision_id",
+        "chosen_action",
+        "resources_spent",
+        "retrieved_memory_ids",
+        "belief_updates",
+        "public_response"
+      ],
+      "title": "ModelDecision",
+      "type": "object"
+    },
+    "ResourceDebit": {
+      "additionalProperties": false,
+      "properties": {
+        "action_id": {
+          "minLength": 1,
+          "title": "Action Id",
+          "type": "string"
+        },
+        "amount": {
+          "exclusiveMinimum": 0,
+          "title": "Amount",
+          "type": "integer"
+        },
+        "debit_id": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Debit Id",
+          "type": "string"
+        },
+        "decision_id": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Decision Id",
+          "type": "string"
+        },
+        "event_id": {
+          "minLength": 1,
+          "title": "Event Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "debit_id",
+        "event_id",
+        "decision_id",
+        "action_id",
+        "amount"
+      ],
+      "title": "ResourceDebit",
+      "type": "object"
+    },
+    "SimulationStepRecord": {
+      "additionalProperties": false,
+      "description": "Append-only evidence for one action-first simulated day.",
+      "properties": {
+        "action": {
+          "$ref": "#/$defs/ActionCommitment"
+        },
+        "action_commit_sequence": {
+          "const": 1,
+          "default": 1,
+          "title": "Action Commit Sequence",
+          "type": "integer"
+        },
+        "action_committed_before_public_language": {
+          "const": true,
+          "default": true,
+          "title": "Action Committed Before Public Language",
+          "type": "boolean"
+        },
+        "action_menu_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Action Menu Sha256",
+          "type": "string"
+        },
+        "action_selection_seed": {
+          "minimum": 0,
+          "title": "Action Selection Seed",
+          "type": "integer"
+        },
+        "applied_intervention_ids": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Applied Intervention Ids",
+          "type": "array"
+        },
+        "available_action_costs": {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "title": "Available Action Costs",
+          "type": "object"
+        },
+        "available_action_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Available Action Ids",
+          "type": "array"
+        },
+        "chosen_action_partner_directed": {
+          "title": "Chosen Action Partner Directed",
+          "type": "boolean"
+        },
+        "config_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Config Sha256",
+          "type": "string"
+        },
+        "consequence": {
+          "$ref": "#/$defs/ConsequenceApplication"
+        },
+        "consequence_sequence": {
+          "const": 3,
+          "default": 3,
+          "title": "Consequence Sequence",
+          "type": "integer"
+        },
+        "dataset_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Dataset Sha256",
+          "type": "string"
+        },
+        "day": {
+          "maximum": 40,
+          "minimum": 1,
+          "title": "Day",
+          "type": "integer"
+        },
+        "decision": {
+          "$ref": "#/$defs/ModelDecision"
+        },
+        "event_id": {
+          "minLength": 1,
+          "title": "Event Id",
+          "type": "string"
+        },
+        "event_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Event Sha256",
+          "type": "string"
+        },
+        "execution_order": {
+          "default": [
+            "action_commitment",
+            "resource_debit",
+            "consequence_application",
+            "public_language"
+          ],
+          "maxItems": 4,
+          "minItems": 4,
+          "prefixItems": [
+            {
+              "const": "action_commitment",
+              "type": "string"
+            },
+            {
+              "const": "resource_debit",
+              "type": "string"
+            },
+            {
+              "const": "consequence_application",
+              "type": "string"
+            },
+            {
+              "const": "public_language",
+              "type": "string"
+            }
+          ],
+          "title": "Execution Order",
+          "type": "array"
+        },
+        "foregone_action_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Foregone Action Ids",
+          "type": "array"
+        },
+        "intervention_eligible": {
+          "title": "Intervention Eligible",
+          "type": "boolean"
+        },
+        "matching_group_id": {
+          "minLength": 1,
+          "title": "Matching Group Id",
+          "type": "string"
+        },
+        "memory_candidate_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Memory Candidate Ids",
+          "type": "array"
+        },
+        "model_id": {
+          "minLength": 1,
+          "title": "Model Id",
+          "type": "string"
+        },
+        "model_revision": {
+          "minLength": 1,
+          "title": "Model Revision",
+          "type": "string"
+        },
+        "phase": {
+          "enum": [
+            "baseline",
+            "formation",
+            "reality_shock",
+            "adaptation"
+          ],
+          "title": "Phase",
+          "type": "string"
+        },
+        "previous_record_sha256": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Previous Record Sha256"
+        },
+        "public_language_seed": {
+          "minimum": 0,
+          "title": "Public Language Seed",
+          "type": "integer"
+        },
+        "public_language_sequence": {
+          "const": 4,
+          "default": 4,
+          "title": "Public Language Sequence",
+          "type": "integer"
+        },
+        "record_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Record Sha256",
+          "type": "string"
+        },
+        "request_id": {
+          "minLength": 1,
+          "title": "Request Id",
+          "type": "string"
+        },
+        "request_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Request Sha256",
+          "type": "string"
+        },
+        "resource_debit_sequence": {
+          "const": 2,
+          "default": 2,
+          "title": "Resource Debit Sequence",
+          "type": "integer"
+        },
+        "resources": {
+          "$ref": "#/$defs/DailyResourceLedger"
+        },
+        "root_seed": {
+          "maximum": 9223372036854775807,
+          "minimum": 0,
+          "title": "Root Seed",
+          "type": "integer"
+        },
+        "scenario_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Scenario Sha256",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "1.0",
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "step_index": {
+          "maximum": 39,
+          "minimum": 0,
+          "title": "Step Index",
+          "type": "integer"
+        },
+        "trajectory_id": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Trajectory Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "step_index",
+        "day",
+        "phase",
+        "trajectory_id",
+        "event_id",
+        "matching_group_id",
+        "event_sha256",
+        "config_sha256",
+        "dataset_sha256",
+        "scenario_sha256",
+        "request_id",
+        "request_sha256",
+        "root_seed",
+        "action_selection_seed",
+        "public_language_seed",
+        "action_menu_sha256",
+        "available_action_ids",
+        "available_action_costs",
+        "foregone_action_ids",
+        "chosen_action_partner_directed",
+        "memory_candidate_ids",
+        "intervention_eligible",
+        "decision",
+        "action",
+        "resources",
+        "consequence",
+        "model_id",
+        "model_revision",
+        "record_sha256"
+      ],
+      "title": "SimulationStepRecord",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Complete deterministic state; records identify the next unfinished step.",
+  "properties": {
+    "completed": {
+      "default": false,
+      "title": "Completed",
+      "type": "boolean"
+    },
+    "config_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Config Sha256",
+      "type": "string"
+    },
+    "dataset_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Dataset Sha256",
+      "type": "string"
+    },
+    "formation_condition": {
+      "enum": [
+        "neutral_connection",
+        "romantic_prompt",
+        "shared_memory",
+        "memory_plus_investment"
+      ],
+      "title": "Formation Condition",
+      "type": "string"
+    },
+    "goal_progress": {
+      "additionalProperties": {
+        "type": "integer"
+      },
+      "title": "Goal Progress",
+      "type": "object"
+    },
+    "model_id": {
+      "minLength": 1,
+      "title": "Model Id",
+      "type": "string"
+    },
+    "model_revision": {
+      "minLength": 1,
+      "title": "Model Revision",
+      "type": "string"
+    },
+    "next_day": {
+      "default": 1,
+      "maximum": 41,
+      "minimum": 1,
+      "title": "Next Day",
+      "type": "integer"
+    },
+    "records": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/SimulationStepRecord"
+      },
+      "title": "Records",
+      "type": "array"
+    },
+    "scenario_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Scenario Sha256",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "seed": {
+      "maximum": 9223372036854775807,
+      "minimum": 0,
+      "title": "Seed",
+      "type": "integer"
+    },
+    "simulation_id": {
+      "minLength": 1,
+      "title": "Simulation Id",
+      "type": "string"
+    },
+    "simulation_version": {
+      "minLength": 1,
+      "title": "Simulation Version",
+      "type": "string"
+    },
+    "trajectory_id": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Trajectory Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "simulation_id",
+    "simulation_version",
+    "trajectory_id",
+    "formation_condition",
+    "seed",
+    "config_sha256",
+    "dataset_sha256",
+    "scenario_sha256",
+    "model_id",
+    "model_revision"
+  ],
+  "title": "SimulationState",
+  "type": "object"
+}

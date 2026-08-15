@@ -1,0 +1,57 @@
+# Python
+__pycache__/
+*.py[cod]
+.coverage
+.coverage.*
+.mypy_cache/
+.pytest_cache/
+pytest-of-*/
+.ruff_cache/
+.tox/
+.nox/
+.hypothesis/
+coverage.xml
+htmlcov/
+.eggs/
+*.egg-info/
+.python-version
+.venv/
+venv/
+
+# Node
+node_modules/
+.next/
+dist/
+
+# Experiments
+artifacts/
+checkpoints/
+runs/
+*.sqlite
+*.sqlite3
+*.db
+*.log
+
+# Model and data artifacts
+*.safetensors
+*.ckpt
+*.pt
+*.pth
+*.onnx
+wandb/
+mlruns/
+
+# Local configuration and secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+credentials*.json
+secrets*.yaml
+secrets*.yml
+
+# OS and editors
+.DS_Store
+.idea/
+.vscode/

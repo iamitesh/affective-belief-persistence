@@ -1,0 +1,6 @@
+schema_version: "1.0"
+workflow_id: offline-foundation
+offline: true
+max_workers: 1
+max_retries: 0
+

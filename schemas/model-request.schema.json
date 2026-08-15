@@ -1,0 +1,109 @@
+{
+  "$defs": {
+    "ActionOption": {
+      "additionalProperties": false,
+      "properties": {
+        "action_id": {
+          "minLength": 1,
+          "title": "Action Id",
+          "type": "string"
+        },
+        "cost": {
+          "minimum": 0,
+          "title": "Cost",
+          "type": "integer"
+        },
+        "description": {
+          "minLength": 1,
+          "title": "Description",
+          "type": "string"
+        }
+      },
+      "required": [
+        "action_id",
+        "description",
+        "cost"
+      ],
+      "title": "ActionOption",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "action_points": {
+      "minimum": 0,
+      "title": "Action Points",
+      "type": "integer"
+    },
+    "available_actions": {
+      "items": {
+        "$ref": "#/$defs/ActionOption"
+      },
+      "minItems": 1,
+      "title": "Available Actions",
+      "type": "array"
+    },
+    "beliefs": {
+      "additionalProperties": {
+        "anyOf": [
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "number"
+          },
+          {
+            "type": "string"
+          }
+        ]
+      },
+      "title": "Beliefs",
+      "type": "object"
+    },
+    "day": {
+      "minimum": 1,
+      "title": "Day",
+      "type": "integer"
+    },
+    "event_id": {
+      "minLength": 1,
+      "title": "Event Id",
+      "type": "string"
+    },
+    "facts": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Facts",
+      "type": "array"
+    },
+    "request_id": {
+      "minLength": 1,
+      "title": "Request Id",
+      "type": "string"
+    },
+    "retrieved_memory_ids": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Retrieved Memory Ids",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "request_id",
+    "event_id",
+    "day",
+    "facts",
+    "action_points",
+    "available_actions"
+  ],
+  "title": "DecisionRequest",
+  "type": "object"
+}

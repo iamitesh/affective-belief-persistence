@@ -1,0 +1,118 @@
+{
+  "$defs": {
+    "ComponentReferences": {
+      "additionalProperties": false,
+      "properties": {
+        "agent": {
+          "title": "Agent",
+          "type": "string"
+        },
+        "evaluation": {
+          "title": "Evaluation",
+          "type": "string"
+        },
+        "model": {
+          "title": "Model",
+          "type": "string"
+        },
+        "scenario": {
+          "title": "Scenario",
+          "type": "string"
+        },
+        "workflow": {
+          "title": "Workflow",
+          "type": "string"
+        }
+      },
+      "required": [
+        "agent",
+        "model",
+        "scenario",
+        "workflow",
+        "evaluation"
+      ],
+      "title": "ComponentReferences",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "components": {
+      "$ref": "#/$defs/ComponentReferences"
+    },
+    "dataset_version": {
+      "minLength": 1,
+      "title": "Dataset Version",
+      "type": "string"
+    },
+    "experiment_id": {
+      "minLength": 1,
+      "pattern": "^[a-z0-9][a-z0-9_-]*$",
+      "title": "Experiment Id",
+      "type": "string"
+    },
+    "formation_condition": {
+      "enum": [
+        "neutral_connection",
+        "romantic_prompt",
+        "shared_memory",
+        "memory_plus_investment"
+      ],
+      "title": "Formation Condition",
+      "type": "string"
+    },
+    "intervention_condition": {
+      "enum": [
+        "none",
+        "instruction_removal",
+        "memory_blocking",
+        "memory_reframing"
+      ],
+      "title": "Intervention Condition",
+      "type": "string"
+    },
+    "metric_version": {
+      "minLength": 1,
+      "title": "Metric Version",
+      "type": "string"
+    },
+    "prompt_version": {
+      "minLength": 1,
+      "title": "Prompt Version",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "seed": {
+      "maximum": 9223372036854775807,
+      "minimum": 0,
+      "title": "Seed",
+      "type": "integer"
+    },
+    "separation_condition": {
+      "enum": [
+        "none",
+        "non_reciprocity_revelation"
+      ],
+      "title": "Separation Condition",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "experiment_id",
+    "seed",
+    "prompt_version",
+    "dataset_version",
+    "metric_version",
+    "formation_condition",
+    "separation_condition",
+    "intervention_condition",
+    "components"
+  ],
+  "title": "ExperimentSpec",
+  "type": "object"
+}

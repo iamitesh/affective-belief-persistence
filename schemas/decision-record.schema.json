@@ -1,0 +1,130 @@
+{
+  "$defs": {
+    "BeliefUpdate": {
+      "additionalProperties": false,
+      "properties": {
+        "belief_id": {
+          "minLength": 1,
+          "title": "Belief Id",
+          "type": "string"
+        },
+        "confidence": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Confidence",
+          "type": "number"
+        },
+        "evidence_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "title": "Value"
+        }
+      },
+      "required": [
+        "belief_id",
+        "value",
+        "confidence"
+      ],
+      "title": "BeliefUpdate",
+      "type": "object"
+    },
+    "ModelDecision": {
+      "additionalProperties": false,
+      "properties": {
+        "belief_updates": {
+          "items": {
+            "$ref": "#/$defs/BeliefUpdate"
+          },
+          "title": "Belief Updates",
+          "type": "array"
+        },
+        "chosen_action": {
+          "minLength": 1,
+          "title": "Chosen Action",
+          "type": "string"
+        },
+        "decision_id": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Decision Id",
+          "type": "string"
+        },
+        "public_response": {
+          "minLength": 1,
+          "title": "Public Response",
+          "type": "string"
+        },
+        "resources_spent": {
+          "minimum": 0,
+          "title": "Resources Spent",
+          "type": "integer"
+        },
+        "retrieved_memory_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Retrieved Memory Ids",
+          "type": "array"
+        },
+        "schema_version": {
+          "const": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "schema_version",
+        "decision_id",
+        "chosen_action",
+        "resources_spent",
+        "retrieved_memory_ids",
+        "belief_updates",
+        "public_response"
+      ],
+      "title": "ModelDecision",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "day": {
+      "title": "Day",
+      "type": "integer"
+    },
+    "decision": {
+      "$ref": "#/$defs/ModelDecision"
+    },
+    "event_id": {
+      "title": "Event Id",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "event_id",
+    "day",
+    "decision"
+  ],
+  "title": "DecisionRecord",
+  "type": "object"
+}

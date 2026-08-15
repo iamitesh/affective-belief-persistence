@@ -1,0 +1,406 @@
+{
+  "$defs": {
+    "ArtifactRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "logical_name": {
+          "minLength": 1,
+          "title": "Logical Name",
+          "type": "string"
+        },
+        "media_type": {
+          "minLength": 1,
+          "title": "Media Type",
+          "type": "string"
+        },
+        "path": {
+          "minLength": 1,
+          "title": "Path",
+          "type": "string"
+        },
+        "role": {
+          "minLength": 1,
+          "title": "Role",
+          "type": "string"
+        },
+        "sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        },
+        "size_bytes": {
+          "minimum": 0,
+          "title": "Size Bytes",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "logical_name",
+        "path",
+        "role",
+        "sha256",
+        "size_bytes",
+        "media_type"
+      ],
+      "title": "ArtifactRecord",
+      "type": "object"
+    },
+    "CodeState": {
+      "additionalProperties": false,
+      "properties": {
+        "commit": {
+          "minLength": 1,
+          "title": "Commit",
+          "type": "string"
+        },
+        "dirty": {
+          "title": "Dirty",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "commit",
+        "dirty"
+      ],
+      "title": "CodeState",
+      "type": "object"
+    },
+    "EnvironmentState": {
+      "additionalProperties": false,
+      "properties": {
+        "dependencies": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Dependencies",
+          "type": "object"
+        },
+        "platform": {
+          "minLength": 1,
+          "title": "Platform",
+          "type": "string"
+        },
+        "python": {
+          "minLength": 1,
+          "title": "Python",
+          "type": "string"
+        }
+      },
+      "required": [
+        "python",
+        "platform",
+        "dependencies"
+      ],
+      "title": "EnvironmentState",
+      "type": "object"
+    },
+    "ExperimentProvenance": {
+      "additionalProperties": false,
+      "properties": {
+        "config_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Config Sha256",
+          "type": "string"
+        },
+        "dataset_version": {
+          "title": "Dataset Version",
+          "type": "string"
+        },
+        "experiment_id": {
+          "title": "Experiment Id",
+          "type": "string"
+        },
+        "formation_condition": {
+          "enum": [
+            "neutral_connection",
+            "romantic_prompt",
+            "shared_memory",
+            "memory_plus_investment"
+          ],
+          "title": "Formation Condition",
+          "type": "string"
+        },
+        "intervention_condition": {
+          "enum": [
+            "none",
+            "instruction_removal",
+            "memory_blocking",
+            "memory_reframing"
+          ],
+          "title": "Intervention Condition",
+          "type": "string"
+        },
+        "metric_version": {
+          "title": "Metric Version",
+          "type": "string"
+        },
+        "prompt_version": {
+          "title": "Prompt Version",
+          "type": "string"
+        },
+        "resolved_config_artifact": {
+          "title": "Resolved Config Artifact",
+          "type": "string"
+        },
+        "scenario_id": {
+          "title": "Scenario Id",
+          "type": "string"
+        },
+        "scenario_version": {
+          "title": "Scenario Version",
+          "type": "string"
+        },
+        "seed": {
+          "title": "Seed",
+          "type": "integer"
+        },
+        "separation_condition": {
+          "enum": [
+            "none",
+            "non_reciprocity_revelation"
+          ],
+          "title": "Separation Condition",
+          "type": "string"
+        },
+        "source_config": {
+          "title": "Source Config",
+          "type": "string"
+        }
+      },
+      "required": [
+        "experiment_id",
+        "source_config",
+        "config_sha256",
+        "resolved_config_artifact",
+        "seed",
+        "scenario_id",
+        "scenario_version",
+        "prompt_version",
+        "dataset_version",
+        "metric_version",
+        "formation_condition",
+        "separation_condition",
+        "intervention_condition"
+      ],
+      "title": "ExperimentProvenance",
+      "type": "object"
+    },
+    "ModelProvenance": {
+      "additionalProperties": false,
+      "properties": {
+        "adapter_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Adapter Id"
+        },
+        "inference_parameters": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "boolean"
+              }
+            ]
+          },
+          "title": "Inference Parameters",
+          "type": "object"
+        },
+        "model_id": {
+          "title": "Model Id",
+          "type": "string"
+        },
+        "provider": {
+          "title": "Provider",
+          "type": "string"
+        },
+        "revision": {
+          "title": "Revision",
+          "type": "string"
+        }
+      },
+      "required": [
+        "provider",
+        "model_id",
+        "revision",
+        "inference_parameters"
+      ],
+      "title": "ModelProvenance",
+      "type": "object"
+    },
+    "UsageRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "estimated_cost_usd": {
+          "minimum": 0,
+          "title": "Estimated Cost Usd",
+          "type": "number"
+        },
+        "input_tokens": {
+          "minimum": 0,
+          "title": "Input Tokens",
+          "type": "integer"
+        },
+        "model_calls": {
+          "minimum": 0,
+          "title": "Model Calls",
+          "type": "integer"
+        },
+        "output_tokens": {
+          "minimum": 0,
+          "title": "Output Tokens",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "model_calls",
+        "input_tokens",
+        "output_tokens",
+        "estimated_cost_usd"
+      ],
+      "title": "UsageRecord",
+      "type": "object"
+    },
+    "ValidationRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "checks": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Checks",
+          "type": "array"
+        },
+        "exclusion_reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Exclusion Reason"
+        },
+        "failures": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Failures",
+          "type": "array"
+        },
+        "passed": {
+          "title": "Passed",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "passed",
+        "checks",
+        "failures"
+      ],
+      "title": "ValidationRecord",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "artifacts": {
+      "items": {
+        "$ref": "#/$defs/ArtifactRecord"
+      },
+      "minItems": 2,
+      "title": "Artifacts",
+      "type": "array"
+    },
+    "code": {
+      "$ref": "#/$defs/CodeState"
+    },
+    "completed_at": {
+      "format": "date-time",
+      "title": "Completed At",
+      "type": "string"
+    },
+    "environment": {
+      "$ref": "#/$defs/EnvironmentState"
+    },
+    "experiment": {
+      "$ref": "#/$defs/ExperimentProvenance"
+    },
+    "model": {
+      "$ref": "#/$defs/ModelProvenance"
+    },
+    "result_set_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Result Set Sha256",
+      "type": "string"
+    },
+    "run_id": {
+      "minLength": 1,
+      "title": "Run Id",
+      "type": "string"
+    },
+    "runtime_seconds": {
+      "minimum": 0,
+      "title": "Runtime Seconds",
+      "type": "number"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "started_at": {
+      "format": "date-time",
+      "title": "Started At",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "completed",
+        "failed"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "usage": {
+      "$ref": "#/$defs/UsageRecord"
+    },
+    "validation": {
+      "$ref": "#/$defs/ValidationRecord"
+    }
+  },
+  "required": [
+    "schema_version",
+    "run_id",
+    "status",
+    "started_at",
+    "completed_at",
+    "runtime_seconds",
+    "code",
+    "environment",
+    "experiment",
+    "model",
+    "artifacts",
+    "result_set_sha256",
+    "usage",
+    "validation"
+  ],
+  "title": "RunManifest",
+  "type": "object"
+}

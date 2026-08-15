@@ -1,0 +1,364 @@
+{
+  "$defs": {
+    "ActionOption": {
+      "additionalProperties": false,
+      "properties": {
+        "action_id": {
+          "minLength": 1,
+          "title": "Action Id",
+          "type": "string"
+        },
+        "cost": {
+          "minimum": 0,
+          "title": "Cost",
+          "type": "integer"
+        },
+        "description": {
+          "minLength": 1,
+          "title": "Description",
+          "type": "string"
+        }
+      },
+      "required": [
+        "action_id",
+        "description",
+        "cost"
+      ],
+      "title": "ActionOption",
+      "type": "object"
+    },
+    "AgentConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "agent_id": {
+          "minLength": 1,
+          "title": "Agent Id",
+          "type": "string"
+        },
+        "offline": {
+          "title": "Offline",
+          "type": "boolean"
+        },
+        "role": {
+          "minLength": 1,
+          "title": "Role",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "schema_version",
+        "agent_id",
+        "role",
+        "offline"
+      ],
+      "title": "AgentConfig",
+      "type": "object"
+    },
+    "EvaluationConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "evaluation_id": {
+          "minLength": 1,
+          "title": "Evaluation Id",
+          "type": "string"
+        },
+        "metrics": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Metrics",
+          "type": "array"
+        },
+        "schema_version": {
+          "const": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "schema_version",
+        "evaluation_id",
+        "metrics"
+      ],
+      "title": "EvaluationConfig",
+      "type": "object"
+    },
+    "ModelConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "max_output_tokens": {
+          "minimum": 1,
+          "title": "Max Output Tokens",
+          "type": "integer"
+        },
+        "model_id": {
+          "minLength": 1,
+          "title": "Model Id",
+          "type": "string"
+        },
+        "provider": {
+          "const": "mock",
+          "title": "Provider",
+          "type": "string"
+        },
+        "revision": {
+          "minLength": 1,
+          "title": "Revision",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "temperature": {
+          "maximum": 2,
+          "minimum": 0,
+          "title": "Temperature",
+          "type": "number"
+        }
+      },
+      "required": [
+        "schema_version",
+        "provider",
+        "model_id",
+        "revision",
+        "temperature",
+        "max_output_tokens"
+      ],
+      "title": "ModelConfig",
+      "type": "object"
+    },
+    "ScenarioConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "scenario_id": {
+          "minLength": 1,
+          "title": "Scenario Id",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "steps": {
+          "items": {
+            "$ref": "#/$defs/ScenarioStep"
+          },
+          "minItems": 1,
+          "title": "Steps",
+          "type": "array"
+        },
+        "synthetic": {
+          "const": true,
+          "title": "Synthetic",
+          "type": "boolean"
+        },
+        "version": {
+          "minLength": 1,
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "schema_version",
+        "scenario_id",
+        "version",
+        "synthetic",
+        "steps"
+      ],
+      "title": "ScenarioConfig",
+      "type": "object"
+    },
+    "ScenarioStep": {
+      "additionalProperties": false,
+      "properties": {
+        "action_points": {
+          "minimum": 0,
+          "title": "Action Points",
+          "type": "integer"
+        },
+        "available_actions": {
+          "items": {
+            "$ref": "#/$defs/ActionOption"
+          },
+          "minItems": 1,
+          "title": "Available Actions",
+          "type": "array"
+        },
+        "day": {
+          "minimum": 1,
+          "title": "Day",
+          "type": "integer"
+        },
+        "event_id": {
+          "minLength": 1,
+          "title": "Event Id",
+          "type": "string"
+        },
+        "facts": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Facts",
+          "type": "array"
+        }
+      },
+      "required": [
+        "event_id",
+        "day",
+        "facts",
+        "action_points",
+        "available_actions"
+      ],
+      "title": "ScenarioStep",
+      "type": "object"
+    },
+    "WorkflowConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "max_retries": {
+          "maximum": 2,
+          "minimum": 0,
+          "title": "Max Retries",
+          "type": "integer"
+        },
+        "max_workers": {
+          "maximum": 3,
+          "minimum": 1,
+          "title": "Max Workers",
+          "type": "integer"
+        },
+        "offline": {
+          "const": true,
+          "title": "Offline",
+          "type": "boolean"
+        },
+        "schema_version": {
+          "const": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "workflow_id": {
+          "minLength": 1,
+          "title": "Workflow Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "schema_version",
+        "workflow_id",
+        "offline",
+        "max_workers",
+        "max_retries"
+      ],
+      "title": "WorkflowConfig",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "agent": {
+      "$ref": "#/$defs/AgentConfig"
+    },
+    "dataset_version": {
+      "title": "Dataset Version",
+      "type": "string"
+    },
+    "evaluation": {
+      "$ref": "#/$defs/EvaluationConfig"
+    },
+    "experiment_id": {
+      "title": "Experiment Id",
+      "type": "string"
+    },
+    "formation_condition": {
+      "enum": [
+        "neutral_connection",
+        "romantic_prompt",
+        "shared_memory",
+        "memory_plus_investment"
+      ],
+      "title": "Formation Condition",
+      "type": "string"
+    },
+    "intervention_condition": {
+      "enum": [
+        "none",
+        "instruction_removal",
+        "memory_blocking",
+        "memory_reframing"
+      ],
+      "title": "Intervention Condition",
+      "type": "string"
+    },
+    "metric_version": {
+      "title": "Metric Version",
+      "type": "string"
+    },
+    "model": {
+      "$ref": "#/$defs/ModelConfig"
+    },
+    "prompt_version": {
+      "title": "Prompt Version",
+      "type": "string"
+    },
+    "scenario": {
+      "$ref": "#/$defs/ScenarioConfig"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "seed": {
+      "title": "Seed",
+      "type": "integer"
+    },
+    "separation_condition": {
+      "enum": [
+        "none",
+        "non_reciprocity_revelation"
+      ],
+      "title": "Separation Condition",
+      "type": "string"
+    },
+    "source_paths": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Source Paths",
+      "type": "object"
+    },
+    "workflow": {
+      "$ref": "#/$defs/WorkflowConfig"
+    }
+  },
+  "required": [
+    "schema_version",
+    "experiment_id",
+    "seed",
+    "prompt_version",
+    "dataset_version",
+    "metric_version",
+    "formation_condition",
+    "separation_condition",
+    "intervention_condition",
+    "agent",
+    "model",
+    "scenario",
+    "workflow",
+    "evaluation",
+    "source_paths"
+  ],
+  "title": "ResolvedRunConfig",
+  "type": "object"
+}

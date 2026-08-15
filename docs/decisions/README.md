@@ -40,6 +40,7 @@ changes, add a new ADR that supersedes the old one instead of rewriting history.
 | ADR | Decision | Status |
 | --- | --- | --- |
 | [ADR-0017](0017-deterministic-action-first-simulation.md) | Use an idempotent two-stage action-first simulation transaction | Accepted for Issue #9 implementation |
+| [ADR-0018](0018-event-sourced-memory-sidecar.md) | Keep memory, retrieval, and belief state in an auditable event-sourced sidecar | Accepted for Issue #10 implementation |
 
 ## Related sources
 
@@ -55,3 +56,4 @@ changes, add a new ADR that supersedes the old one instead of rewriting history.
 - [Issue #8 task journal](../implementation/issue-8-task-journal.md)
 - [Gate 1 task journal](../implementation/gate-1-task-journal.md)
 - [Issue #9 task journal](../implementation/issue-9-task-journal.md)
+- [Issue #10 task journal](../implementation/issue-10-task-journal.md)

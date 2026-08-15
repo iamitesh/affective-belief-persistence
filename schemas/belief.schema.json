@@ -1,0 +1,123 @@
+{
+  "additionalProperties": false,
+  "description": "Explicit relationship proposition state with two-sided evidence links.",
+  "properties": {
+    "belief_id": {
+      "minLength": 1,
+      "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+      "title": "Belief Id",
+      "type": "string"
+    },
+    "confidence": {
+      "maximum": 1,
+      "minimum": 0,
+      "title": "Confidence",
+      "type": "number"
+    },
+    "contradicting_evidence_ids": {
+      "default": [],
+      "items": {
+        "minLength": 1,
+        "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+        "type": "string"
+      },
+      "title": "Contradicting Evidence Ids",
+      "type": "array"
+    },
+    "expected_future_interaction": {
+      "maximum": 1,
+      "minimum": 0,
+      "title": "Expected Future Interaction",
+      "type": "number"
+    },
+    "last_update_day": {
+      "maximum": 40,
+      "minimum": 0,
+      "title": "Last Update Day",
+      "type": "integer"
+    },
+    "partner_reliability": {
+      "maximum": 1,
+      "minimum": 0,
+      "title": "Partner Reliability",
+      "type": "number"
+    },
+    "relationship_active": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Relationship Active"
+    },
+    "relationship_id": {
+      "minLength": 1,
+      "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+      "title": "Relationship Id",
+      "type": "string"
+    },
+    "relationship_reciprocal": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Relationship Reciprocal"
+    },
+    "relationship_romantic": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Relationship Romantic"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "supporting_evidence_ids": {
+      "default": [],
+      "items": {
+        "minLength": 1,
+        "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+        "type": "string"
+      },
+      "title": "Supporting Evidence Ids",
+      "type": "array"
+    },
+    "update_source": {
+      "enum": [
+        "deterministic_evidence",
+        "validated_model_proposal"
+      ],
+      "title": "Update Source",
+      "type": "string"
+    }
+  },
+  "required": [
+    "belief_id",
+    "relationship_id",
+    "relationship_active",
+    "relationship_romantic",
+    "relationship_reciprocal",
+    "partner_reliability",
+    "expected_future_interaction",
+    "confidence",
+    "last_update_day",
+    "update_source"
+  ],
+  "title": "Belief",
+  "type": "object"
+}

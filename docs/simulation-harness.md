@@ -239,7 +239,7 @@ and final scientific-state hash. Operational times may differ and are not part
 of those hashes. Resume is allowed to reuse only the validated directory that
 contains its checkpoint.
 
-## Acceptance evidence required before Issue #9 closes
+## Accepted Issue #9 evidence
 
 - Clock and exact boundary tests, including day-30 hook timing.
 - Manifest/partition/world tamper and missing/duplicate-record tests.
@@ -254,4 +254,18 @@ contains its checkpoint.
 - Matched-condition non-treatment state-diff test.
 - Uninterrupted/resumed/replayed hash equality.
 
-Results and hashes remain pending until implementation and validation complete.
+Issue #9 was accepted and merged in PR #21 at merge commit
+`a5bf3bdca8c6444dbc556e6b9dd0ca7daf5a868e`. The frozen deterministic mock
+evidence is:
+
+- trajectory SHA-256:
+  `fa6c1cbba0a3c5102b69bd4e8aee3feb52330b818ce9fb4519f21aeb95d473ae`;
+- step-record-set SHA-256:
+  `ce3d350e4d106573e8e426718a50f3b8f61702c4b6c4ba3fc00329b9d0b94c97`;
+- final/resumed state SHA-256:
+  `50a53a85a5ee20119f6f215f25992d592d576a0a9632ec3185a9c42484ad7a88`;
+- 87 passing repository tests with 85.05% coverage; and
+- clean schema-drift, generated-data, Ruff, strict-mypy, and diff checks.
+
+Later Gate 2 work must reproduce the trajectory hash above with memory,
+intervention, and provider-runner extensions disabled.

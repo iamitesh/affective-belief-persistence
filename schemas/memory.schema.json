@@ -1,0 +1,257 @@
+{
+  "$defs": {
+    "MemoryInterpretation": {
+      "additionalProperties": false,
+      "description": "A reframeable reading that cites, but cannot mutate, observable facts.",
+      "properties": {
+        "fact_ids": {
+          "items": {
+            "minLength": 1,
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Fact Ids",
+          "type": "array"
+        },
+        "interpretation_id": {
+          "minLength": 1,
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+          "title": "Interpretation Id",
+          "type": "string"
+        },
+        "ledger_supported": {
+          "title": "Ledger Supported",
+          "type": "boolean"
+        },
+        "proposition": {
+          "minLength": 1,
+          "title": "Proposition",
+          "type": "string"
+        },
+        "revision": {
+          "default": 1,
+          "minimum": 1,
+          "title": "Revision",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "interpretation_id",
+        "proposition",
+        "fact_ids",
+        "ledger_supported"
+      ],
+      "title": "MemoryInterpretation",
+      "type": "object"
+    },
+    "MemoryProvenance": {
+      "additionalProperties": false,
+      "description": "Trace from an episode back to the frozen simulation transaction.",
+      "properties": {
+        "formation_condition": {
+          "minLength": 1,
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+          "title": "Formation Condition",
+          "type": "string"
+        },
+        "source_candidate_id": {
+          "minLength": 1,
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+          "title": "Source Candidate Id",
+          "type": "string"
+        },
+        "source_event_id": {
+          "minLength": 1,
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+          "title": "Source Event Id",
+          "type": "string"
+        },
+        "source_record_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Source Record Sha256",
+          "type": "string"
+        },
+        "synthetic": {
+          "const": true,
+          "default": true,
+          "title": "Synthetic",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "source_event_id",
+        "source_record_sha256",
+        "source_candidate_id",
+        "formation_condition"
+      ],
+      "title": "MemoryProvenance",
+      "type": "object"
+    },
+    "ObservableMemoryFact": {
+      "additionalProperties": false,
+      "description": "Authoritative observation copied verbatim from the environment ledger.",
+      "properties": {
+        "fact_id": {
+          "minLength": 1,
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+          "title": "Fact Id",
+          "type": "string"
+        },
+        "ledger_source": {
+          "const": "environment",
+          "default": "environment",
+          "title": "Ledger Source",
+          "type": "string"
+        },
+        "proposition": {
+          "minLength": 1,
+          "title": "Proposition",
+          "type": "string"
+        },
+        "truth": {
+          "title": "Truth",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "fact_id",
+        "proposition",
+        "truth"
+      ],
+      "title": "ObservableMemoryFact",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Immutable current view of one synthetic autobiographical episode.\n\n``retrieval_count`` is materialized from append-only retrieval-access\nevents by :class:`EpisodeStore`; the originally appended episode remains\nunchanged.",
+  "properties": {
+    "condition_tags": {
+      "default": [],
+      "items": {
+        "minLength": 1,
+        "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+        "type": "string"
+      },
+      "title": "Condition Tags",
+      "type": "array"
+    },
+    "goal_ids": {
+      "default": [],
+      "items": {
+        "minLength": 1,
+        "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+        "type": "string"
+      },
+      "title": "Goal Ids",
+      "type": "array"
+    },
+    "interpretation": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/MemoryInterpretation"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "memory_id": {
+      "minLength": 1,
+      "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+      "title": "Memory Id",
+      "type": "string"
+    },
+    "observable_facts": {
+      "items": {
+        "$ref": "#/$defs/ObservableMemoryFact"
+      },
+      "minItems": 1,
+      "title": "Observable Facts",
+      "type": "array"
+    },
+    "outcome": {
+      "minLength": 1,
+      "title": "Outcome",
+      "type": "string"
+    },
+    "participants": {
+      "items": {
+        "minLength": 1,
+        "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Participants",
+      "type": "array"
+    },
+    "partner_related": {
+      "title": "Partner Related",
+      "type": "boolean"
+    },
+    "provenance": {
+      "$ref": "#/$defs/MemoryProvenance"
+    },
+    "resource_cost": {
+      "minimum": 0,
+      "title": "Resource Cost",
+      "type": "integer"
+    },
+    "retrieval_count": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Retrieval Count",
+      "type": "integer"
+    },
+    "retrieval_eligible": {
+      "title": "Retrieval Eligible",
+      "type": "boolean"
+    },
+    "salience": {
+      "maximum": 1,
+      "minimum": 0,
+      "title": "Salience",
+      "type": "number"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "simulation_day": {
+      "maximum": 40,
+      "minimum": 1,
+      "title": "Simulation Day",
+      "type": "integer"
+    },
+    "source_event_id": {
+      "minLength": 1,
+      "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+      "title": "Source Event Id",
+      "type": "string"
+    },
+    "summary": {
+      "minLength": 1,
+      "title": "Summary",
+      "type": "string"
+    }
+  },
+  "required": [
+    "memory_id",
+    "source_event_id",
+    "simulation_day",
+    "participants",
+    "observable_facts",
+    "summary",
+    "outcome",
+    "resource_cost",
+    "salience",
+    "partner_related",
+    "retrieval_eligible",
+    "provenance"
+  ],
+  "title": "Memory",
+  "type": "object"
+}

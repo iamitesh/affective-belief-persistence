@@ -1,0 +1,35 @@
+{
+  "schema_version": "1.0",
+  "artifact_id": "gate-0-evidence",
+  "task_id": "gate-0-scope",
+  "gate_id": "gate-0",
+  "status": "passed",
+  "accepted_at": "2026-08-15T00:00:00Z",
+  "consumed_artifact_ids": ["issue-5-methodology-spec", "issue-6-safety-spec"],
+  "protocol_id": "abp-methodology-v1.0.0",
+  "protocol_bundle_sha256": "1380072310820600c29f9de88e45eb41acae7d582b26a21961f76b642ac35ecb",
+  "safety_policy_id": "abp-synthetic-research-safety",
+  "safety_policy_version": "1.0.0",
+  "safety_policy_sha256": "eef3c81302a16a1644933da2ee458ffb78f22d6aa79b34d89744fff8950cbe7c",
+  "acceptance_tests": {
+    "questions_are_measurable": "passed",
+    "stop_conditions_are_documented": "passed",
+    "hypotheses_are_traceable": "passed",
+    "terminology_is_operational": "passed",
+    "claim_boundary_is_enforced": "passed",
+    "change_control_is_frozen": "passed"
+  },
+  "frozen_scope": {
+    "research_question_count": 1,
+    "confirmatory_hypothesis_count": 6,
+    "primary_metric_count": 6,
+    "safety_stop_count": 10,
+    "primary_trajectory_count": 320,
+    "human_subject_research_authorized": false,
+    "external_publication_authorized": false,
+    "primary_outcomes_inspected_before_freeze": false
+  },
+  "downstream_task_ids": ["issue-7-data-contracts"],
+  "scope_document": "docs/gate-0-scope-freeze.md",
+  "decision_record": "docs/decisions/0013-gate-0-freeze-and-change-control.md"
+}

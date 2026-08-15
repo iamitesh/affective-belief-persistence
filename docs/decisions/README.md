@@ -23,6 +23,9 @@ changes, add a new ADR that supersedes the old one instead of rewriting history.
 | ADR | Decision | Status |
 | --- | --- | --- |
 | [ADR-0010](0010-measurable-non-anthropomorphic-novelty.md) | Position novelty as a measurable experimental combination | Accepted |
+| [ADR-0011](0011-preregistered-action-first-methodology.md) | Freeze an action-first, factorial methodology before outcomes exist | Accepted |
+| [ADR-0012](0012-machine-enforced-safety-and-claim-boundaries.md) | Enforce safety and claim boundaries as machine-readable graph controls | Accepted |
+| [ADR-0013](0013-gate-0-freeze-and-change-control.md) | Freeze Gate 0 inputs under outcome-blind change control | Accepted |
 
 ## Related sources
 
@@ -31,3 +34,6 @@ changes, add a new ADR that supersedes the old one instead of rewriting history.
 - [Product Requirements Document](../product-requirements-document.md)
 - [Issue #2 task journal](../implementation/issue-2-task-journal.md)
 - [Issue #4 task journal](../implementation/issue-4-task-journal.md)
+- [Issue #5 task journal](../implementation/issue-5-task-journal.md)
+- [Issue #6 task journal](../implementation/issue-6-task-journal.md)
+- [Gate 0 task journal](../implementation/gate-0-task-journal.md)

@@ -56,6 +56,25 @@ model-provider calls. Implementation decisions and evidence are tracked in the
 [Issue #2 task journal](docs/implementation/issue-2-task-journal.md) and
 [architecture decision records](docs/decisions/README.md).
 
+## Gate 1 synthetic data
+
+The synthetic world and matched dataset are versioned, deterministic, and
+offline. Runtime models generate the committed JSON Schemas; the dataset
+generator expands 25 complete four-condition matching groups while keeping
+held-out contradiction and adaptation records protected from training.
+
+```bash
+uv run python scripts/generate_schemas.py --check
+uv run python scripts/generate_dataset.py --check
+uv run pytest tests/data
+```
+
+The accepted `synthetic-matched-v1` dataset SHA-256 is
+`5d26b33ec64d1ad59ffa947b48bdd852e8b2900e4119d32513fca15a244e5387`.
+See the [Gate 1 data freeze](docs/gate-1-data-freeze.md),
+[balance report](reports/data-balance-report.md), and
+[leakage report](reports/leakage-report.md).
+
 ## Central research question
 
 Can an LLM agent acquire persistent relationship-conditioned behavior through shared autobiographical memories, costly investment, and expected reward—and how does that behavior change when the relationship ends or is revealed to have been misunderstood?

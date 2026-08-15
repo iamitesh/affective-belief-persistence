@@ -27,6 +27,14 @@ changes, add a new ADR that supersedes the old one instead of rewriting history.
 | [ADR-0012](0012-machine-enforced-safety-and-claim-boundaries.md) | Enforce safety and claim boundaries as machine-readable graph controls | Accepted |
 | [ADR-0013](0013-gate-0-freeze-and-change-control.md) | Freeze Gate 0 inputs under outcome-blind change control | Accepted |
 
+## Data Gate 1 decisions
+
+| ADR | Decision | Status |
+| --- | --- | --- |
+| [ADR-0014](0014-versioned-synthetic-world-contracts.md) | Make strict runtime contracts the source of truth for the synthetic world | Accepted |
+| [ADR-0015](0015-deterministic-matched-dataset.md) | Generate matched partitions deterministically and protect held-out content | Accepted |
+| [ADR-0016](0016-gate-1-data-freeze.md) | Freeze dataset hashes only after schema, matching, leakage, and provenance checks | Accepted |
+
 ## Related sources
 
 - [Issue #2: supervisor, specialist agents, and shared-state contracts](https://github.com/iamitesh/affective-belief-persistence/issues/2)
@@ -37,3 +45,6 @@ changes, add a new ADR that supersedes the old one instead of rewriting history.
 - [Issue #5 task journal](../implementation/issue-5-task-journal.md)
 - [Issue #6 task journal](../implementation/issue-6-task-journal.md)
 - [Gate 0 task journal](../implementation/gate-0-task-journal.md)
+- [Issue #7 task journal](../implementation/issue-7-task-journal.md)
+- [Issue #8 task journal](../implementation/issue-8-task-journal.md)
+- [Gate 1 task journal](../implementation/gate-1-task-journal.md)

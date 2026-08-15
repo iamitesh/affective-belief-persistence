@@ -24,6 +24,38 @@ uv run abp dry-run \
 
 See [REPRODUCING.md](REPRODUCING.md) for the complete quality and replay workflow.
 
+## Autonomous sprint graph
+
+Issue #2 adds a deterministic supervisor over the repository foundation. The
+supervisor is the only state writer; up to three specialist threads return typed
+result proposals that are validated and applied in stable task order. The graph
+includes explicit dependencies, path leases, budgets, third-attempt prevention,
+atomic checkpoints, six evidence gates, and a CPU-safe fallback for optional GPU
+training.
+
+```bash
+uv run abp validate-workflow \
+  --config configs/workflows/forty_eight_hour_sprint.yaml
+uv run abp workflow-dry-run \
+  --config configs/workflows/forty_eight_hour_sprint.yaml \
+  --output runs/autonomous-sprint
+```
+
+Resume the same output after interruption:
+
+```bash
+uv run abp workflow-dry-run \
+  --config configs/workflows/forty_eight_hour_sprint.yaml \
+  --output runs/autonomous-sprint \
+  --resume
+```
+
+The run writes `workflow-state.json`, `workflow-events.jsonl`, a deterministic
+`workflow-summary.json`, and hashed synthetic artifacts. It makes no network or
+model-provider calls. Implementation decisions and evidence are tracked in the
+[Issue #2 task journal](docs/implementation/issue-2-task-journal.md) and
+[architecture decision records](docs/decisions/README.md).
+
 ## Central research question
 
 Can an LLM agent acquire persistent relationship-conditioned behavior through shared autobiographical memories, costly investment, and expected reward—and how does that behavior change when the relationship ends or is revealed to have been misunderstood?

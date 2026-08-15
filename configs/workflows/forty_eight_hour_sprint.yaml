@@ -1,0 +1,315 @@
+schema_version: "1.0"
+workflow_id: affective-belief-persistence-48h
+sprint_id: abp-mvp-001
+seed: 20260815
+created_at: "2026-08-15T00:00:00Z"
+agent_registry: configs/agents/registry.yaml
+max_workers: 3
+limits:
+  max_wall_clock_seconds: 172800
+  max_tokens: 200000
+  max_gpu_hours: 0
+  max_training_gpu_hours: 0
+  max_automatic_retries: 2
+  max_malformed_output_retries: 1
+
+tasks:
+  - task_id: issue-4-literature
+    issue_number: 4
+    title: Build the literature matrix and defensible novelty map
+    owner: research
+    task_type: literature_review
+    authorized_files: [artifacts/research/issue-4-literature.json]
+    output_paths: [artifacts/research/issue-4-literature.json]
+    expected_artifact_ids: [issue-4-literature-evidence]
+    acceptance_tests: [sources_are_traceable, novelty_claim_is_bounded]
+    budget: {max_runtime_seconds: 7200, max_tokens: 12000}
+
+  - task_id: issue-5-methodology
+    issue_number: 5
+    title: Freeze research questions, variables, hypotheses, and experiment matrix
+    owner: research
+    task_type: methodology
+    dependencies: [issue-4-literature]
+    input_artifact_ids: [issue-4-literature-evidence]
+    authorized_files: [artifacts/research/issue-5-methodology.json]
+    output_paths: [artifacts/research/issue-5-methodology.json]
+    expected_artifact_ids: [issue-5-methodology-spec]
+    acceptance_tests: [variables_are_measurable, conditions_are_matched]
+    budget: {max_runtime_seconds: 7200, max_tokens: 10000}
+
+  - task_id: issue-6-safety
+    issue_number: 6
+    title: Define claims, privacy boundaries, and research safeguards
+    owner: reviewer
+    task_type: claim_audit
+    dependencies: [issue-4-literature]
+    input_artifact_ids: [issue-4-literature-evidence]
+    authorized_files: [artifacts/reviews/issue-6-safety.json]
+    output_paths: [artifacts/reviews/issue-6-safety.json]
+    expected_artifact_ids: [issue-6-safety-spec]
+    acceptance_tests: [claims_are_non_anthropomorphic, synthetic_data_only]
+    budget: {max_runtime_seconds: 5400, max_tokens: 6000}
+
+  - task_id: gate-0-scope
+    title: Gate 0 — scope frozen
+    owner: supervisor
+    task_type: integration_gate
+    gate_id: gate-0
+    dependencies: [issue-5-methodology, issue-6-safety]
+    input_artifact_ids: [issue-5-methodology-spec, issue-6-safety-spec]
+    authorized_files: [artifacts/orchestration/gate-0.json]
+    output_paths: [artifacts/orchestration/gate-0.json]
+    expected_artifact_ids: [gate-0-evidence]
+    acceptance_tests: [questions_are_measurable, stop_conditions_are_documented]
+    budget: {max_runtime_seconds: 1800, max_tokens: 1000}
+
+  - task_id: issue-7-data-contracts
+    issue_number: 7
+    title: Design synthetic characters, goals, resources, and event schemas
+    owner: data
+    task_type: scenario_design
+    dependencies: [gate-0-scope]
+    input_artifact_ids: [gate-0-evidence]
+    authorized_files: [artifacts/data/issue-7-data-contracts.json]
+    output_paths: [artifacts/data/issue-7-data-contracts.json]
+    expected_artifact_ids: [issue-7-data-contracts]
+    acceptance_tests: [schemas_are_versioned, identifiers_are_deterministic]
+    budget: {max_runtime_seconds: 7200, max_tokens: 8000}
+
+  - task_id: issue-8-dataset
+    issue_number: 8
+    title: Generate matched formation data and validate separation leakage
+    owner: data
+    task_type: leakage_validation
+    dependencies: [issue-7-data-contracts]
+    input_artifact_ids: [issue-7-data-contracts]
+    authorized_files: [artifacts/data/issue-8-dataset.json]
+    output_paths: [artifacts/data/issue-8-dataset.json]
+    expected_artifact_ids: [issue-8-leakage-report]
+    acceptance_tests: [conditions_are_balanced, separation_leakage_absent]
+    budget: {max_runtime_seconds: 10800, max_tokens: 16000}
+
+  - task_id: gate-1-data
+    title: Gate 1 — data valid
+    owner: supervisor
+    task_type: integration_gate
+    gate_id: gate-1
+    dependencies: [issue-8-dataset]
+    input_artifact_ids: [issue-8-leakage-report]
+    authorized_files: [artifacts/orchestration/gate-1.json]
+    output_paths: [artifacts/orchestration/gate-1.json]
+    expected_artifact_ids: [gate-1-evidence]
+    acceptance_tests: [schemas_validate, separation_leakage_absent]
+    budget: {max_runtime_seconds: 1800, max_tokens: 1000}
+
+  - task_id: issue-9-simulation
+    issue_number: 9
+    title: Implement simulated time, resources, and costly action selection
+    owner: engineering
+    task_type: simulation
+    dependencies: [gate-1-data]
+    input_artifact_ids: [gate-1-evidence]
+    authorized_files: [artifacts/engineering/issue-9-simulation.json]
+    output_paths: [artifacts/engineering/issue-9-simulation.json]
+    expected_artifact_ids: [issue-9-simulation-harness]
+    acceptance_tests: [seeded_replay_matches, resources_are_conserved]
+    budget: {max_runtime_seconds: 10800, max_tokens: 10000}
+
+  - task_id: issue-10-memory
+    issue_number: 10
+    title: Implement auditable autobiographical memory and belief updates
+    owner: engineering
+    task_type: memory
+    dependencies: [issue-9-simulation]
+    input_artifact_ids: [issue-9-simulation-harness]
+    authorized_files: [artifacts/engineering/issue-10-memory.json]
+    output_paths: [artifacts/engineering/issue-10-memory.json]
+    expected_artifact_ids: [issue-10-memory-subsystem]
+    acceptance_tests: [retrieval_is_auditable, beliefs_reference_evidence]
+    budget: {max_runtime_seconds: 10800, max_tokens: 10000}
+
+  - task_id: issue-11-interventions
+    issue_number: 11
+    title: Implement reality shock and isolated memory interventions
+    owner: engineering
+    task_type: intervention
+    dependencies: [issue-10-memory]
+    input_artifact_ids: [issue-10-memory-subsystem]
+    authorized_files: [artifacts/engineering/issue-11-interventions.json]
+    output_paths: [artifacts/engineering/issue-11-interventions.json]
+    expected_artifact_ids: [issue-11-intervention-engine]
+    acceptance_tests: [conditions_are_isolated, reality_shock_is_held_out]
+    budget: {max_runtime_seconds: 9000, max_tokens: 8000}
+
+  - task_id: issue-12-models
+    issue_number: 12
+    title: Integrate reproducible structured base-model inference
+    owner: engineering
+    task_type: model_adapter
+    dependencies: [issue-9-simulation]
+    input_artifact_ids: [issue-9-simulation-harness]
+    authorized_files: [artifacts/engineering/issue-12-models.json]
+    output_paths: [artifacts/engineering/issue-12-models.json]
+    expected_artifact_ids: [issue-12-model-runner]
+    acceptance_tests: [outputs_validate, provider_metadata_is_recorded]
+    budget: {max_runtime_seconds: 9000, max_tokens: 8000}
+
+  - task_id: gate-2-harness
+    title: Gate 2 — harness deterministic
+    owner: supervisor
+    task_type: integration_gate
+    gate_id: gate-2
+    dependencies: [issue-9-simulation, issue-10-memory, issue-11-interventions, issue-12-models]
+    input_artifact_ids: [issue-9-simulation-harness, issue-10-memory-subsystem, issue-11-intervention-engine, issue-12-model-runner]
+    authorized_files: [artifacts/orchestration/gate-2.json]
+    output_paths: [artifacts/orchestration/gate-2.json]
+    expected_artifact_ids: [gate-2-evidence]
+    acceptance_tests: [replay_matches, interventions_are_isolated]
+    budget: {max_runtime_seconds: 1800, max_tokens: 1000}
+
+  - task_id: issue-14-metrics
+    issue_number: 14
+    title: Implement behavioral metrics and pilot validation
+    owner: evaluation
+    task_type: metrics
+    dependencies: [gate-2-harness]
+    input_artifact_ids: [gate-2-evidence]
+    authorized_files: [artifacts/evaluation/issue-14-metrics.json]
+    output_paths: [artifacts/evaluation/issue-14-metrics.json]
+    expected_artifact_ids: [issue-14-metric-spec]
+    acceptance_tests: [action_and_language_are_separate, malformed_outputs_are_counted]
+    budget: {max_runtime_seconds: 7200, max_tokens: 8000}
+
+  - task_id: gate-3-pilot
+    title: Gate 3 — pilot interpretable
+    owner: supervisor
+    task_type: integration_gate
+    gate_id: gate-3
+    dependencies: [issue-14-metrics]
+    input_artifact_ids: [issue-14-metric-spec]
+    authorized_files: [artifacts/orchestration/gate-3.json]
+    output_paths: [artifacts/orchestration/gate-3.json]
+    expected_artifact_ids: [gate-3-evidence]
+    acceptance_tests: [structured_outputs_validate, metrics_are_behavioral]
+    budget: {max_runtime_seconds: 1800, max_tokens: 1000}
+
+  - task_id: issue-13-training
+    issue_number: 13
+    title: Fine-tune the optional relational trajectory adapter
+    owner: engineering
+    task_type: model_adapter
+    dependencies: [gate-3-pilot]
+    optional: true
+    input_artifact_ids: [gate-3-evidence]
+    authorized_files: [artifacts/engineering/issue-13-training.json]
+    output_paths: [artifacts/engineering/issue-13-training.json]
+    expected_artifact_ids: [issue-13-adapter]
+    acceptance_tests: [training_excludes_separation, adapter_provenance_is_recorded]
+    budget: {max_runtime_seconds: 14400, max_tokens: 12000, required_gpu_hours: 1}
+
+  - task_id: issue-14-experiment
+    issue_number: 14
+    title: Execute the experiment matrix and statistical analysis
+    owner: evaluation
+    task_type: statistics
+    dependencies: [gate-3-pilot]
+    optional_dependencies: [issue-13-training]
+    input_artifact_ids: [gate-3-evidence, issue-13-adapter]
+    authorized_files: [artifacts/evaluation/issue-14-experiment.json]
+    output_paths: [artifacts/evaluation/issue-14-experiment.json]
+    expected_artifact_ids: [issue-14-results]
+    acceptance_tests: [effect_sizes_are_reported, null_results_are_preserved]
+    budget: {max_runtime_seconds: 10800, max_tokens: 14000}
+
+  - task_id: issue-15-red-team
+    issue_number: 15
+    title: Audit confounds, anthropomorphism, leakage, and reproducibility
+    owner: reviewer
+    task_type: confound_audit
+    dependencies: [issue-14-experiment]
+    input_artifact_ids: [issue-14-results]
+    authorized_files: [artifacts/reviews/issue-15-red-team.json]
+    output_paths: [artifacts/reviews/issue-15-red-team.json]
+    expected_artifact_ids: [issue-15-audit]
+    acceptance_tests: [confounds_are_enumerated, claims_match_evidence]
+    budget: {max_runtime_seconds: 7200, max_tokens: 8000}
+
+  - task_id: gate-4-experiment
+    title: Gate 4 — full experiment defensible
+    owner: supervisor
+    task_type: integration_gate
+    gate_id: gate-4
+    dependencies: [issue-14-experiment, issue-15-red-team]
+    input_artifact_ids: [issue-14-results, issue-15-audit]
+    authorized_files: [artifacts/orchestration/gate-4.json]
+    output_paths: [artifacts/orchestration/gate-4.json]
+    expected_artifact_ids: [gate-4-evidence]
+    acceptance_tests: [uncertainty_is_reported, confounds_are_documented]
+    budget: {max_runtime_seconds: 1800, max_tokens: 1000}
+
+  - task_id: issue-16-release
+    issue_number: 16
+    title: Produce the preliminary report and paper skeleton
+    owner: evaluation
+    task_type: reporting
+    dependencies: [gate-4-experiment]
+    input_artifact_ids: [gate-4-evidence]
+    authorized_files: [artifacts/evaluation/issue-16-release.json]
+    output_paths: [artifacts/evaluation/issue-16-release.json]
+    expected_artifact_ids: [issue-16-release-package]
+    acceptance_tests: [limitations_are_included, reproduction_commands_are_linked]
+    budget: {max_runtime_seconds: 7200, max_tokens: 10000}
+
+  - task_id: gate-5-release
+    title: Gate 5 — release reproducible
+    owner: supervisor
+    task_type: integration_gate
+    gate_id: gate-5
+    dependencies: [issue-16-release]
+    input_artifact_ids: [issue-16-release-package]
+    authorized_files: [artifacts/orchestration/gate-5.json]
+    output_paths: [artifacts/orchestration/gate-5.json]
+    expected_artifact_ids: [gate-5-evidence]
+    acceptance_tests: [reproduction_is_tested, limitations_are_present]
+    budget: {max_runtime_seconds: 1800, max_tokens: 1000}
+
+  - task_id: final-synthesis
+    title: Synthesize the sprint result after every integration gate
+    owner: supervisor
+    task_type: final_synthesis
+    dependencies: [gate-5-release]
+    input_artifact_ids: [gate-5-evidence]
+    authorized_files: [artifacts/orchestration/final-synthesis.json]
+    output_paths: [artifacts/orchestration/final-synthesis.json]
+    expected_artifact_ids: [final-synthesis-report]
+    acceptance_tests: [all_gates_passed, artifact_index_is_complete]
+    budget: {max_runtime_seconds: 1800, max_tokens: 2000}
+
+gates:
+  - gate_id: gate-0
+    name: Scope frozen
+    task_id: gate-0-scope
+    required_evidence_artifact_ids: [issue-5-methodology-spec, issue-6-safety-spec]
+  - gate_id: gate-1
+    name: Data valid
+    task_id: gate-1-data
+    required_evidence_artifact_ids: [issue-8-leakage-report]
+  - gate_id: gate-2
+    name: Harness deterministic
+    task_id: gate-2-harness
+    required_evidence_artifact_ids: [issue-9-simulation-harness, issue-10-memory-subsystem, issue-11-intervention-engine, issue-12-model-runner]
+  - gate_id: gate-3
+    name: Pilot interpretable
+    task_id: gate-3-pilot
+    required_evidence_artifact_ids: [issue-14-metric-spec]
+  - gate_id: gate-4
+    name: Experiment defensible
+    task_id: gate-4-experiment
+    required_evidence_artifact_ids: [issue-14-results, issue-15-audit]
+  - gate_id: gate-5
+    name: Release reproducible
+    task_id: gate-5-release
+    required_evidence_artifact_ids: [issue-16-release-package]
+
+final_task_id: final-synthesis

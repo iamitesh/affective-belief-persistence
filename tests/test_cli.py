@@ -69,3 +69,38 @@ def test_validate_schemas_reports_drift(project_root: Path, tmp_path: Path, monk
     monkeypatch.chdir(copied_root)
 
     assert main(["validate-schemas"]) == 2
+
+
+def test_workflow_validate_dry_run_and_resume_commands(
+    project_root: Path, tmp_path: Path, monkeypatch
+) -> None:
+    config = project_root / "configs/workflows/forty_eight_hour_sprint.yaml"
+    output = tmp_path / "workflow"
+    monkeypatch.chdir(project_root)
+
+    assert main(["validate-workflow", "--config", str(config)]) == 0
+    assert (
+        main(
+            [
+                "workflow-dry-run",
+                "--config",
+                str(config),
+                "--output",
+                str(output),
+            ]
+        )
+        == 0
+    )
+    assert (
+        main(
+            [
+                "workflow-dry-run",
+                "--config",
+                str(config),
+                "--output",
+                str(output),
+                "--resume",
+            ]
+        )
+        == 0
+    )

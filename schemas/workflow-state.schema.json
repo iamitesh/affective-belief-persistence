@@ -1,0 +1,874 @@
+{
+  "$defs": {
+    "ArtifactContract": {
+      "additionalProperties": false,
+      "description": "Provenance and validation record for an artifact exchanged by agents.",
+      "properties": {
+        "artifact_id": {
+          "minLength": 1,
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+          "title": "Artifact Id",
+          "type": "string"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "downstream_task_ids": {
+          "default": [],
+          "items": {
+            "minLength": 1,
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+            "type": "string"
+          },
+          "title": "Downstream Task Ids",
+          "type": "array"
+        },
+        "logical_name": {
+          "minLength": 1,
+          "title": "Logical Name",
+          "type": "string"
+        },
+        "media_type": {
+          "minLength": 1,
+          "title": "Media Type",
+          "type": "string"
+        },
+        "metadata": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "title": "Metadata",
+          "type": "object"
+        },
+        "path": {
+          "minLength": 1,
+          "title": "Path",
+          "type": "string"
+        },
+        "produced_by_agent": {
+          "minLength": 1,
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+          "title": "Produced By Agent",
+          "type": "string"
+        },
+        "produced_by_task": {
+          "minLength": 1,
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+          "title": "Produced By Task",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "1.0",
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "sha256": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sha256"
+        },
+        "size_bytes": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Size Bytes"
+        },
+        "source_commit": {
+          "minLength": 1,
+          "title": "Source Commit",
+          "type": "string"
+        },
+        "validation_notes": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Validation Notes",
+          "type": "array"
+        },
+        "validation_status": {
+          "$ref": "#/$defs/ValidationStatus",
+          "default": "pending"
+        }
+      },
+      "required": [
+        "artifact_id",
+        "produced_by_task",
+        "produced_by_agent",
+        "logical_name",
+        "path",
+        "media_type",
+        "created_at",
+        "source_commit"
+      ],
+      "title": "ArtifactContract",
+      "type": "object"
+    },
+    "EventLog": {
+      "additionalProperties": false,
+      "description": "Persistent append-only workflow event sequence.\n\n``append`` returns a new log, which prevents in-place history rewrites and\nmakes the object safe to place directly inside a checkpoint.",
+      "properties": {
+        "events": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/WorkflowEvent"
+          },
+          "title": "Events",
+          "type": "array"
+        },
+        "workflow_id": {
+          "minLength": 1,
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+          "title": "Workflow Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "workflow_id"
+      ],
+      "title": "EventLog",
+      "type": "object"
+    },
+    "FailureCategory": {
+      "description": "Structured failure classes used for retry and escalation policy.",
+      "enum": [
+        "validation_failure",
+        "dependency_missing",
+        "schema_mismatch",
+        "file_lease_conflict",
+        "model_unavailable",
+        "budget_exceeded",
+        "reproducibility_failure",
+        "safety_boundary",
+        "human_decision_required",
+        "runtime_interrupted"
+      ],
+      "title": "FailureCategory",
+      "type": "string"
+    },
+    "HandoffContract": {
+      "additionalProperties": false,
+      "description": "Explicit transfer of validated outputs between two tasks.",
+      "properties": {
+        "acceptance_notes": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Acceptance Notes",
+          "type": "array"
+        },
+        "artifact_ids": {
+          "items": {
+            "minLength": 1,
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Artifact Ids",
+          "type": "array"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "from_task_id": {
+          "minLength": 1,
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+          "title": "From Task Id",
+          "type": "string"
+        },
+        "handoff_id": {
+          "minLength": 1,
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+          "title": "Handoff Id",
+          "type": "string"
+        },
+        "summary": {
+          "minLength": 1,
+          "title": "Summary",
+          "type": "string"
+        },
+        "to_task_id": {
+          "minLength": 1,
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+          "title": "To Task Id",
+          "type": "string"
+        },
+        "validation_status": {
+          "$ref": "#/$defs/ValidationStatus",
+          "default": "pending"
+        }
+      },
+      "required": [
+        "handoff_id",
+        "from_task_id",
+        "to_task_id",
+        "artifact_ids",
+        "summary",
+        "created_at"
+      ],
+      "title": "HandoffContract",
+      "type": "object"
+    },
+    "TaskLease": {
+      "additionalProperties": false,
+      "description": "Exclusive, expiring assignment of a task and its file scope to a worker.",
+      "properties": {
+        "acquired_at": {
+          "format": "date-time",
+          "title": "Acquired At",
+          "type": "string"
+        },
+        "authorized_files": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Authorized Files",
+          "type": "array"
+        },
+        "expires_at": {
+          "format": "date-time",
+          "title": "Expires At",
+          "type": "string"
+        },
+        "lease_id": {
+          "minLength": 1,
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+          "title": "Lease Id",
+          "type": "string"
+        },
+        "worker_id": {
+          "minLength": 1,
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+          "title": "Worker Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "lease_id",
+        "worker_id",
+        "acquired_at",
+        "expires_at"
+      ],
+      "title": "TaskLease",
+      "type": "object"
+    },
+    "TaskStatus": {
+      "description": "Lifecycle states defined by the research workflow PRD.",
+      "enum": [
+        "pending",
+        "ready",
+        "leased",
+        "running",
+        "validating",
+        "completed",
+        "retry",
+        "blocked",
+        "escalated",
+        "cancelled"
+      ],
+      "title": "TaskStatus",
+      "type": "string"
+    },
+    "ValidationStatus": {
+      "description": "Validation state for a produced artifact or handoff.",
+      "enum": [
+        "pending",
+        "passed",
+        "failed"
+      ],
+      "title": "ValidationStatus",
+      "type": "string"
+    },
+    "WorkflowEvent": {
+      "additionalProperties": false,
+      "description": "One immutable event; sequence is monotonic within a workflow.",
+      "properties": {
+        "actor_id": {
+          "minLength": 1,
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+          "title": "Actor Id",
+          "type": "string"
+        },
+        "event_id": {
+          "minLength": 1,
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+          "title": "Event Id",
+          "type": "string"
+        },
+        "event_type": {
+          "$ref": "#/$defs/WorkflowEventType"
+        },
+        "message": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Message"
+        },
+        "new_status": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/TaskStatus"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "occurred_at": {
+          "format": "date-time",
+          "title": "Occurred At",
+          "type": "string"
+        },
+        "payload": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "title": "Payload",
+          "type": "object"
+        },
+        "previous_status": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/TaskStatus"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "sequence": {
+          "minimum": 1,
+          "title": "Sequence",
+          "type": "integer"
+        },
+        "task_id": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Task Id"
+        },
+        "workflow_id": {
+          "minLength": 1,
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+          "title": "Workflow Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "event_id",
+        "workflow_id",
+        "sequence",
+        "event_type",
+        "occurred_at",
+        "actor_id"
+      ],
+      "title": "WorkflowEvent",
+      "type": "object"
+    },
+    "WorkflowEventType": {
+      "description": "Kinds of facts that may be appended to a workflow history.",
+      "enum": [
+        "workflow_created",
+        "status_transition",
+        "artifact_registered",
+        "handoff_registered",
+        "checkpoint_saved",
+        "note"
+      ],
+      "title": "WorkflowEventType",
+      "type": "string"
+    },
+    "WorkflowTask": {
+      "additionalProperties": false,
+      "description": "Mutable-in-time task facts represented as an immutable snapshot.",
+      "properties": {
+        "acceptance_tests": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Acceptance Tests",
+          "type": "array"
+        },
+        "attempt_count": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Attempt Count",
+          "type": "integer"
+        },
+        "authorized_files": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Authorized Files",
+          "type": "array"
+        },
+        "blocker": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Blocker"
+        },
+        "completed_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Completed At"
+        },
+        "dependencies": {
+          "default": [],
+          "items": {
+            "minLength": 1,
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+            "type": "string"
+          },
+          "title": "Dependencies",
+          "type": "array"
+        },
+        "expected_artifact_ids": {
+          "default": [],
+          "items": {
+            "minLength": 1,
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+            "type": "string"
+          },
+          "title": "Expected Artifact Ids",
+          "type": "array"
+        },
+        "failure_category": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/FailureCategory"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "gate_id": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Gate Id"
+        },
+        "input_artifact_ids": {
+          "default": [],
+          "items": {
+            "minLength": 1,
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+            "type": "string"
+          },
+          "title": "Input Artifact Ids",
+          "type": "array"
+        },
+        "issue_number": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Issue Number"
+        },
+        "last_error": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Last Error"
+        },
+        "lease": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/TaskLease"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "max_attempts": {
+          "default": 2,
+          "maximum": 3,
+          "minimum": 1,
+          "title": "Max Attempts",
+          "type": "integer"
+        },
+        "max_runtime_seconds": {
+          "default": 1,
+          "minimum": 1,
+          "title": "Max Runtime Seconds",
+          "type": "integer"
+        },
+        "no_artifact_reason": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "No Artifact Reason"
+        },
+        "optional": {
+          "default": false,
+          "title": "Optional",
+          "type": "boolean"
+        },
+        "optional_dependencies": {
+          "default": [],
+          "items": {
+            "minLength": 1,
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+            "type": "string"
+          },
+          "title": "Optional Dependencies",
+          "type": "array"
+        },
+        "output_artifact_ids": {
+          "default": [],
+          "items": {
+            "minLength": 1,
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+            "type": "string"
+          },
+          "title": "Output Artifact Ids",
+          "type": "array"
+        },
+        "output_paths": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Output Paths",
+          "type": "array"
+        },
+        "owner": {
+          "default": "unassigned",
+          "minLength": 1,
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+          "title": "Owner",
+          "type": "string"
+        },
+        "retry_count": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Retry Count",
+          "type": "integer"
+        },
+        "started_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Started At"
+        },
+        "status": {
+          "$ref": "#/$defs/TaskStatus",
+          "default": "pending"
+        },
+        "task_id": {
+          "minLength": 1,
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+          "title": "Task Id",
+          "type": "string"
+        },
+        "task_type": {
+          "default": "unspecified",
+          "minLength": 1,
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+          "title": "Task Type",
+          "type": "string"
+        },
+        "title": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Title"
+        },
+        "updated_at": {
+          "format": "date-time",
+          "title": "Updated At",
+          "type": "string"
+        }
+      },
+      "required": [
+        "task_id",
+        "updated_at"
+      ],
+      "title": "WorkflowTask",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Complete state snapshot suitable for an atomic JSON checkpoint.",
+  "properties": {
+    "active_agents": {
+      "default": [],
+      "items": {
+        "minLength": 1,
+        "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+        "type": "string"
+      },
+      "title": "Active Agents",
+      "type": "array"
+    },
+    "artifacts": {
+      "additionalProperties": {
+        "$ref": "#/$defs/ArtifactContract"
+      },
+      "title": "Artifacts",
+      "type": "object"
+    },
+    "blockers": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Blockers",
+      "type": "array"
+    },
+    "budget_usage": {
+      "additionalProperties": {
+        "anyOf": [
+          {
+            "type": "integer"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "title": "Budget Usage",
+      "type": "object"
+    },
+    "checkpoint_sequence": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Checkpoint Sequence",
+      "type": "integer"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "current_commit": {
+      "default": "unknown",
+      "title": "Current Commit",
+      "type": "string"
+    },
+    "deadline": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Deadline"
+    },
+    "decisions": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Decisions",
+      "type": "array"
+    },
+    "event_log": {
+      "$ref": "#/$defs/EventLog"
+    },
+    "gates": {
+      "additionalProperties": {
+        "type": "boolean"
+      },
+      "title": "Gates",
+      "type": "object"
+    },
+    "handoffs": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/HandoffContract"
+      },
+      "title": "Handoffs",
+      "type": "array"
+    },
+    "phase": {
+      "default": "initializing",
+      "title": "Phase",
+      "type": "string"
+    },
+    "revision": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Revision",
+      "type": "integer"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "sprint_id": {
+      "minLength": 1,
+      "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+      "title": "Sprint Id",
+      "type": "string"
+    },
+    "tasks": {
+      "additionalProperties": {
+        "$ref": "#/$defs/WorkflowTask"
+      },
+      "title": "Tasks",
+      "type": "object"
+    },
+    "updated_at": {
+      "format": "date-time",
+      "title": "Updated At",
+      "type": "string"
+    },
+    "workflow_id": {
+      "minLength": 1,
+      "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+      "title": "Workflow Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "workflow_id",
+    "sprint_id",
+    "created_at",
+    "updated_at",
+    "tasks",
+    "event_log"
+  ],
+  "title": "WorkflowState",
+  "type": "object"
+}

@@ -253,16 +253,39 @@ class RunManifest(StrictModel):
     schema_models: ClassVar[tuple[type[BaseModel], ...]] = ()
 
 
+from affective_belief_persistence.orchestration.contracts import (  # noqa: E402
+    ArtifactContract as WorkflowArtifactContract,
+)
+from affective_belief_persistence.orchestration.contracts import (  # noqa: E402
+    HandoffContract as WorkflowHandoffContract,
+)
+from affective_belief_persistence.orchestration.contracts import (  # noqa: E402
+    TaskContract as WorkflowTaskContract,
+)
+from affective_belief_persistence.orchestration.contracts import WorkerResult  # noqa: E402
+from affective_belief_persistence.orchestration.events import WorkflowEvent  # noqa: E402
+from affective_belief_persistence.orchestration.state import WorkflowState  # noqa: E402
+from affective_belief_persistence.orchestration.workflow import (  # noqa: E402
+    WorkflowDefinition,
+)
+
 SCHEMA_MODELS: dict[str, type[BaseModel]] = {
     "agent-config.schema.json": AgentConfig,
+    "artifact.schema.json": WorkflowArtifactContract,
     "decision-record.schema.json": DecisionRecord,
     "evaluation-config.schema.json": EvaluationConfig,
     "experiment-config.schema.json": ExperimentSpec,
+    "handoff.schema.json": WorkflowHandoffContract,
     "model-config.schema.json": ModelConfig,
     "model-decision.schema.json": ModelDecision,
     "model-request.schema.json": DecisionRequest,
     "resolved-run-config.schema.json": ResolvedRunConfig,
     "run-manifest.schema.json": RunManifest,
     "scenario-config.schema.json": ScenarioConfig,
+    "task.schema.json": WorkflowTaskContract,
+    "worker-result.schema.json": WorkerResult,
     "workflow-config.schema.json": WorkflowConfig,
+    "workflow-definition.schema.json": WorkflowDefinition,
+    "workflow-event.schema.json": WorkflowEvent,
+    "workflow-state.schema.json": WorkflowState,
 }

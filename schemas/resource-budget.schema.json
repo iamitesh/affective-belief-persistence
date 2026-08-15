@@ -1,0 +1,39 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "carry_over": {
+      "const": false,
+      "default": false,
+      "title": "Carry Over",
+      "type": "boolean"
+    },
+    "daily_total": {
+      "exclusiveMinimum": 0,
+      "title": "Daily Total",
+      "type": "integer"
+    },
+    "resource_budget_id": {
+      "pattern": "^[a-z0-9][a-z0-9_-]*$",
+      "title": "Resource Budget Id",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "unit": {
+      "const": "action_points",
+      "title": "Unit",
+      "type": "string"
+    }
+  },
+  "required": [
+    "resource_budget_id",
+    "unit",
+    "daily_total"
+  ],
+  "title": "ResourceBudget",
+  "type": "object"
+}

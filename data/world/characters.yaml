@@ -1,0 +1,57 @@
+schema_version: "1.0"
+characters:
+  - character_id: ari
+    display_name: Ari
+    role: focal_agent
+    goal_ids: [deliver_project, maintain_friendship, restore_energy, learn_skill, support_mira]
+    preference_weights:
+      deliver_project: 0.90
+      maintain_friendship: 0.70
+      restore_energy: 0.65
+      learn_skill: 0.60
+      support_mira: 0.55
+    synthetic: true
+    provenance: &world_provenance
+      declaration_id: gate1-world-declaration
+      generator_id: gate1-world-spec
+      generator_version: "1.0.0"
+      seed: 20260815
+      source_commit: 82a54942abeb332bdc092d347966e51c07af9080
+      source_ids: [gate-0-evidence, issue-7-world-contract]
+      synthetic: true
+  - character_id: mira
+    display_name: Mira
+    role: scripted_partner
+    goal_ids: [deliver_project, maintain_friendship, restore_energy]
+    preference_weights:
+      deliver_project: 0.80
+      maintain_friendship: 0.75
+      restore_energy: 0.60
+    synthetic: true
+    provenance: *world_provenance
+  - character_id: noah
+    display_name: Noah
+    role: friend
+    goal_ids: [maintain_friendship, learn_skill]
+    preference_weights:
+      maintain_friendship: 0.80
+      learn_skill: 0.70
+    synthetic: true
+    provenance: *world_provenance
+  - character_id: priya
+    display_name: Priya
+    role: coworker
+    goal_ids: [deliver_project, learn_skill]
+    preference_weights:
+      deliver_project: 0.85
+      learn_skill: 0.65
+    synthetic: true
+    provenance: *world_provenance
+  - character_id: ledger-target
+    display_name: Ledger Target
+    role: neutral_target
+    goal_ids: [verify_neutral_fact]
+    preference_weights:
+      verify_neutral_fact: 1.0
+    synthetic: true
+    provenance: *world_provenance

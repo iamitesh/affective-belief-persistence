@@ -1,0 +1,114 @@
+{
+  "$defs": {
+    "SyntheticProvenance": {
+      "additionalProperties": false,
+      "properties": {
+        "declaration_id": {
+          "pattern": "^[a-z0-9][a-z0-9_-]*$",
+          "title": "Declaration Id",
+          "type": "string"
+        },
+        "generator_id": {
+          "pattern": "^[a-z0-9][a-z0-9_-]*$",
+          "title": "Generator Id",
+          "type": "string"
+        },
+        "generator_version": {
+          "minLength": 1,
+          "title": "Generator Version",
+          "type": "string"
+        },
+        "seed": {
+          "minimum": 0,
+          "title": "Seed",
+          "type": "integer"
+        },
+        "source_commit": {
+          "minLength": 7,
+          "title": "Source Commit",
+          "type": "string"
+        },
+        "source_ids": {
+          "items": {
+            "pattern": "^[a-z0-9][a-z0-9_-]*$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Source Ids",
+          "type": "array"
+        },
+        "synthetic": {
+          "const": true,
+          "default": true,
+          "title": "Synthetic",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "declaration_id",
+        "generator_id",
+        "generator_version",
+        "seed",
+        "source_commit",
+        "source_ids"
+      ],
+      "title": "SyntheticProvenance",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "category": {
+      "enum": [
+        "work",
+        "friendship",
+        "rest",
+        "personal_development",
+        "partner_activity",
+        "neutral_control"
+      ],
+      "title": "Category",
+      "type": "string"
+    },
+    "daily_priority": {
+      "maximum": 1,
+      "minimum": 0,
+      "title": "Daily Priority",
+      "type": "number"
+    },
+    "description": {
+      "minLength": 1,
+      "title": "Description",
+      "type": "string"
+    },
+    "goal_id": {
+      "pattern": "^[a-z0-9][a-z0-9_-]*$",
+      "title": "Goal Id",
+      "type": "string"
+    },
+    "provenance": {
+      "$ref": "#/$defs/SyntheticProvenance"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "synthetic": {
+      "const": true,
+      "default": true,
+      "title": "Synthetic",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "goal_id",
+    "category",
+    "description",
+    "daily_priority",
+    "provenance"
+  ],
+  "title": "Goal",
+  "type": "object"
+}

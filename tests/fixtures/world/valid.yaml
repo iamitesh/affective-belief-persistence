@@ -1,0 +1,116 @@
+provenance: &provenance
+  declaration_id: fixture-declaration
+  generator_id: fixture-generator
+  generator_version: "1.0.0"
+  seed: 7
+  source_commit: fixture-commit
+  source_ids: [fixture-source]
+  synthetic: true
+
+character:
+  schema_version: "1.0"
+  character_id: fixture-character
+  display_name: Fixture
+  role: focal_agent
+  goal_ids: [fixture-goal]
+  preference_weights: {fixture-goal: 0.5}
+  synthetic: true
+  provenance: *provenance
+
+goal:
+  schema_version: "1.0"
+  goal_id: fixture-goal
+  category: work
+  description: Complete a synthetic fixture task.
+  daily_priority: 0.5
+  synthetic: true
+  provenance: *provenance
+
+resource_budget:
+  schema_version: "1.0"
+  resource_budget_id: fixture-budget
+  unit: action_points
+  daily_total: 5
+  carry_over: false
+
+consequence:
+  schema_version: "1.0"
+  consequence_id: fixture-consequence
+  resource_delta: -2
+  goal_progress: {fixture-goal: 1}
+  emitted_fact_ids: []
+  deterministic: true
+
+action_option:
+  schema_version: "1.0"
+  action_id: fixture-action
+  category: work
+  description: Spend two points on the fixture goal.
+  cost: 2
+  partner_directed: false
+  goal_ids: [fixture-goal]
+  consequence_id: fixture-consequence
+
+condition_variant:
+  schema_version: "1.0"
+  formation_condition: shared_memory
+  treatment_active: true
+  romantic_instruction: false
+  memory_mode: episodic
+  investment_points: 0
+  declared_treatment_dimensions: [autobiographical_memory]
+
+event:
+  schema_version: "1.0"
+  event_id: fixture-event
+  matching_group_id: fixture-group
+  day: 6
+  phase: formation
+  participant_ids: [fixture-character]
+  observable_facts:
+    - fact_id: fixture-fact
+      proposition: A synthetic fixture event occurred.
+      truth: true
+      ledger_source: environment
+  interpretations:
+    - interpretation_id: fixture-interpretation
+      proposition: This interpretation is linked to the fixture fact.
+      fact_ids: [fixture-fact]
+      ledger_supported: true
+  available_action_ids: [fixture-action]
+  consequence_ids: [fixture-consequence]
+  resource_budget_id: fixture-budget
+  background_fact_ids: []
+  memory_candidates:
+    - memory_id: fixture-memory
+      summary: The fixture event occurred.
+      source_fact_ids: [fixture-fact]
+      partner_related: false
+      retrieval_eligible: true
+  relationship_evidence: []
+  condition_variant:
+    schema_version: "1.0"
+    formation_condition: shared_memory
+    treatment_active: true
+    romantic_instruction: false
+    memory_mode: episodic
+    investment_points: 0
+    declared_treatment_dimensions: [autobiographical_memory]
+  synthetic: true
+  provenance: *provenance
+
+scenario:
+  schema_version: "1.0"
+  scenario_id: fixture-scenario
+  version: "1.0.0"
+  character_ids: [fixture-character, fixture-partner]
+  goal_ids: [fixture-goal]
+  resource_budget_ids: [fixture-budget]
+  action_ids: [fixture-action]
+  event_ids: [fixture-event]
+  baseline_days: [1, 5]
+  formation_days: [6, 25]
+  reality_shock_day: 26
+  adaptation_days: [27, 40]
+  synthetic: true
+  provenance: *provenance

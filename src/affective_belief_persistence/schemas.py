@@ -392,6 +392,7 @@ class RunManifest(StrictModel):
     schema_models: ClassVar[tuple[type[BaseModel], ...]] = ()
 
 
+from affective_belief_persistence.data.contracts import DatasetManifest  # noqa: E402
 from affective_belief_persistence.orchestration.contracts import (  # noqa: E402
     ArtifactContract as WorkflowArtifactContract,
 )
@@ -407,11 +408,13 @@ from affective_belief_persistence.orchestration.state import WorkflowState  # no
 from affective_belief_persistence.orchestration.workflow import (  # noqa: E402
     WorkflowDefinition,
 )
+from affective_belief_persistence.world import WORLD_SCHEMA_MODELS  # noqa: E402
 
 SCHEMA_MODELS: dict[str, type[BaseModel]] = {
     "agent-config.schema.json": AgentConfig,
     "artifact.schema.json": WorkflowArtifactContract,
     "decision-record.schema.json": DecisionRecord,
+    "dataset-manifest.schema.json": DatasetManifest,
     "evaluation-config.schema.json": EvaluationConfig,
     "experiment-config.schema.json": ExperimentSpec,
     "handoff.schema.json": WorkflowHandoffContract,
@@ -427,4 +430,5 @@ SCHEMA_MODELS: dict[str, type[BaseModel]] = {
     "workflow-definition.schema.json": WorkflowDefinition,
     "workflow-event.schema.json": WorkflowEvent,
     "workflow-state.schema.json": WorkflowState,
+    **WORLD_SCHEMA_MODELS,
 }

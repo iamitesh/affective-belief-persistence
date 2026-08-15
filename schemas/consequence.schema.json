@@ -1,0 +1,53 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "consequence_id": {
+      "pattern": "^[a-z0-9][a-z0-9_-]*$",
+      "title": "Consequence Id",
+      "type": "string"
+    },
+    "deterministic": {
+      "const": true,
+      "default": true,
+      "title": "Deterministic",
+      "type": "boolean"
+    },
+    "emitted_fact_ids": {
+      "default": [],
+      "items": {
+        "pattern": "^[a-z0-9][a-z0-9_-]*$",
+        "type": "string"
+      },
+      "title": "Emitted Fact Ids",
+      "type": "array"
+    },
+    "goal_progress": {
+      "minProperties": 1,
+      "patternProperties": {
+        "^[a-z0-9][a-z0-9_-]*$": {
+          "type": "integer"
+        }
+      },
+      "title": "Goal Progress",
+      "type": "object"
+    },
+    "resource_delta": {
+      "maximum": 0,
+      "title": "Resource Delta",
+      "type": "integer"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "consequence_id",
+    "resource_delta",
+    "goal_progress"
+  ],
+  "title": "Consequence",
+  "type": "object"
+}

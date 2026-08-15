@@ -1,0 +1,64 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "declared_treatment_dimensions": {
+      "default": [],
+      "items": {
+        "enum": [
+          "romantic_instruction",
+          "autobiographical_memory",
+          "costly_investment"
+        ],
+        "type": "string"
+      },
+      "title": "Declared Treatment Dimensions",
+      "type": "array"
+    },
+    "formation_condition": {
+      "enum": [
+        "neutral_connection",
+        "romantic_prompt",
+        "shared_memory",
+        "memory_plus_investment"
+      ],
+      "title": "Formation Condition",
+      "type": "string"
+    },
+    "investment_points": {
+      "minimum": 0,
+      "title": "Investment Points",
+      "type": "integer"
+    },
+    "memory_mode": {
+      "enum": [
+        "none",
+        "episodic"
+      ],
+      "title": "Memory Mode",
+      "type": "string"
+    },
+    "romantic_instruction": {
+      "title": "Romantic Instruction",
+      "type": "boolean"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "treatment_active": {
+      "title": "Treatment Active",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "formation_condition",
+    "treatment_active",
+    "romantic_instruction",
+    "memory_mode",
+    "investment_points"
+  ],
+  "title": "ConditionVariant",
+  "type": "object"
+}

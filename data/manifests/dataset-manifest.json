@@ -1,0 +1,111 @@
+{
+  "dataset_id": "abp-gate1-synthetic",
+  "dataset_sha256": "5d26b33ec64d1ad59ffa947b48bdd852e8b2900e4119d32513fca15a244e5387",
+  "dataset_version": "synthetic-matched-v1",
+  "freeze_date": "2026-08-15",
+  "generator_id": "gate1-dataset-generator",
+  "generator_version": "1.0.0",
+  "known_imperfections": [
+    "Semantic leakage uses deterministic concept rules rather than an embedding model to keep CI offline and reproducible."
+  ],
+  "manual_review_sample_ids": [
+    "formation-06-neutral_connection",
+    "formation-25-neutral_connection",
+    "formation-06-romantic_prompt",
+    "formation-25-romantic_prompt",
+    "formation-06-shared_memory",
+    "formation-25-shared_memory",
+    "formation-06-memory_plus_investment",
+    "formation-25-memory_plus_investment"
+  ],
+  "partitions": [
+    {
+      "first_day": 26,
+      "last_day": 40,
+      "path": "data/controls/neutral_belief_revision.jsonl",
+      "protected_from_training": false,
+      "record_count": 15,
+      "role": "control",
+      "sha256": "fab856d463c24607781d0e7b9e023596d9b45bcc9b55a3f9cbea604df6361333"
+    },
+    {
+      "first_day": 1,
+      "last_day": 25,
+      "path": "data/formation/memory_investment.jsonl",
+      "protected_from_training": false,
+      "record_count": 25,
+      "role": "formation",
+      "sha256": "f5ae840acacd1a3c401340dfcbe54dfa303586c6dba0c1d9e0506c1a8a596269"
+    },
+    {
+      "first_day": 1,
+      "last_day": 25,
+      "path": "data/formation/neutral.jsonl",
+      "protected_from_training": false,
+      "record_count": 25,
+      "role": "formation",
+      "sha256": "67be57df627ed4d86d0726cf45929c6a1b8c159173acac2701c65ec294924a25"
+    },
+    {
+      "first_day": 1,
+      "last_day": 25,
+      "path": "data/formation/romantic_prompt.jsonl",
+      "protected_from_training": false,
+      "record_count": 25,
+      "role": "formation",
+      "sha256": "5c8e8a341bc45e252320a178326f9f4cd6549236537a525f87b5b1a22165f624"
+    },
+    {
+      "first_day": 1,
+      "last_day": 25,
+      "path": "data/formation/shared_memory.jsonl",
+      "protected_from_training": false,
+      "record_count": 25,
+      "role": "formation",
+      "sha256": "914d20d2bb71bdb026f65f65404627c9daabe45e8e864f6c72d158e95b374aed"
+    },
+    {
+      "first_day": 27,
+      "last_day": 40,
+      "path": "data/held_out/adaptation.jsonl",
+      "protected_from_training": true,
+      "record_count": 56,
+      "role": "held_out",
+      "sha256": "11ed6c0d35ad65ec385f3561cf8faef4f6642b8e093772e06c2e7d76e7ef3c65"
+    },
+    {
+      "first_day": 26,
+      "last_day": 26,
+      "path": "data/held_out/reality_shock.jsonl",
+      "protected_from_training": true,
+      "record_count": 4,
+      "role": "held_out",
+      "sha256": "af907662f404089b757ee4c3d1011743612929ec62ac8e3d1ccfd5a7302b6d9e"
+    },
+    {
+      "first_day": 1,
+      "last_day": 2,
+      "path": "data/smoke/gate1.jsonl",
+      "protected_from_training": false,
+      "record_count": 8,
+      "role": "smoke",
+      "sha256": "0db848736f3dca34775129e93d11d07f0a1e9b12f1fabc109072472896f44fbc"
+    }
+  ],
+  "protocol_sha256": "1380072310820600c29f9de88e45eb41acae7d582b26a21961f76b642ac35ecb",
+  "safety_policy_sha256": "eef3c81302a16a1644933da2ee458ffb78f22d6aa79b34d89744fff8950cbe7c",
+  "schema_version": "1.0",
+  "seed": 20260815,
+  "source_commit": "82a54942abeb332bdc092d347966e51c07af9080",
+  "synthetic": true,
+  "validation": {
+    "deterministic_regeneration": "passed",
+    "exact_lexical_semantic_leakage": "passed",
+    "identifier_uniqueness": "passed",
+    "manual_stratified_review": "passed",
+    "matching": "passed",
+    "privacy_and_secrets": "passed",
+    "resource_conservation": "passed",
+    "schemas": "passed"
+  }
+}

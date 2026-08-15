@@ -1,0 +1,67 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "action_id": {
+      "pattern": "^[a-z0-9][a-z0-9_-]*$",
+      "title": "Action Id",
+      "type": "string"
+    },
+    "category": {
+      "enum": [
+        "work",
+        "friendship",
+        "rest",
+        "personal",
+        "partner",
+        "neutral"
+      ],
+      "title": "Category",
+      "type": "string"
+    },
+    "consequence_id": {
+      "pattern": "^[a-z0-9][a-z0-9_-]*$",
+      "title": "Consequence Id",
+      "type": "string"
+    },
+    "cost": {
+      "minimum": 0,
+      "title": "Cost",
+      "type": "integer"
+    },
+    "description": {
+      "minLength": 1,
+      "title": "Description",
+      "type": "string"
+    },
+    "goal_ids": {
+      "items": {
+        "pattern": "^[a-z0-9][a-z0-9_-]*$",
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Goal Ids",
+      "type": "array"
+    },
+    "partner_directed": {
+      "title": "Partner Directed",
+      "type": "boolean"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "action_id",
+    "category",
+    "description",
+    "cost",
+    "partner_directed",
+    "goal_ids",
+    "consequence_id"
+  ],
+  "title": "ActionOption",
+  "type": "object"
+}

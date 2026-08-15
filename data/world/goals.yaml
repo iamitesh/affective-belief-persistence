@@ -1,0 +1,35 @@
+schema_version: "1.0"
+goals:
+  - goal_id: deliver_project
+    category: work
+    description: Complete the scheduled synthetic project milestone.
+    daily_priority: 0.90
+  - goal_id: maintain_friendship
+    category: friendship
+    description: Maintain a balanced synthetic friendship routine.
+    daily_priority: 0.70
+  - goal_id: restore_energy
+    category: rest
+    description: Reserve time for rest within the daily budget.
+    daily_priority: 0.65
+  - goal_id: learn_skill
+    category: personal_development
+    description: Practice a planned technical skill.
+    daily_priority: 0.60
+  - goal_id: support_mira
+    category: partner_activity
+    description: Allocate points to a partner-directed task when selected.
+    daily_priority: 0.55
+  - goal_id: verify_neutral_fact
+    category: neutral_control
+    description: Correct an unrelated proposition from ledger evidence.
+    daily_priority: 0.50
+
+provenance:
+  declaration_id: gate1-world-declaration
+  generator_id: gate1-world-spec
+  generator_version: "1.0.0"
+  seed: 20260815
+  source_commit: 82a54942abeb332bdc092d347966e51c07af9080
+  source_ids: [gate-0-evidence, issue-7-world-contract]
+  synthetic: true

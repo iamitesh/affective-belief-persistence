@@ -1,0 +1,17 @@
+schema_version: "1.0"
+dataset_id: abp-gate1-synthetic
+dataset_version: synthetic-matched-v1
+generator_version: "1.0.0"
+seed: 20260815
+source_commit: 82a54942abeb332bdc092d347966e51c07af9080
+freeze_date: "2026-08-15"
+formation_conditions:
+  - neutral_connection
+  - romantic_prompt
+  - shared_memory
+  - memory_plus_investment
+baseline_days: [1, 5]
+formation_days: [6, 25]
+reality_shock_day: 26
+adaptation_days: [27, 40]
+smoke_days_per_condition: 2

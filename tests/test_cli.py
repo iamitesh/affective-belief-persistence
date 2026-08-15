@@ -104,3 +104,40 @@ def test_workflow_validate_dry_run_and_resume_commands(
         )
         == 0
     )
+
+
+def test_simulation_command_runs_and_resumes(
+    project_root: Path, tmp_path: Path, monkeypatch
+) -> None:
+    config = project_root / "configs/scenarios/ari_mira_v1.yaml"
+    output = tmp_path / "simulation"
+    monkeypatch.chdir(project_root)
+
+    assert (
+        main(
+            [
+                "simulate",
+                "--config",
+                str(config),
+                "--output",
+                str(output),
+                "--max-steps",
+                "13",
+            ]
+        )
+        == 0
+    )
+    assert (
+        main(
+            [
+                "simulate",
+                "--config",
+                str(config),
+                "--output",
+                str(output),
+                "--resume",
+            ]
+        )
+        == 0
+    )
+    assert len((output / "step-records.jsonl").read_text(encoding="utf-8").splitlines()) == 40

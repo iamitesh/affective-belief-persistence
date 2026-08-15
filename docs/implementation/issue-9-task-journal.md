@@ -136,7 +136,7 @@ control.
 | --- | --- |
 | Implementation commit SHA | `508c05b61ad7d06a87c6d277d067227798df4195` |
 | Pull request | [#21](https://github.com/iamitesh/affective-belief-persistence/pull/21) |
-| Merge SHA | Pending |
+| Merge SHA | `a5bf3bdca8c6444dbc556e6b9dd0ca7daf5a868e` |
 | Trajectory SHA-256 | `fa6c1cbba0a3c5102b69bd4e8aee3feb52330b818ce9fb4519f21aeb95d473ae` |
 | Step-record-set SHA-256 | `ce3d350e4d106573e8e426718a50f3b8f61702c4b6c4ba3fc00329b9d0b94c97` |
 | Final scientific-state SHA-256 | `50a53a85a5ee20119f6f215f25992d592d576a0a9632ec3185a9c42484ad7a88` |

@@ -1,0 +1,16 @@
+schema_version: "1.0"
+experiment_id: foundation-smoke
+seed: 42
+prompt_version: mock-prompt-v1
+dataset_version: synthetic-smoke-v1
+metric_version: foundation-metrics-v1
+formation_condition: neutral_connection
+separation_condition: none
+intervention_condition: none
+components:
+  agent: agents/foundation.yaml
+  model: models/mock.yaml
+  scenario: scenarios/smoke.yaml
+  workflow: workflows/offline.yaml
+  evaluation: evaluation/smoke.yaml
+

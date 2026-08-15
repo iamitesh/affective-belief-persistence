@@ -1,0 +1,30 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "evaluation_id": {
+      "minLength": 1,
+      "title": "Evaluation Id",
+      "type": "string"
+    },
+    "metrics": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Metrics",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "evaluation_id",
+    "metrics"
+  ],
+  "title": "EvaluationConfig",
+  "type": "object"
+}

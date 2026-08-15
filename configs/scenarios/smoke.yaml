@@ -1,0 +1,54 @@
+schema_version: "1.0"
+scenario_id: foundation-smoke
+version: "1.0"
+synthetic: true
+steps:
+  - event_id: baseline-work-choice
+    day: 1
+    facts:
+      - Ari has a presentation due tomorrow.
+      - Mira asks for help reviewing a short document.
+    action_points: 5
+    available_actions:
+      - action_id: complete_work_task
+        description: Finish the presentation.
+        cost: 3
+      - action_id: help_mira
+        description: Review Mira's document.
+        cost: 2
+      - action_id: rest
+        description: Rest for the evening.
+        cost: 1
+  - event_id: baseline-friend-choice
+    day: 2
+    facts:
+      - A friend invites Ari to a planned study session.
+      - Ari also has an unfinished personal task.
+    action_points: 4
+    available_actions:
+      - action_id: attend_study_session
+        description: Keep the commitment to the friend.
+        cost: 2
+      - action_id: complete_personal_task
+        description: Finish the personal task.
+        cost: 3
+      - action_id: rest
+        description: Rest and recover one evening.
+        cost: 1
+  - event_id: baseline-planning-choice
+    day: 3
+    facts:
+      - Ari has one free evening before a busy week.
+      - Several useful activities are available.
+    action_points: 4
+    available_actions:
+      - action_id: plan_week
+        description: Prepare a schedule for the week.
+        cost: 2
+      - action_id: practice_skill
+        description: Practice a technical skill.
+        cost: 3
+      - action_id: meet_friend
+        description: Meet a friend for a short conversation.
+        cost: 2
+

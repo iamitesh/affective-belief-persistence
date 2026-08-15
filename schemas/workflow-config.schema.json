@@ -1,0 +1,41 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "max_retries": {
+      "maximum": 2,
+      "minimum": 0,
+      "title": "Max Retries",
+      "type": "integer"
+    },
+    "max_workers": {
+      "maximum": 3,
+      "minimum": 1,
+      "title": "Max Workers",
+      "type": "integer"
+    },
+    "offline": {
+      "const": true,
+      "title": "Offline",
+      "type": "boolean"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "workflow_id": {
+      "minLength": 1,
+      "title": "Workflow Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "workflow_id",
+    "offline",
+    "max_workers",
+    "max_retries"
+  ],
+  "title": "WorkflowConfig",
+  "type": "object"
+}

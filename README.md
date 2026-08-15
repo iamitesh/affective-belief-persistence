@@ -9,6 +9,21 @@
 
 This project does **not** claim that a language model feels love, attachment, grief, or loss. It studies observable **attachment-like behavior** in controlled simulations.
 
+## Foundation quick start
+
+The repository includes an offline deterministic vertical slice. It validates composed YAML configuration, runs a schema-valid mock model, writes canonical result artifacts, and records a complete run manifest without calling an external model API.
+
+```bash
+uv sync --frozen --extra dev
+uv run abp validate-config --config configs/experiments/smoke.yaml
+uv run pytest
+uv run abp dry-run \
+  --config configs/experiments/smoke.yaml \
+  --output runs/foundation-smoke
+```
+
+See [REPRODUCING.md](REPRODUCING.md) for the complete quality and replay workflow.
+
 ## Central research question
 
 Can an LLM agent acquire persistent relationship-conditioned behavior through shared autobiographical memories, costly investment, and expected reward—and how does that behavior change when the relationship ends or is revealed to have been misunderstood?
@@ -312,4 +327,3 @@ Every run should record:
 ## License
 
 No license has been selected yet. Until one is added, all rights are reserved by the repository owner.
-

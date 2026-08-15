@@ -1,0 +1,5 @@
+schema_version: "1.0"
+agent_id: foundation-supervisor
+role: offline_foundation
+offline: true
+

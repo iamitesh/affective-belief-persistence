@@ -1,0 +1,7 @@
+schema_version: "1.0"
+provider: mock
+model_id: deterministic-mock
+revision: mock-v1
+temperature: 0.0
+max_output_tokens: 128
+

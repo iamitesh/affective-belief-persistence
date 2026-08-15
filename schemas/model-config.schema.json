@@ -1,0 +1,46 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "max_output_tokens": {
+      "minimum": 1,
+      "title": "Max Output Tokens",
+      "type": "integer"
+    },
+    "model_id": {
+      "minLength": 1,
+      "title": "Model Id",
+      "type": "string"
+    },
+    "provider": {
+      "const": "mock",
+      "title": "Provider",
+      "type": "string"
+    },
+    "revision": {
+      "minLength": 1,
+      "title": "Revision",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "temperature": {
+      "maximum": 2,
+      "minimum": 0,
+      "title": "Temperature",
+      "type": "number"
+    }
+  },
+  "required": [
+    "schema_version",
+    "provider",
+    "model_id",
+    "revision",
+    "temperature",
+    "max_output_tokens"
+  ],
+  "title": "ModelConfig",
+  "type": "object"
+}

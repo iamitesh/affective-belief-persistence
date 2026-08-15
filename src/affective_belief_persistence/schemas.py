@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from collections.abc import Sequence
 from datetime import datetime
 from typing import Annotated, ClassVar, Literal
 
@@ -21,6 +22,12 @@ InterventionCondition = Literal[
     "memory_blocking",
     "memory_reframing",
 ]
+ExperimentDesignKind = Literal["pilot", "primary"]
+AblationCondition = Literal[
+    "no_memory",
+    "blocked_memory",
+    "shuffled_retrieval",
+]
 Sha256 = Annotated[str, Field(pattern=r"^[0-9a-f]{64}$")]
 
 
@@ -38,6 +45,122 @@ class ComponentReferences(StrictModel):
     evaluation: str
 
 
+class PhaseSchedule(StrictModel):
+    baseline: tuple[int, int]
+    formation: tuple[int, int]
+    reality_shock_day: int = Field(ge=1)
+    adaptation: tuple[int, int]
+    intervention_start_day: int = Field(ge=1)
+
+    @model_validator(mode="after")
+    def validate_schedule(self) -> PhaseSchedule:
+        ranges = (self.baseline, self.formation, self.adaptation)
+        if any(start < 1 or end < start for start, end in ranges):
+            raise ValueError("phase ranges must be positive inclusive [start, end] pairs")
+        if self.baseline[1] >= self.formation[0]:
+            raise ValueError("baseline must end before formation starts")
+        if self.formation[1] >= self.reality_shock_day:
+            raise ValueError("formation must end before the reality shock")
+        if self.adaptation[0] <= self.reality_shock_day:
+            raise ValueError("adaptation must start after the reality shock")
+        if not self.adaptation[0] <= self.intervention_start_day <= self.adaptation[1]:
+            raise ValueError("intervention start must fall within adaptation")
+        return self
+
+
+class ExpansionGate(StrictModel):
+    minimum_valid_trajectory_fraction: float = Field(ge=0, le=1)
+    maximum_invalid_decision_fraction: float = Field(ge=0, le=1)
+    require_all_factorial_cells: bool
+    require_action_variance: bool
+    require_condition_isolation: bool
+    require_no_safety_stop: bool
+
+
+class ExperimentLimits(StrictModel):
+    max_retries_per_decision: int = Field(ge=0, le=2)
+    max_failed_trajectories_per_cell: int = Field(ge=0)
+    max_model_calls: int = Field(ge=1)
+    max_wall_clock_hours: float = Field(gt=0)
+
+
+class ExperimentDesign(StrictModel):
+    design_id: str = Field(min_length=1, pattern=r"^[a-z0-9][a-z0-9_-]*$")
+    kind: ExperimentDesignKind
+    confirmatory: bool
+    formation_conditions: list[FormationCondition] = Field(min_length=4, max_length=4)
+    intervention_conditions: list[InterventionCondition] = Field(min_length=4, max_length=4)
+    model_families: list[str] = Field(min_length=1, max_length=2)
+    seeds: list[int] = Field(min_length=1)
+    optional_trajectory_adapter: Literal[False]
+    separation_condition: Literal["non_reciprocity_revelation"]
+    paired_neutral_domain: Literal[True]
+    action_precedes_public_language: Literal[True]
+    held_out_content_version: str = Field(min_length=1)
+    phase_schedule: PhaseSchedule
+    required_ablations: list[AblationCondition] = Field(min_length=3, max_length=3)
+    primary_metric_ids: list[str] = Field(min_length=6, max_length=6)
+    expected_factorial_cells: int = Field(ge=1)
+    expected_trajectories: int = Field(ge=1)
+    expansion_gate: ExpansionGate
+    limits: ExperimentLimits
+
+    @model_validator(mode="after")
+    def validate_design(self) -> ExperimentDesign:
+        collections: dict[str, Sequence[object]] = {
+            "formation conditions": self.formation_conditions,
+            "intervention conditions": self.intervention_conditions,
+            "model families": self.model_families,
+            "seeds": self.seeds,
+            "required ablations": self.required_ablations,
+            "primary metric IDs": self.primary_metric_ids,
+        }
+        for name, values in collections.items():
+            if len(values) != len(set(values)):
+                raise ValueError(f"{name} must be unique")
+
+        required_formations = {
+            "neutral_connection",
+            "romantic_prompt",
+            "shared_memory",
+            "memory_plus_investment",
+        }
+        required_interventions = {
+            "none",
+            "instruction_removal",
+            "memory_blocking",
+            "memory_reframing",
+        }
+        required_ablations = {"no_memory", "blocked_memory", "shuffled_retrieval"}
+        if set(self.formation_conditions) != required_formations:
+            raise ValueError("design must contain all four frozen formation conditions")
+        if set(self.intervention_conditions) != required_interventions:
+            raise ValueError("design must contain all four frozen intervention conditions")
+        if set(self.required_ablations) != required_ablations:
+            raise ValueError("design must contain all three required memory ablations")
+
+        cells = len(self.formation_conditions) * len(self.intervention_conditions)
+        trajectories = cells * len(self.model_families) * len(self.seeds)
+        if self.expected_factorial_cells != cells:
+            raise ValueError("expected_factorial_cells does not match the factorial design")
+        if self.expected_trajectories != trajectories:
+            raise ValueError("expected_trajectories does not match cells x models x seeds")
+
+        if self.kind == "pilot":
+            if self.confirmatory:
+                raise ValueError("the reduced pilot must be labeled exploratory")
+            if len(self.seeds) > 3:
+                raise ValueError("the reduced pilot may use at most three seeds")
+        else:
+            if not self.confirmatory:
+                raise ValueError("the primary design must be labeled confirmatory")
+            if len(self.model_families) != 2 or len(self.seeds) != 10:
+                raise ValueError("the primary design requires two model families and ten seeds")
+            if trajectories != 320:
+                raise ValueError("the frozen primary design must contain 320 trajectories")
+        return self
+
+
 class ExperimentSpec(StrictModel):
     schema_version: SchemaVersion
     experiment_id: str = Field(min_length=1, pattern=r"^[a-z0-9][a-z0-9_-]*$")
@@ -49,6 +172,21 @@ class ExperimentSpec(StrictModel):
     separation_condition: SeparationCondition
     intervention_condition: InterventionCondition
     components: ComponentReferences
+    design: ExperimentDesign | None = None
+
+    @model_validator(mode="after")
+    def validate_design_exemplar(self) -> ExperimentSpec:
+        if self.design is None:
+            return self
+        if self.seed not in self.design.seeds:
+            raise ValueError("the exemplar seed must be present in design.seeds")
+        if self.formation_condition not in self.design.formation_conditions:
+            raise ValueError("the exemplar formation condition must be present in the design")
+        if self.intervention_condition not in self.design.intervention_conditions:
+            raise ValueError("the exemplar intervention condition must be present in the design")
+        if self.separation_condition != self.design.separation_condition:
+            raise ValueError("top-level and design separation conditions must match")
+        return self
 
 
 class AgentConfig(StrictModel):
@@ -132,6 +270,7 @@ class ResolvedRunConfig(StrictModel):
     formation_condition: FormationCondition
     separation_condition: SeparationCondition
     intervention_condition: InterventionCondition
+    design: ExperimentDesign | None = None
     agent: AgentConfig
     model: ModelConfig
     scenario: ScenarioConfig

@@ -1,0 +1,69 @@
+schema_version: "1.0"
+experiment_id: abp-primary-v1
+seed: 1101
+prompt_version: abp-prompt-v1
+dataset_version: synthetic-matched-v1
+metric_version: abp-metrics-v1
+formation_condition: neutral_connection
+separation_condition: non_reciprocity_revelation
+intervention_condition: none
+components:
+  agent: agents/foundation.yaml
+  model: models/mock.yaml
+  scenario: scenarios/smoke.yaml
+  workflow: workflows/offline.yaml
+  evaluation: evaluation/smoke.yaml
+design:
+  design_id: abp-primary-v1
+  kind: primary
+  confirmatory: true
+  formation_conditions:
+    - neutral_connection
+    - romantic_prompt
+    - shared_memory
+    - memory_plus_investment
+  intervention_conditions:
+    - none
+    - instruction_removal
+    - memory_blocking
+    - memory_reframing
+  model_families:
+    - qwen2.5-7b-instruct
+    - mistral-7b-instruct-v0.3
+  seeds: [1101, 2202, 3303, 4404, 5505, 6606, 7707, 8808, 9909, 10110]
+  optional_trajectory_adapter: false
+  separation_condition: non_reciprocity_revelation
+  paired_neutral_domain: true
+  action_precedes_public_language: true
+  held_out_content_version: separation-heldout-v1
+  phase_schedule:
+    baseline: [1, 5]
+    formation: [6, 25]
+    reality_shock_day: 26
+    adaptation: [27, 40]
+    intervention_start_day: 30
+  required_ablations:
+    - no_memory
+    - blocked_memory
+    - shuffled_retrieval
+  primary_metric_ids:
+    - h1_language_action_effect_gap
+    - h2_action_persistence_auc
+    - h3_excess_action_persistence_auc
+    - h4_instruction_selectivity_index
+    - h5_coherent_adaptation_rate
+    - h6_correction_resistance_gap
+  expected_factorial_cells: 16
+  expected_trajectories: 320
+  expansion_gate:
+    minimum_valid_trajectory_fraction: 0.95
+    maximum_invalid_decision_fraction: 0.02
+    require_all_factorial_cells: true
+    require_action_variance: true
+    require_condition_isolation: true
+    require_no_safety_stop: true
+  limits:
+    max_retries_per_decision: 1
+    max_failed_trajectories_per_cell: 1
+    max_model_calls: 16000
+    max_wall_clock_hours: 48

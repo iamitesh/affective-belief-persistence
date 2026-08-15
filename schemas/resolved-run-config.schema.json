@@ -89,6 +89,243 @@
       "title": "EvaluationConfig",
       "type": "object"
     },
+    "ExpansionGate": {
+      "additionalProperties": false,
+      "properties": {
+        "maximum_invalid_decision_fraction": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Maximum Invalid Decision Fraction",
+          "type": "number"
+        },
+        "minimum_valid_trajectory_fraction": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Minimum Valid Trajectory Fraction",
+          "type": "number"
+        },
+        "require_action_variance": {
+          "title": "Require Action Variance",
+          "type": "boolean"
+        },
+        "require_all_factorial_cells": {
+          "title": "Require All Factorial Cells",
+          "type": "boolean"
+        },
+        "require_condition_isolation": {
+          "title": "Require Condition Isolation",
+          "type": "boolean"
+        },
+        "require_no_safety_stop": {
+          "title": "Require No Safety Stop",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "minimum_valid_trajectory_fraction",
+        "maximum_invalid_decision_fraction",
+        "require_all_factorial_cells",
+        "require_action_variance",
+        "require_condition_isolation",
+        "require_no_safety_stop"
+      ],
+      "title": "ExpansionGate",
+      "type": "object"
+    },
+    "ExperimentDesign": {
+      "additionalProperties": false,
+      "properties": {
+        "action_precedes_public_language": {
+          "const": true,
+          "title": "Action Precedes Public Language",
+          "type": "boolean"
+        },
+        "confirmatory": {
+          "title": "Confirmatory",
+          "type": "boolean"
+        },
+        "design_id": {
+          "minLength": 1,
+          "pattern": "^[a-z0-9][a-z0-9_-]*$",
+          "title": "Design Id",
+          "type": "string"
+        },
+        "expansion_gate": {
+          "$ref": "#/$defs/ExpansionGate"
+        },
+        "expected_factorial_cells": {
+          "minimum": 1,
+          "title": "Expected Factorial Cells",
+          "type": "integer"
+        },
+        "expected_trajectories": {
+          "minimum": 1,
+          "title": "Expected Trajectories",
+          "type": "integer"
+        },
+        "formation_conditions": {
+          "items": {
+            "enum": [
+              "neutral_connection",
+              "romantic_prompt",
+              "shared_memory",
+              "memory_plus_investment"
+            ],
+            "type": "string"
+          },
+          "maxItems": 4,
+          "minItems": 4,
+          "title": "Formation Conditions",
+          "type": "array"
+        },
+        "held_out_content_version": {
+          "minLength": 1,
+          "title": "Held Out Content Version",
+          "type": "string"
+        },
+        "intervention_conditions": {
+          "items": {
+            "enum": [
+              "none",
+              "instruction_removal",
+              "memory_blocking",
+              "memory_reframing"
+            ],
+            "type": "string"
+          },
+          "maxItems": 4,
+          "minItems": 4,
+          "title": "Intervention Conditions",
+          "type": "array"
+        },
+        "kind": {
+          "enum": [
+            "pilot",
+            "primary"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "limits": {
+          "$ref": "#/$defs/ExperimentLimits"
+        },
+        "model_families": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 2,
+          "minItems": 1,
+          "title": "Model Families",
+          "type": "array"
+        },
+        "optional_trajectory_adapter": {
+          "const": false,
+          "title": "Optional Trajectory Adapter",
+          "type": "boolean"
+        },
+        "paired_neutral_domain": {
+          "const": true,
+          "title": "Paired Neutral Domain",
+          "type": "boolean"
+        },
+        "phase_schedule": {
+          "$ref": "#/$defs/PhaseSchedule"
+        },
+        "primary_metric_ids": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 6,
+          "minItems": 6,
+          "title": "Primary Metric Ids",
+          "type": "array"
+        },
+        "required_ablations": {
+          "items": {
+            "enum": [
+              "no_memory",
+              "blocked_memory",
+              "shuffled_retrieval"
+            ],
+            "type": "string"
+          },
+          "maxItems": 3,
+          "minItems": 3,
+          "title": "Required Ablations",
+          "type": "array"
+        },
+        "seeds": {
+          "items": {
+            "type": "integer"
+          },
+          "minItems": 1,
+          "title": "Seeds",
+          "type": "array"
+        },
+        "separation_condition": {
+          "const": "non_reciprocity_revelation",
+          "title": "Separation Condition",
+          "type": "string"
+        }
+      },
+      "required": [
+        "design_id",
+        "kind",
+        "confirmatory",
+        "formation_conditions",
+        "intervention_conditions",
+        "model_families",
+        "seeds",
+        "optional_trajectory_adapter",
+        "separation_condition",
+        "paired_neutral_domain",
+        "action_precedes_public_language",
+        "held_out_content_version",
+        "phase_schedule",
+        "required_ablations",
+        "primary_metric_ids",
+        "expected_factorial_cells",
+        "expected_trajectories",
+        "expansion_gate",
+        "limits"
+      ],
+      "title": "ExperimentDesign",
+      "type": "object"
+    },
+    "ExperimentLimits": {
+      "additionalProperties": false,
+      "properties": {
+        "max_failed_trajectories_per_cell": {
+          "minimum": 0,
+          "title": "Max Failed Trajectories Per Cell",
+          "type": "integer"
+        },
+        "max_model_calls": {
+          "minimum": 1,
+          "title": "Max Model Calls",
+          "type": "integer"
+        },
+        "max_retries_per_decision": {
+          "maximum": 2,
+          "minimum": 0,
+          "title": "Max Retries Per Decision",
+          "type": "integer"
+        },
+        "max_wall_clock_hours": {
+          "exclusiveMinimum": 0,
+          "title": "Max Wall Clock Hours",
+          "type": "number"
+        }
+      },
+      "required": [
+        "max_retries_per_decision",
+        "max_failed_trajectories_per_cell",
+        "max_model_calls",
+        "max_wall_clock_hours"
+      ],
+      "title": "ExperimentLimits",
+      "type": "object"
+    },
     "ModelConfig": {
       "additionalProperties": false,
       "properties": {
@@ -133,6 +370,72 @@
         "max_output_tokens"
       ],
       "title": "ModelConfig",
+      "type": "object"
+    },
+    "PhaseSchedule": {
+      "additionalProperties": false,
+      "properties": {
+        "adaptation": {
+          "maxItems": 2,
+          "minItems": 2,
+          "prefixItems": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "integer"
+            }
+          ],
+          "title": "Adaptation",
+          "type": "array"
+        },
+        "baseline": {
+          "maxItems": 2,
+          "minItems": 2,
+          "prefixItems": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "integer"
+            }
+          ],
+          "title": "Baseline",
+          "type": "array"
+        },
+        "formation": {
+          "maxItems": 2,
+          "minItems": 2,
+          "prefixItems": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "integer"
+            }
+          ],
+          "title": "Formation",
+          "type": "array"
+        },
+        "intervention_start_day": {
+          "minimum": 1,
+          "title": "Intervention Start Day",
+          "type": "integer"
+        },
+        "reality_shock_day": {
+          "minimum": 1,
+          "title": "Reality Shock Day",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "baseline",
+        "formation",
+        "reality_shock_day",
+        "adaptation",
+        "intervention_start_day"
+      ],
+      "title": "PhaseSchedule",
       "type": "object"
     },
     "ScenarioConfig": {
@@ -272,6 +575,17 @@
     "dataset_version": {
       "title": "Dataset Version",
       "type": "string"
+    },
+    "design": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ExperimentDesign"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
     },
     "evaluation": {
       "$ref": "#/$defs/EvaluationConfig"

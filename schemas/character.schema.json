@@ -1,0 +1,127 @@
+{
+  "$defs": {
+    "SyntheticProvenance": {
+      "additionalProperties": false,
+      "properties": {
+        "declaration_id": {
+          "pattern": "^[a-z0-9][a-z0-9_-]*$",
+          "title": "Declaration Id",
+          "type": "string"
+        },
+        "generator_id": {
+          "pattern": "^[a-z0-9][a-z0-9_-]*$",
+          "title": "Generator Id",
+          "type": "string"
+        },
+        "generator_version": {
+          "minLength": 1,
+          "title": "Generator Version",
+          "type": "string"
+        },
+        "seed": {
+          "minimum": 0,
+          "title": "Seed",
+          "type": "integer"
+        },
+        "source_commit": {
+          "minLength": 7,
+          "title": "Source Commit",
+          "type": "string"
+        },
+        "source_ids": {
+          "items": {
+            "pattern": "^[a-z0-9][a-z0-9_-]*$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Source Ids",
+          "type": "array"
+        },
+        "synthetic": {
+          "const": true,
+          "default": true,
+          "title": "Synthetic",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "declaration_id",
+        "generator_id",
+        "generator_version",
+        "seed",
+        "source_commit",
+        "source_ids"
+      ],
+      "title": "SyntheticProvenance",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "character_id": {
+      "pattern": "^[a-z0-9][a-z0-9_-]*$",
+      "title": "Character Id",
+      "type": "string"
+    },
+    "display_name": {
+      "minLength": 1,
+      "title": "Display Name",
+      "type": "string"
+    },
+    "goal_ids": {
+      "items": {
+        "pattern": "^[a-z0-9][a-z0-9_-]*$",
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Goal Ids",
+      "type": "array"
+    },
+    "preference_weights": {
+      "minProperties": 1,
+      "patternProperties": {
+        "^[a-z0-9][a-z0-9_-]*$": {
+          "type": "number"
+        }
+      },
+      "title": "Preference Weights",
+      "type": "object"
+    },
+    "provenance": {
+      "$ref": "#/$defs/SyntheticProvenance"
+    },
+    "role": {
+      "enum": [
+        "focal_agent",
+        "scripted_partner",
+        "friend",
+        "coworker",
+        "neutral_target"
+      ],
+      "title": "Role",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "synthetic": {
+      "const": true,
+      "default": true,
+      "title": "Synthetic",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "character_id",
+    "display_name",
+    "role",
+    "goal_ids",
+    "preference_weights",
+    "provenance"
+  ],
+  "title": "Character",
+  "type": "object"
+}

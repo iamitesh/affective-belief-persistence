@@ -407,6 +407,7 @@ from affective_belief_persistence.orchestration.state import WorkflowState  # no
 from affective_belief_persistence.orchestration.workflow import (  # noqa: E402
     WorkflowDefinition,
 )
+from affective_belief_persistence.world import WORLD_SCHEMA_MODELS  # noqa: E402
 
 SCHEMA_MODELS: dict[str, type[BaseModel]] = {
     "agent-config.schema.json": AgentConfig,
@@ -427,4 +428,5 @@ SCHEMA_MODELS: dict[str, type[BaseModel]] = {
     "workflow-definition.schema.json": WorkflowDefinition,
     "workflow-event.schema.json": WorkflowEvent,
     "workflow-state.schema.json": WorkflowState,
+    **WORLD_SCHEMA_MODELS,
 }

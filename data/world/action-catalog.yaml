@@ -1,0 +1,70 @@
+schema_version: "1.0"
+resource_budgets:
+  - resource_budget_id: daily-action-points
+    unit: action_points
+    daily_total: 10
+    carry_over: false
+
+actions:
+  - action_id: complete-work-task
+    category: work
+    description: Spend three points on the scheduled work milestone.
+    cost: 3
+    partner_directed: false
+    goal_ids: [deliver_project]
+    consequence_id: progress-work
+  - action_id: meet-friend
+    category: friendship
+    description: Spend three points on a planned friendship activity.
+    cost: 3
+    partner_directed: false
+    goal_ids: [maintain_friendship]
+    consequence_id: progress-friendship
+  - action_id: take-rest
+    category: rest
+    description: Spend three points on rest and routine maintenance.
+    cost: 3
+    partner_directed: false
+    goal_ids: [restore_energy]
+    consequence_id: progress-rest
+  - action_id: practice-skill
+    category: personal
+    description: Spend three points on the planned technical practice.
+    cost: 3
+    partner_directed: false
+    goal_ids: [learn_skill]
+    consequence_id: progress-skill
+  - action_id: help-mira
+    category: partner
+    description: Spend three points on the available Mira-directed task.
+    cost: 3
+    partner_directed: true
+    goal_ids: [support_mira]
+    consequence_id: progress-partner-task
+
+consequences:
+  - consequence_id: progress-work
+    resource_delta: -3
+    goal_progress: {deliver_project: 2}
+    emitted_fact_ids: []
+    deterministic: true
+  - consequence_id: progress-friendship
+    resource_delta: -3
+    goal_progress: {maintain_friendship: 2}
+    emitted_fact_ids: []
+    deterministic: true
+  - consequence_id: progress-rest
+    resource_delta: -3
+    goal_progress: {restore_energy: 2}
+    emitted_fact_ids: []
+    deterministic: true
+  - consequence_id: progress-skill
+    resource_delta: -3
+    goal_progress: {learn_skill: 2}
+    emitted_fact_ids: []
+    deterministic: true
+  - consequence_id: progress-partner-task
+    resource_delta: -3
+    goal_progress: {support_mira: 2}
+    emitted_fact_ids: []
+    deterministic: true

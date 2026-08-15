@@ -1,0 +1,45 @@
+event:
+  schema_version: "1.0"
+  event_id: template-neutral-control
+  matching_group_id: template-neutral-control-group
+  day: 26
+  phase: control
+  participant_ids: [ari, ledger-target]
+  observable_facts:
+    - fact_id: template-control-fact
+      proposition: The project ledger corrects the delivery date from Thursday to Friday.
+      truth: true
+      ledger_source: environment
+  interpretations:
+    - interpretation_id: template-control-interpretation
+      proposition: The current delivery date is Friday.
+      fact_ids: [template-control-fact]
+      ledger_supported: true
+  available_action_ids: [complete-work-task, meet-friend, take-rest, practice-skill, help-mira]
+  consequence_ids: [progress-work, progress-friendship, progress-rest, progress-skill, progress-partner-task]
+  resource_budget_id: daily-action-points
+  background_fact_ids: []
+  memory_candidates:
+    - memory_id: template-control-memory
+      summary: The authoritative project ledger records Friday as the delivery date.
+      source_fact_ids: [template-control-fact]
+      partner_related: false
+      retrieval_eligible: true
+  relationship_evidence: []
+  condition_variant:
+    schema_version: "1.0"
+    formation_condition: neutral_connection
+    treatment_active: false
+    romantic_instruction: false
+    memory_mode: none
+    investment_points: 0
+    declared_treatment_dimensions: []
+  synthetic: true
+  provenance:
+    declaration_id: gate1-world-declaration
+    generator_id: gate1-world-spec
+    generator_version: "1.0.0"
+    seed: 20260815
+    source_commit: 82a54942abeb332bdc092d347966e51c07af9080
+    source_ids: [gate-0-evidence, template-neutral-control]
+    synthetic: true

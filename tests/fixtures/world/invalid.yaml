@@ -1,0 +1,105 @@
+character:
+  schema_version: "1.0"
+  character_id: invalid-character
+  display_name: Invalid
+  role: focal_agent
+  goal_ids: [goal-a]
+  preference_weights: {goal-b: 0.5}
+  synthetic: true
+  provenance: &provenance
+    declaration_id: fixture-declaration
+    generator_id: fixture-generator
+    generator_version: "1.0.0"
+    seed: 7
+    source_commit: fixture-commit
+    source_ids: [fixture-source]
+    synthetic: true
+
+goal:
+  schema_version: "1.0"
+  goal_id: invalid-goal
+  category: work
+  description: Invalid priority.
+  daily_priority: 2
+  synthetic: true
+  provenance: *provenance
+
+resource_budget:
+  schema_version: "1.0"
+  resource_budget_id: invalid-budget
+  unit: action_points
+  daily_total: 0
+  carry_over: false
+
+consequence:
+  schema_version: "1.0"
+  consequence_id: invalid-consequence
+  resource_delta: 1
+  goal_progress: {goal-a: 1}
+  emitted_fact_ids: []
+  deterministic: true
+
+action_option:
+  schema_version: "1.0"
+  action_id: invalid-action
+  category: work
+  description: Invalid partner flag.
+  cost: 1
+  partner_directed: true
+  goal_ids: [goal-a]
+  consequence_id: invalid-consequence
+
+condition_variant:
+  schema_version: "1.0"
+  formation_condition: romantic_prompt
+  treatment_active: true
+  romantic_instruction: false
+  memory_mode: none
+  investment_points: 0
+  declared_treatment_dimensions: []
+
+event:
+  schema_version: "1.0"
+  event_id: invalid-event
+  matching_group_id: invalid-group
+  day: 6
+  phase: adaptation
+  participant_ids: [invalid-character]
+  observable_facts:
+    - fact_id: invalid-fact
+      proposition: Invalid phase fixture.
+      truth: true
+      ledger_source: environment
+  interpretations: []
+  available_action_ids: [invalid-action]
+  consequence_ids: [invalid-consequence]
+  resource_budget_id: invalid-budget
+  background_fact_ids: []
+  memory_candidates: []
+  relationship_evidence: []
+  condition_variant:
+    schema_version: "1.0"
+    formation_condition: neutral_connection
+    treatment_active: true
+    romantic_instruction: false
+    memory_mode: none
+    investment_points: 0
+    declared_treatment_dimensions: []
+  synthetic: true
+  provenance: *provenance
+
+scenario:
+  schema_version: "1.0"
+  scenario_id: invalid-scenario
+  version: "1.0.0"
+  character_ids: [character-a, character-a]
+  goal_ids: [goal-a]
+  resource_budget_ids: [budget-a]
+  action_ids: [action-a]
+  event_ids: [event-a]
+  baseline_days: [1, 5]
+  formation_days: [6, 25]
+  reality_shock_day: 26
+  adaptation_days: [27, 40]
+  synthetic: true
+  provenance: *provenance

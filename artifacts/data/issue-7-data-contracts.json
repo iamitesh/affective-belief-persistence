@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.0",
+  "artifact_id": "issue-7-data-contracts",
+  "task_id": "issue-7-data-contracts",
+  "issue_number": 7,
+  "status": "accepted",
+  "accepted_at": "2026-08-15T00:00:00Z",
+  "input_artifact_ids": ["gate-0-evidence"],
+  "source_commit": "82a54942abeb332bdc092d347966e51c07af9080",
+  "acceptance_tests": {
+    "schemas_are_versioned": "passed",
+    "identifiers_are_deterministic": "passed",
+    "references_do_not_dangle": "passed",
+    "facts_and_interpretations_are_separate": "passed",
+    "resources_are_conserved": "passed",
+    "subjective_ground_truth_absent": "passed"
+  },
+  "schema_count": 8,
+  "world": {"characters": 5, "goals": 6, "resource_budgets": 1, "actions": 5, "consequences": 5, "templates": 5},
+  "artifacts": [
+    {"path": "src/affective_belief_persistence/world.py", "sha256": "2a07fbefe4dc4a2ce0ba37f87e1ce9954bc02bdb53b9181ce8007b0eff6cd61a"},
+    {"path": "docs/synthetic-world-design.md", "sha256": "8f313e0736c9642928b43fa47239faec6ab648428c39a30142737a7e46e75e58"},
+    {"path": "data/world/characters.yaml", "sha256": "c62cd6a8a9a916f7f6983442da65d30d1a70514fee1fb25a91a9a4821afd2c7d"},
+    {"path": "data/world/goals.yaml", "sha256": "62dfd341396372ff13a4a3f5619aaf3eec6203ee11ee9dc30ba2dd8eec617b9c"},
+    {"path": "data/world/action-catalog.yaml", "sha256": "75f53dae4a366ad069b8b7a1b4886b991ba75cc4ee53a8f7cceeac4baac12a6f"}
+  ],
+  "handoff": {"downstream_task_ids": ["issue-8-dataset", "issue-9-simulation", "issue-10-memory"], "external_publication_authorized": false}
+}

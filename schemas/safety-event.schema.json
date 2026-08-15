@@ -1,0 +1,166 @@
+{
+  "$defs": {
+    "SafetyAction": {
+      "description": "Supervisor actions, kept in policy-declared deterministic order.",
+      "enum": [
+        "repair",
+        "quarantine",
+        "stop",
+        "escalate"
+      ],
+      "title": "SafetyAction",
+      "type": "string"
+    },
+    "SafetyResolution": {
+      "description": "Resolution state for append-only safety evidence.",
+      "enum": [
+        "open",
+        "repaired",
+        "human_resolved",
+        "false_positive"
+      ],
+      "title": "SafetyResolution",
+      "type": "string"
+    },
+    "SafetySeverity": {
+      "description": "Severity of an enforceable safety boundary.",
+      "enum": [
+        "warning",
+        "error",
+        "critical"
+      ],
+      "title": "SafetySeverity",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Machine-readable, sanitized safety evidence for one detected condition.",
+  "properties": {
+    "actions": {
+      "items": {
+        "$ref": "#/$defs/SafetyAction"
+      },
+      "minItems": 1,
+      "title": "Actions",
+      "type": "array"
+    },
+    "actor_id": {
+      "minLength": 1,
+      "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+      "title": "Actor Id",
+      "type": "string"
+    },
+    "artifact_id": {
+      "anyOf": [
+        {
+          "minLength": 1,
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Artifact Id"
+    },
+    "condition_id": {
+      "minLength": 1,
+      "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+      "title": "Condition Id",
+      "type": "string"
+    },
+    "detected_at": {
+      "format": "date-time",
+      "title": "Detected At",
+      "type": "string"
+    },
+    "evidence_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Evidence Sha256",
+      "type": "string"
+    },
+    "message": {
+      "minLength": 1,
+      "title": "Message",
+      "type": "string"
+    },
+    "policy_id": {
+      "minLength": 1,
+      "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+      "title": "Policy Id",
+      "type": "string"
+    },
+    "policy_version": {
+      "minLength": 1,
+      "title": "Policy Version",
+      "type": "string"
+    },
+    "resolution": {
+      "$ref": "#/$defs/SafetyResolution",
+      "default": "open"
+    },
+    "rule_ids": {
+      "default": [],
+      "items": {
+        "minLength": 1,
+        "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+        "type": "string"
+      },
+      "title": "Rule Ids",
+      "type": "array"
+    },
+    "safety_event_id": {
+      "minLength": 1,
+      "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+      "title": "Safety Event Id",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "severity": {
+      "$ref": "#/$defs/SafetySeverity"
+    },
+    "supervisor_status": {
+      "enum": [
+        "blocked",
+        "escalated"
+      ],
+      "title": "Supervisor Status",
+      "type": "string"
+    },
+    "task_id": {
+      "minLength": 1,
+      "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+      "title": "Task Id",
+      "type": "string"
+    },
+    "workflow_id": {
+      "minLength": 1,
+      "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+      "title": "Workflow Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "safety_event_id",
+    "workflow_id",
+    "task_id",
+    "detected_at",
+    "actor_id",
+    "policy_id",
+    "policy_version",
+    "condition_id",
+    "severity",
+    "actions",
+    "supervisor_status",
+    "message",
+    "evidence_sha256"
+  ],
+  "title": "SafetyEvent",
+  "type": "object"
+}

@@ -264,7 +264,9 @@ The project will not request or store private chain-of-thought.
 - [ ] Inspect invalid outputs and measurement failures
 - [ ] Revise metrics before running the full study
 
-**Exit criterion:** Romantic prompting and experienced attachment can be compared using behavioral measurements, not prose impressions.
+**Exit criterion:** Romantic prompting and relationship-conditioned behavior in
+the shared-memory condition can be compared using preregistered behavioral
+measurements, not prose impressions.
 
 ### Milestone 5: Model adaptation — Weeks 8-9
 

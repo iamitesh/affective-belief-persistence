@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0",
+  "artifact_id": "issue-5-methodology-spec",
+  "task_id": "issue-5-methodology",
+  "issue_number": 5,
+  "status": "accepted",
+  "accepted_at": "2026-08-15T00:00:00Z",
+  "protocol_id": "abp-methodology-v1.0.0",
+  "protocol_bundle_sha256": "1380072310820600c29f9de88e45eb41acae7d582b26a21961f76b642ac35ecb",
+  "pilot_trajectories": 32,
+  "primary_trajectories": 320,
+  "acceptance_tests": {
+    "variables_are_measurable": "passed",
+    "conditions_are_matched": "passed",
+    "one_metric_per_hypothesis": "passed",
+    "action_precedes_language": "passed",
+    "facts_and_interpretations_separate": "passed",
+    "matrix_counts_validate": "passed",
+    "protocol_hash_matches": "passed"
+  },
+  "artifacts": [
+    {"path": "docs/methodology.md", "sha256": "836829d237e9448e14ffd82a56bc4889b5012ff4898d74ac52b8b561e99d5c18"},
+    {"path": "docs/preregistration.md", "sha256": "80b09cbf2eadaa3e289c7a6355228f957c906d31853dbfe692620c54a5549527"},
+    {"path": "docs/metric-specification.md", "sha256": "653133a56b316ce7b6010d98d38ed42d89e771642e9c850046587980378a7276"},
+    {"path": "docs/analysis-plan.md", "sha256": "d52aaf4df98dd96ef8705fa35eb3877fc5e1e6bac0ce9ae424b5c3b4c9b004ab"},
+    {"path": "configs/experiments/pilot.yaml", "sha256": "7cb601e9dd10e988eb47e28483e44928f07311512f4664782ef224ddb8a85d4e"},
+    {"path": "configs/experiments/primary.yaml", "sha256": "cb39ee1c583f5d2b655daadc5106cabcf62039c416ee22170f072d78b8ab3173"}
+  ],
+  "handoff": {"downstream_task_ids": ["gate-0-scope"], "no_primary_outcomes_inspected": true}
+}

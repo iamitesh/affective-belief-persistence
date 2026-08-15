@@ -126,6 +126,7 @@ def load_run_config(path: Path, *, project_root: Path | None = None) -> LoadedRu
         formation_condition=spec.formation_condition,
         separation_condition=spec.separation_condition,
         intervention_condition=spec.intervention_condition,
+        design=spec.design,
         agent=parse_yaml(component_paths["agent"], AgentConfig),
         model=parse_yaml(component_paths["model"], ModelConfig),
         scenario=parse_yaml(component_paths["scenario"], ScenarioConfig),

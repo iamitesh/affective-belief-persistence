@@ -1,0 +1,382 @@
+{
+  "$defs": {
+    "BudgetLimits": {
+      "additionalProperties": false,
+      "description": "Supervisor limits; ``None`` means an optional meter is unbounded.",
+      "properties": {
+        "deadline": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Deadline"
+        },
+        "max_automatic_retries": {
+          "default": 2,
+          "maximum": 2,
+          "minimum": 0,
+          "title": "Max Automatic Retries",
+          "type": "integer"
+        },
+        "max_gpu_hours": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Gpu Hours"
+        },
+        "max_malformed_output_retries": {
+          "default": 1,
+          "maximum": 2,
+          "minimum": 0,
+          "title": "Max Malformed Output Retries",
+          "type": "integer"
+        },
+        "max_tokens": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Tokens"
+        },
+        "max_training_gpu_hours": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Max Training Gpu Hours",
+          "type": "number"
+        },
+        "max_wall_clock_seconds": {
+          "minimum": 0,
+          "title": "Max Wall Clock Seconds",
+          "type": "number"
+        }
+      },
+      "required": [
+        "max_wall_clock_seconds"
+      ],
+      "title": "BudgetLimits",
+      "type": "object"
+    },
+    "GateDefinition": {
+      "additionalProperties": false,
+      "description": "File-backed evidence required to pass one integration gate.",
+      "properties": {
+        "gate_id": {
+          "minLength": 1,
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+          "title": "Gate Id",
+          "type": "string"
+        },
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "required_evidence_artifact_ids": {
+          "items": {
+            "minLength": 1,
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Required Evidence Artifact Ids",
+          "type": "array"
+        },
+        "task_id": {
+          "minLength": 1,
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+          "title": "Task Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "gate_id",
+        "name",
+        "task_id",
+        "required_evidence_artifact_ids"
+      ],
+      "title": "GateDefinition",
+      "type": "object"
+    },
+    "TaskBudget": {
+      "additionalProperties": false,
+      "description": "Hard limits assigned to one task.",
+      "properties": {
+        "max_attempts": {
+          "default": 2,
+          "maximum": 3,
+          "minimum": 1,
+          "title": "Max Attempts",
+          "type": "integer"
+        },
+        "max_cost_usd": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Max Cost Usd",
+          "type": "number"
+        },
+        "max_runtime_seconds": {
+          "minimum": 1,
+          "title": "Max Runtime Seconds",
+          "type": "integer"
+        },
+        "max_tokens": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Max Tokens",
+          "type": "integer"
+        },
+        "required_gpu_hours": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Required Gpu Hours",
+          "type": "number"
+        }
+      },
+      "required": [
+        "max_runtime_seconds"
+      ],
+      "title": "TaskBudget",
+      "type": "object"
+    },
+    "TaskContract": {
+      "additionalProperties": false,
+      "description": "Static specification used by the graph and scheduler.",
+      "properties": {
+        "acceptance_tests": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Acceptance Tests",
+          "type": "array"
+        },
+        "authorized_files": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Authorized Files",
+          "type": "array"
+        },
+        "budget": {
+          "$ref": "#/$defs/TaskBudget"
+        },
+        "dependencies": {
+          "default": [],
+          "items": {
+            "minLength": 1,
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+            "type": "string"
+          },
+          "title": "Dependencies",
+          "type": "array"
+        },
+        "expected_artifact_ids": {
+          "default": [],
+          "items": {
+            "minLength": 1,
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+            "type": "string"
+          },
+          "title": "Expected Artifact Ids",
+          "type": "array"
+        },
+        "gate_id": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Gate Id"
+        },
+        "input_artifact_ids": {
+          "default": [],
+          "items": {
+            "minLength": 1,
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+            "type": "string"
+          },
+          "title": "Input Artifact Ids",
+          "type": "array"
+        },
+        "issue_number": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Issue Number"
+        },
+        "optional": {
+          "default": false,
+          "title": "Optional",
+          "type": "boolean"
+        },
+        "optional_dependencies": {
+          "default": [],
+          "items": {
+            "minLength": 1,
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+            "type": "string"
+          },
+          "title": "Optional Dependencies",
+          "type": "array"
+        },
+        "output_paths": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Output Paths",
+          "type": "array"
+        },
+        "owner": {
+          "minLength": 1,
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+          "title": "Owner",
+          "type": "string"
+        },
+        "task_id": {
+          "minLength": 1,
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+          "title": "Task Id",
+          "type": "string"
+        },
+        "task_type": {
+          "minLength": 1,
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+          "title": "Task Type",
+          "type": "string"
+        },
+        "title": {
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        }
+      },
+      "required": [
+        "task_id",
+        "title",
+        "owner",
+        "task_type",
+        "acceptance_tests",
+        "budget"
+      ],
+      "title": "TaskContract",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Complete sprint definition, including graph, agents, budgets, and gates.",
+  "properties": {
+    "agent_registry": {
+      "minLength": 1,
+      "title": "Agent Registry",
+      "type": "string"
+    },
+    "created_at": {
+      "minLength": 1,
+      "title": "Created At",
+      "type": "string"
+    },
+    "final_task_id": {
+      "minLength": 1,
+      "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+      "title": "Final Task Id",
+      "type": "string"
+    },
+    "gates": {
+      "items": {
+        "$ref": "#/$defs/GateDefinition"
+      },
+      "minItems": 1,
+      "title": "Gates",
+      "type": "array"
+    },
+    "limits": {
+      "$ref": "#/$defs/BudgetLimits"
+    },
+    "max_workers": {
+      "default": 3,
+      "maximum": 3,
+      "minimum": 1,
+      "title": "Max Workers",
+      "type": "integer"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "seed": {
+      "maximum": 9223372036854775807,
+      "minimum": 0,
+      "title": "Seed",
+      "type": "integer"
+    },
+    "sprint_id": {
+      "minLength": 1,
+      "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+      "title": "Sprint Id",
+      "type": "string"
+    },
+    "tasks": {
+      "items": {
+        "$ref": "#/$defs/TaskContract"
+      },
+      "minItems": 1,
+      "title": "Tasks",
+      "type": "array"
+    },
+    "workflow_id": {
+      "minLength": 1,
+      "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+      "title": "Workflow Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "workflow_id",
+    "sprint_id",
+    "seed",
+    "created_at",
+    "agent_registry",
+    "limits",
+    "tasks",
+    "gates",
+    "final_task_id"
+  ],
+  "title": "WorkflowDefinition",
+  "type": "object"
+}

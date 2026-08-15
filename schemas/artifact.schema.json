@@ -1,0 +1,150 @@
+{
+  "$defs": {
+    "ValidationStatus": {
+      "description": "Validation state for a produced artifact or handoff.",
+      "enum": [
+        "pending",
+        "passed",
+        "failed"
+      ],
+      "title": "ValidationStatus",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Provenance and validation record for an artifact exchanged by agents.",
+  "properties": {
+    "artifact_id": {
+      "minLength": 1,
+      "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+      "title": "Artifact Id",
+      "type": "string"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "downstream_task_ids": {
+      "default": [],
+      "items": {
+        "minLength": 1,
+        "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+        "type": "string"
+      },
+      "title": "Downstream Task Ids",
+      "type": "array"
+    },
+    "logical_name": {
+      "minLength": 1,
+      "title": "Logical Name",
+      "type": "string"
+    },
+    "media_type": {
+      "minLength": 1,
+      "title": "Media Type",
+      "type": "string"
+    },
+    "metadata": {
+      "additionalProperties": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "integer"
+          },
+          {
+            "type": "number"
+          },
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "title": "Metadata",
+      "type": "object"
+    },
+    "path": {
+      "minLength": 1,
+      "title": "Path",
+      "type": "string"
+    },
+    "produced_by_agent": {
+      "minLength": 1,
+      "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+      "title": "Produced By Agent",
+      "type": "string"
+    },
+    "produced_by_task": {
+      "minLength": 1,
+      "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+      "title": "Produced By Task",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "sha256": {
+      "anyOf": [
+        {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Sha256"
+    },
+    "size_bytes": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Size Bytes"
+    },
+    "source_commit": {
+      "minLength": 1,
+      "title": "Source Commit",
+      "type": "string"
+    },
+    "validation_notes": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Validation Notes",
+      "type": "array"
+    },
+    "validation_status": {
+      "$ref": "#/$defs/ValidationStatus",
+      "default": "pending"
+    }
+  },
+  "required": [
+    "artifact_id",
+    "produced_by_task",
+    "produced_by_agent",
+    "logical_name",
+    "path",
+    "media_type",
+    "created_at",
+    "source_commit"
+  ],
+  "title": "ArtifactContract",
+  "type": "object"
+}

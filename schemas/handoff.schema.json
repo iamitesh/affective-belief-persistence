@@ -1,0 +1,78 @@
+{
+  "$defs": {
+    "ValidationStatus": {
+      "description": "Validation state for a produced artifact or handoff.",
+      "enum": [
+        "pending",
+        "passed",
+        "failed"
+      ],
+      "title": "ValidationStatus",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Explicit transfer of validated outputs between two tasks.",
+  "properties": {
+    "acceptance_notes": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Acceptance Notes",
+      "type": "array"
+    },
+    "artifact_ids": {
+      "items": {
+        "minLength": 1,
+        "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Artifact Ids",
+      "type": "array"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "from_task_id": {
+      "minLength": 1,
+      "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+      "title": "From Task Id",
+      "type": "string"
+    },
+    "handoff_id": {
+      "minLength": 1,
+      "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+      "title": "Handoff Id",
+      "type": "string"
+    },
+    "summary": {
+      "minLength": 1,
+      "title": "Summary",
+      "type": "string"
+    },
+    "to_task_id": {
+      "minLength": 1,
+      "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+      "title": "To Task Id",
+      "type": "string"
+    },
+    "validation_status": {
+      "$ref": "#/$defs/ValidationStatus",
+      "default": "pending"
+    }
+  },
+  "required": [
+    "handoff_id",
+    "from_task_id",
+    "to_task_id",
+    "artifact_ids",
+    "summary",
+    "created_at"
+  ],
+  "title": "HandoffContract",
+  "type": "object"
+}

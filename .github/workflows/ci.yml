@@ -56,3 +56,9 @@ jobs:
 
       - name: Run deterministic offline experiment
         run: uv run abp dry-run --config configs/experiments/smoke.yaml --output "${{ runner.temp }}/abp-smoke"
+
+      - name: Validate autonomous sprint graph
+        run: uv run abp validate-workflow --config configs/workflows/forty_eight_hour_sprint.yaml
+
+      - name: Run deterministic offline sprint
+        run: uv run abp workflow-dry-run --config configs/workflows/forty_eight_hour_sprint.yaml --output "${{ runner.temp }}/abp-workflow"

@@ -1,0 +1,144 @@
+schema_version: "1.0"
+max_concurrent_workers: 3
+agents:
+  - agent_id: sprint-supervisor
+    kind: supervisor
+    role: supervisor
+    supported_task_types:
+      - orchestration
+      - integration_gate
+      - final_synthesis
+      - escalation
+    allowed_paths:
+      - artifacts/orchestration/**
+      - configs/workflows/**
+      - docs/decisions/**
+    required_input_schemas:
+      - workflow-state.schema.json
+      - task.schema.json
+    output_schemas:
+      - workflow-state.schema.json
+      - decision-record.schema.json
+    default_timebox_seconds: 14400
+    retry_budget: 2
+    escalation_destination: human-owner
+    enabled: true
+
+  - agent_id: literature-researcher
+    kind: specialist
+    role: research
+    supported_task_types:
+      - literature_review
+      - novelty_analysis
+      - methodology
+    allowed_paths:
+      - artifacts/research/**
+      - docs/research/**
+    required_input_schemas:
+      - task.schema.json
+    output_schemas:
+      - artifact.schema.json
+      - handoff.schema.json
+    default_timebox_seconds: 7200
+    retry_budget: 2
+    escalation_destination: sprint-supervisor
+    enabled: true
+
+  - agent_id: synthetic-data-engineer
+    kind: specialist
+    role: data
+    supported_task_types:
+      - scenario_design
+      - dataset_generation
+      - leakage_validation
+    allowed_paths:
+      - artifacts/data/**
+      - configs/scenarios/**
+      - data/synthetic/**
+    required_input_schemas:
+      - scenario-config.schema.json
+      - task.schema.json
+    output_schemas:
+      - artifact.schema.json
+      - handoff.schema.json
+      - scenario-config.schema.json
+    default_timebox_seconds: 7200
+    retry_budget: 2
+    escalation_destination: sprint-supervisor
+    enabled: true
+
+  - agent_id: graph-engineer
+    kind: specialist
+    role: engineering
+    supported_task_types:
+      - orchestration
+      - implementation
+      - simulation
+      - memory
+      - intervention
+      - model_adapter
+    allowed_paths:
+      - artifacts/engineering/**
+      - configs/**
+      - scripts/**
+      - src/**
+      - tests/**
+    required_input_schemas:
+      - task.schema.json
+    output_schemas:
+      - artifact.schema.json
+      - handoff.schema.json
+    default_timebox_seconds: 10800
+    retry_budget: 2
+    escalation_destination: sprint-supervisor
+    enabled: true
+
+  - agent_id: metrics-evaluator
+    kind: specialist
+    role: evaluation
+    supported_task_types:
+      - experiment_execution
+      - metrics
+      - statistics
+      - reporting
+    allowed_paths:
+      - artifacts/evaluation/**
+      - configs/evaluation/**
+      - docs/results/**
+      - src/affective_belief_persistence/evaluation/**
+      - src/affective_belief_persistence/reporting/**
+      - tests/evaluation/**
+    required_input_schemas:
+      - evaluation-config.schema.json
+      - run-manifest.schema.json
+      - task.schema.json
+    output_schemas:
+      - artifact.schema.json
+      - handoff.schema.json
+      - run-manifest.schema.json
+    default_timebox_seconds: 10800
+    retry_budget: 2
+    escalation_destination: sprint-supervisor
+    enabled: true
+
+  - agent_id: independent-reviewer
+    kind: specialist
+    role: reviewer
+    supported_task_types:
+      - claim_audit
+      - confound_audit
+      - leakage_audit
+      - reproducibility_audit
+    allowed_paths:
+      - artifacts/reviews/**
+      - docs/reviews/**
+    required_input_schemas:
+      - artifact.schema.json
+      - task.schema.json
+    output_schemas:
+      - artifact.schema.json
+      - handoff.schema.json
+    default_timebox_seconds: 7200
+    retry_budget: 1
+    escalation_destination: human-owner
+    enabled: true

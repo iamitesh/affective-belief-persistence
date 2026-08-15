@@ -1,0 +1,151 @@
+{
+  "$defs": {
+    "TaskStatus": {
+      "description": "Lifecycle states defined by the research workflow PRD.",
+      "enum": [
+        "pending",
+        "ready",
+        "leased",
+        "running",
+        "validating",
+        "completed",
+        "retry",
+        "blocked",
+        "escalated",
+        "cancelled"
+      ],
+      "title": "TaskStatus",
+      "type": "string"
+    },
+    "WorkflowEventType": {
+      "description": "Kinds of facts that may be appended to a workflow history.",
+      "enum": [
+        "workflow_created",
+        "status_transition",
+        "artifact_registered",
+        "handoff_registered",
+        "checkpoint_saved",
+        "note"
+      ],
+      "title": "WorkflowEventType",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "description": "One immutable event; sequence is monotonic within a workflow.",
+  "properties": {
+    "actor_id": {
+      "minLength": 1,
+      "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+      "title": "Actor Id",
+      "type": "string"
+    },
+    "event_id": {
+      "minLength": 1,
+      "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+      "title": "Event Id",
+      "type": "string"
+    },
+    "event_type": {
+      "$ref": "#/$defs/WorkflowEventType"
+    },
+    "message": {
+      "anyOf": [
+        {
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Message"
+    },
+    "new_status": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/TaskStatus"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "occurred_at": {
+      "format": "date-time",
+      "title": "Occurred At",
+      "type": "string"
+    },
+    "payload": {
+      "additionalProperties": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "integer"
+          },
+          {
+            "type": "number"
+          },
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "title": "Payload",
+      "type": "object"
+    },
+    "previous_status": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/TaskStatus"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "sequence": {
+      "minimum": 1,
+      "title": "Sequence",
+      "type": "integer"
+    },
+    "task_id": {
+      "anyOf": [
+        {
+          "minLength": 1,
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Task Id"
+    },
+    "workflow_id": {
+      "minLength": 1,
+      "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+      "title": "Workflow Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "event_id",
+    "workflow_id",
+    "sequence",
+    "event_type",
+    "occurred_at",
+    "actor_id"
+  ],
+  "title": "WorkflowEvent",
+  "type": "object"
+}

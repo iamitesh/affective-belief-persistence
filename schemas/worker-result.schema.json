@@ -1,0 +1,161 @@
+{
+  "$defs": {
+    "FailureCategory": {
+      "description": "Structured failure classes used for retry and escalation policy.",
+      "enum": [
+        "validation_failure",
+        "dependency_missing",
+        "schema_mismatch",
+        "file_lease_conflict",
+        "model_unavailable",
+        "budget_exceeded",
+        "reproducibility_failure",
+        "safety_boundary",
+        "human_decision_required",
+        "runtime_interrupted"
+      ],
+      "title": "FailureCategory",
+      "type": "string"
+    },
+    "WorkerArtifactProposal": {
+      "additionalProperties": false,
+      "description": "Artifact bytes proposed by a worker for supervisor validation and writing.",
+      "properties": {
+        "artifact_id": {
+          "minLength": 1,
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+          "title": "Artifact Id",
+          "type": "string"
+        },
+        "content": {
+          "title": "Content",
+          "type": "string"
+        },
+        "logical_name": {
+          "minLength": 1,
+          "title": "Logical Name",
+          "type": "string"
+        },
+        "media_type": {
+          "minLength": 1,
+          "title": "Media Type",
+          "type": "string"
+        },
+        "path": {
+          "minLength": 1,
+          "title": "Path",
+          "type": "string"
+        }
+      },
+      "required": [
+        "artifact_id",
+        "logical_name",
+        "path",
+        "media_type",
+        "content"
+      ],
+      "title": "WorkerArtifactProposal",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Immutable result envelope; workers cannot return shared workflow state.",
+  "properties": {
+    "artifacts": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/WorkerArtifactProposal"
+      },
+      "title": "Artifacts",
+      "type": "array"
+    },
+    "consumed_artifact_ids": {
+      "default": [],
+      "items": {
+        "minLength": 1,
+        "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+        "type": "string"
+      },
+      "title": "Consumed Artifact Ids",
+      "type": "array"
+    },
+    "error": {
+      "anyOf": [
+        {
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Error"
+    },
+    "failure_category": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/FailureCategory"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "gpu_hours_used": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Gpu Hours Used",
+      "type": "number"
+    },
+    "no_artifact_reason": {
+      "anyOf": [
+        {
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "No Artifact Reason"
+    },
+    "passed_checks": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Passed Checks",
+      "type": "array"
+    },
+    "retryable": {
+      "default": false,
+      "title": "Retryable",
+      "type": "boolean"
+    },
+    "succeeded": {
+      "title": "Succeeded",
+      "type": "boolean"
+    },
+    "task_id": {
+      "minLength": 1,
+      "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+      "title": "Task Id",
+      "type": "string"
+    },
+    "tokens_used": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Tokens Used",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "task_id",
+    "succeeded"
+  ],
+  "title": "WorkerResult",
+  "type": "object"
+}

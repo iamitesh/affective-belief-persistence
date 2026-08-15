@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.0",
+  "artifact_id": "issue-4-literature-evidence",
+  "task_id": "issue-4-literature",
+  "issue_number": 4,
+  "status": "accepted",
+  "accepted_at": "2026-08-15T00:00:00Z",
+  "base_commit": "4c11a0b029f48696c7a2e4554f1c31b28946d97d",
+  "source_count": 34,
+  "primary_technical_count": 22,
+  "required_field_count": 25,
+  "selected_novelty_strength": "conservative",
+  "acceptance_tests": {
+    "sources_are_traceable": "passed",
+    "novelty_claim_is_bounded": "passed",
+    "required_fields": "passed",
+    "duplicate_identifiers": "passed",
+    "bibliography_keys": "passed",
+    "closest_work_comparison": "passed",
+    "human_model_equivalence_prohibited": "passed"
+  },
+  "artifacts": [
+    {
+      "path": "docs/literature-matrix.md",
+      "sha256": "f86711ac9f4c0d3a874955b62ec873e28fed50535fc2611eafe286031d5bafd8"
+    },
+    {
+      "path": "data/research/literature-matrix.jsonl",
+      "sha256": "f97cb4ed39774c47e80b47352e4f10d1ce190fca51642458b01465b2e7ed6553"
+    },
+    {
+      "path": "data/research/literature-search-log.csv",
+      "sha256": "0173cefae01ea306e9eef111b9b2f679ec0e3e4eb6d68308cf7e04e71febd499"
+    },
+    {
+      "path": "docs/novelty-and-positioning.md",
+      "sha256": "a23de27aef3cb6bf39a3bad2690bd793ec38eed97ee36fb8102d5fe798b47980"
+    },
+    {
+      "path": "docs/terminology-map.md",
+      "sha256": "29718b1c09f968420a3d08cc719e07e6644c35b5af5685efbfd3c6d101cb62db"
+    },
+    {
+      "path": "docs/research-citations.bib",
+      "sha256": "1dc562c4549686d9160471b5262d27f488fdd6a3fd1676cdddb457c631e411d4"
+    },
+    {
+      "path": "docs/literature-validation-report.md",
+      "sha256": "c0020816d1f09bc85ac3df446cc3c1b6500812a11166dd191c78abe680c4d962"
+    }
+  ],
+  "handoff": {
+    "downstream_task_ids": [
+      "issue-5-methodology",
+      "issue-6-safety"
+    ],
+    "terminology": "docs/terminology-map.md",
+    "positioning": "docs/novelty-and-positioning.md",
+    "unresolved_risks": "docs/literature-matrix.md#unresolved-search-gaps"
+  }
+}
+

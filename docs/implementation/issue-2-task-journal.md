@@ -41,7 +41,7 @@ and the [Product Requirements Document](../product-requirements-document.md).
 | 2.10 | Add a deterministic synthetic/offline end-to-end dry run | Completed | `forty_eight_hour_sprint.yaml`; stable semantic hash recorded below |
 | 2.11 | Validate interruption, checkpoint, resume, and no-repeat behavior | Completed | `test_checkpoint_resume_does_not_repeat_completed_tasks` |
 | 2.12 | Run lint, type checking, full tests, coverage, and two-run replay checks | Completed | 41 tests; 86.77% coverage; Ruff, mypy, schemas, config, and two-run hash match passed |
-| 2.13 | Publish implementation PR, link Issue #2, and complete remote merge | Validating | Branch `agent/issue-2-supervisor-graph`; implementation commit `e29a6a4cd444c91948ac52117245526e33e7ab08`; [PR #18](https://github.com/iamitesh/affective-belief-persistence/pull/18); merge pending |
+| 2.13 | Publish implementation PR, link Issue #2, and complete remote merge | Completed | Branch `agent/issue-2-supervisor-graph`; implementation commit `e29a6a4cd444c91948ac52117245526e33e7ab08`; [PR #18](https://github.com/iamitesh/affective-belief-persistence/pull/18); merge commit `4c11a0b029f48696c7a2e4554f1c31b28946d97d` |
 | 2.D1 | Create the Issue #2 task journal and decision records | Completed | This journal and ADR-0001 through ADR-0009 |
 
 ## Acceptance checklist
@@ -58,7 +58,7 @@ and the [Product Requirements Document](../product-requirements-document.md).
 - [x] The end-to-end dry run is synthetic, offline, deterministic, and secret-free.
 - [x] Same inputs and seed produce identical canonical final-state hashes.
 - [x] Tests, lint, type checking, and CI pass on the supported Python versions.
-- [ ] Remote PR and merge evidence is recorded below.
+- [x] Remote PR and merge evidence is recorded below.
 
 ## Critical decision log
 
@@ -87,7 +87,7 @@ claims.
 | Issue #2 implementation commit | `e29a6a4cd444c91948ac52117245526e33e7ab08` |
 | Issue #2 pull request | [PR #18](https://github.com/iamitesh/affective-belief-persistence/pull/18) |
 | GitHub Actions run | [CI run #6](https://github.com/iamitesh/affective-belief-persistence/actions/runs/31878976590) — success on Python 3.11 and 3.12 |
-| Issue #2 merge commit | _pending_ |
+| Issue #2 merge commit | [`4c11a0b029f48696c7a2e4554f1c31b28946d97d`](https://github.com/iamitesh/affective-belief-persistence/commit/4c11a0b029f48696c7a2e4554f1c31b28946d97d) |
 | Offline dry-run command | `uv run abp workflow-dry-run --config configs/workflows/forty_eight_hour_sprint.yaml --output <empty-dir>` |
 | First run final-state hash | `c25b09e55ad1d06c6ac43cae30a24a7cdacac522e9949c20d49960358ce04ee0` |
 | Replay final-state hash | `c25b09e55ad1d06c6ac43cae30a24a7cdacac522e9949c20d49960358ce04ee0` |
@@ -136,6 +136,17 @@ claims.
 - Verified GitHub Actions run #6 completed successfully on Python 3.11 and 3.12.
 - Left the merge SHA pending because Issue #2 has not been merged; no local Git
   state is being treated as proof of a remote merge.
+
+### 2026-08-15 — Remote merge accepted
+
+- Verified remote `main` and PR #18 after the merge rather than inferring state
+  from the unsynchronized local checkout.
+- Recorded merge commit
+  [`4c11a0b029f48696c7a2e4554f1c31b28946d97d`](https://github.com/iamitesh/affective-belief-persistence/commit/4c11a0b029f48696c7a2e4554f1c31b28946d97d),
+  created at `2026-08-15T14:00:12Z` with a verified GitHub signature.
+- Marked the publication task and final acceptance item complete. This entry
+  supersedes the earlier merge-pending statement while preserving it as an
+  audit record of what was known at that checkpoint.
 
 ## Blockers and deviations
 

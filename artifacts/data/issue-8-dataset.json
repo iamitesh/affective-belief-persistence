@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.0",
+  "artifact_id": "issue-8-leakage-report",
+  "task_id": "issue-8-dataset",
+  "issue_number": 8,
+  "status": "accepted",
+  "accepted_at": "2026-08-15T00:00:00Z",
+  "input_artifact_ids": ["issue-7-data-contracts"],
+  "dataset_id": "abp-gate1-synthetic",
+  "dataset_version": "synthetic-matched-v1",
+  "dataset_sha256": "5d26b33ec64d1ad59ffa947b48bdd852e8b2900e4119d32513fca15a244e5387",
+  "acceptance_tests": {
+    "conditions_are_balanced": "passed",
+    "separation_leakage_absent": "passed",
+    "records_validate": "passed",
+    "privacy_and_secrets_absent": "passed",
+    "regeneration_is_deterministic": "passed",
+    "partition_hashes_verify": "passed",
+    "manual_review_complete": "passed"
+  },
+  "counts": {"formation": 100, "reality_shock": 4, "adaptation": 56, "neutral_control": 15, "smoke_subset": 8, "matching_groups": 25},
+  "manifest": {"path": "data/manifests/dataset-manifest.json", "sha256": "27c55214c1660da6f083dacc825648bc3bc1cc27106ff48fbb0046db0c58d13a"},
+  "reports": [
+    {"path": "reports/data-balance-report.md", "sha256": "82d2f670e76270ade6ef4245dc87b424c0705956e2aab03544a8b4a3129962e0"},
+    {"path": "reports/leakage-report.md", "sha256": "bd19c5bd6d8dc24a46e370bca511a80797bfbd631d58a8dde85af73ed82598e5"}
+  ],
+  "handoff": {"downstream_task_ids": ["gate-1-data"], "held_out_training_authorized": false, "external_publication_authorized": false}
+}

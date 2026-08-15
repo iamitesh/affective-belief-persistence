@@ -1,0 +1,167 @@
+{
+  "$defs": {
+    "PartitionManifest": {
+      "additionalProperties": false,
+      "properties": {
+        "first_day": {
+          "minimum": 1,
+          "title": "First Day",
+          "type": "integer"
+        },
+        "last_day": {
+          "minimum": 1,
+          "title": "Last Day",
+          "type": "integer"
+        },
+        "path": {
+          "title": "Path",
+          "type": "string"
+        },
+        "protected_from_training": {
+          "title": "Protected From Training",
+          "type": "boolean"
+        },
+        "record_count": {
+          "minimum": 1,
+          "title": "Record Count",
+          "type": "integer"
+        },
+        "role": {
+          "enum": [
+            "formation",
+            "held_out",
+            "control",
+            "smoke"
+          ],
+          "title": "Role",
+          "type": "string"
+        },
+        "sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        }
+      },
+      "required": [
+        "path",
+        "role",
+        "record_count",
+        "sha256",
+        "first_day",
+        "last_day",
+        "protected_from_training"
+      ],
+      "title": "PartitionManifest",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "dataset_id": {
+      "title": "Dataset Id",
+      "type": "string"
+    },
+    "dataset_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Dataset Sha256",
+      "type": "string"
+    },
+    "dataset_version": {
+      "title": "Dataset Version",
+      "type": "string"
+    },
+    "freeze_date": {
+      "title": "Freeze Date",
+      "type": "string"
+    },
+    "generator_id": {
+      "const": "gate1-dataset-generator",
+      "default": "gate1-dataset-generator",
+      "title": "Generator Id",
+      "type": "string"
+    },
+    "generator_version": {
+      "const": "1.0.0",
+      "default": "1.0.0",
+      "title": "Generator Version",
+      "type": "string"
+    },
+    "known_imperfections": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Known Imperfections",
+      "type": "array"
+    },
+    "manual_review_sample_ids": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 4,
+      "title": "Manual Review Sample Ids",
+      "type": "array"
+    },
+    "partitions": {
+      "items": {
+        "$ref": "#/$defs/PartitionManifest"
+      },
+      "minItems": 7,
+      "title": "Partitions",
+      "type": "array"
+    },
+    "protocol_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Protocol Sha256",
+      "type": "string"
+    },
+    "safety_policy_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Safety Policy Sha256",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "seed": {
+      "title": "Seed",
+      "type": "integer"
+    },
+    "source_commit": {
+      "title": "Source Commit",
+      "type": "string"
+    },
+    "synthetic": {
+      "const": true,
+      "default": true,
+      "title": "Synthetic",
+      "type": "boolean"
+    },
+    "validation": {
+      "additionalProperties": {
+        "const": "passed",
+        "type": "string"
+      },
+      "title": "Validation",
+      "type": "object"
+    }
+  },
+  "required": [
+    "dataset_id",
+    "dataset_version",
+    "seed",
+    "source_commit",
+    "freeze_date",
+    "protocol_sha256",
+    "safety_policy_sha256",
+    "partitions",
+    "dataset_sha256",
+    "validation",
+    "manual_review_sample_ids",
+    "known_imperfections"
+  ],
+  "title": "DatasetManifest",
+  "type": "object"
+}

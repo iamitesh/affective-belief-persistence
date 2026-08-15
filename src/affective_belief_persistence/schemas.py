@@ -392,6 +392,7 @@ class RunManifest(StrictModel):
     schema_models: ClassVar[tuple[type[BaseModel], ...]] = ()
 
 
+from affective_belief_persistence.data.contracts import DatasetManifest  # noqa: E402
 from affective_belief_persistence.orchestration.contracts import (  # noqa: E402
     ArtifactContract as WorkflowArtifactContract,
 )
@@ -413,6 +414,7 @@ SCHEMA_MODELS: dict[str, type[BaseModel]] = {
     "agent-config.schema.json": AgentConfig,
     "artifact.schema.json": WorkflowArtifactContract,
     "decision-record.schema.json": DecisionRecord,
+    "dataset-manifest.schema.json": DatasetManifest,
     "evaluation-config.schema.json": EvaluationConfig,
     "experiment-config.schema.json": ExperimentSpec,
     "handoff.schema.json": WorkflowHandoffContract,

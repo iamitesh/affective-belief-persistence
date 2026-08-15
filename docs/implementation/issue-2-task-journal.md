@@ -41,7 +41,7 @@ and the [Product Requirements Document](../product-requirements-document.md).
 | 2.10 | Add a deterministic synthetic/offline end-to-end dry run | Completed | `forty_eight_hour_sprint.yaml`; stable semantic hash recorded below |
 | 2.11 | Validate interruption, checkpoint, resume, and no-repeat behavior | Completed | `test_checkpoint_resume_does_not_repeat_completed_tasks` |
 | 2.12 | Run lint, type checking, full tests, coverage, and two-run replay checks | Completed | 41 tests; 86.77% coverage; Ruff, mypy, schemas, config, and two-run hash match passed |
-| 2.13 | Publish implementation PR, link Issue #2, and complete remote merge | Planned | Branch: _pending_; commit: _pending_; PR: _pending_; merge SHA: _pending_ |
+| 2.13 | Publish implementation PR, link Issue #2, and complete remote merge | Validating | Branch `agent/issue-2-supervisor-graph`; implementation commit `e29a6a4cd444c91948ac52117245526e33e7ab08`; [PR #18](https://github.com/iamitesh/affective-belief-persistence/pull/18); merge pending |
 | 2.D1 | Create the Issue #2 task journal and decision records | Completed | This journal and ADR-0001 through ADR-0009 |
 
 ## Acceptance checklist
@@ -57,7 +57,7 @@ and the [Product Requirements Document](../product-requirements-document.md).
 - [x] Missing GPU capability skips optional training without blocking the baseline.
 - [x] The end-to-end dry run is synthetic, offline, deterministic, and secret-free.
 - [x] Same inputs and seed produce identical canonical final-state hashes.
-- [ ] Tests, lint, type checking, and CI pass on the supported Python versions.
+- [x] Tests, lint, type checking, and CI pass on the supported Python versions.
 - [ ] Remote PR and merge evidence is recorded below.
 
 ## Critical decision log
@@ -83,10 +83,10 @@ claims.
 | --- | --- |
 | Issue #3 foundation PR | [PR #17](https://github.com/iamitesh/affective-belief-persistence/pull/17) |
 | Issue #3 merge commit | `4e430f54be3eae1b520f932c59ae02c8e66f8939` |
-| Issue #2 implementation branch | _pending_ |
-| Issue #2 head commit | _pending_ |
-| Issue #2 pull request | _pending_ |
-| GitHub Actions run | _pending_ |
+| Issue #2 implementation branch | `agent/issue-2-supervisor-graph` |
+| Issue #2 implementation commit | `e29a6a4cd444c91948ac52117245526e33e7ab08` |
+| Issue #2 pull request | [PR #18](https://github.com/iamitesh/affective-belief-persistence/pull/18) |
+| GitHub Actions run | [CI run #6](https://github.com/iamitesh/affective-belief-persistence/actions/runs/31878976590) — success on Python 3.11 and 3.12 |
 | Issue #2 merge commit | _pending_ |
 | Offline dry-run command | `uv run abp workflow-dry-run --config configs/workflows/forty_eight_hour_sprint.yaml --output <empty-dir>` |
 | First run final-state hash | `c25b09e55ad1d06c6ac43cae30a24a7cdacac522e9949c20d49960358ce04ee0` |
@@ -125,6 +125,17 @@ claims.
   drift check, 41 tests at 86.77% coverage, foundation config validation, sprint
   workflow validation, and two independent dry runs with matching semantic hash
   `c25b09e55ad1d06c6ac43cae30a24a7cdacac522e9949c20d49960358ce04ee0`.
+
+### 2026-08-15 — Remote publication checkpoint
+
+- Verified remote `main` still pointed to the Issue #3 merge commit before
+  publication.
+- Published implementation commit
+  `e29a6a4cd444c91948ac52117245526e33e7ab08` on
+  `agent/issue-2-supervisor-graph` and opened PR #18 with `Closes #2`.
+- Verified GitHub Actions run #6 completed successfully on Python 3.11 and 3.12.
+- Left the merge SHA pending because Issue #2 has not been merged; no local Git
+  state is being treated as proof of a remote merge.
 
 ## Blockers and deviations
 

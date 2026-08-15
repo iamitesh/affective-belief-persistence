@@ -408,6 +408,10 @@ from affective_belief_persistence.orchestration.state import WorkflowState  # no
 from affective_belief_persistence.orchestration.workflow import (  # noqa: E402
     WorkflowDefinition,
 )
+from affective_belief_persistence.simulation.state import (  # noqa: E402
+    SimulationState,
+    SimulationStepRecord,
+)
 from affective_belief_persistence.world import WORLD_SCHEMA_MODELS  # noqa: E402
 
 SCHEMA_MODELS: dict[str, type[BaseModel]] = {
@@ -424,6 +428,8 @@ SCHEMA_MODELS: dict[str, type[BaseModel]] = {
     "resolved-run-config.schema.json": ResolvedRunConfig,
     "run-manifest.schema.json": RunManifest,
     "scenario-config.schema.json": ScenarioConfig,
+    "simulation-state.schema.json": SimulationState,
+    "step-record.schema.json": SimulationStepRecord,
     "task.schema.json": WorkflowTaskContract,
     "worker-result.schema.json": WorkerResult,
     "workflow-config.schema.json": WorkflowConfig,

@@ -1,0 +1,93 @@
+{
+  "schema_version": "1.0",
+  "artifact_id": "issue-9-simulation-harness",
+  "task_id": "issue-9-simulation",
+  "issue_number": 9,
+  "path": "artifacts/engineering/issue-9-simulation.json",
+  "status": "accepted",
+  "accepted_at": "2026-08-16T00:00:00Z",
+  "input_artifact_ids": [
+    "gate-1-evidence"
+  ],
+  "base_commit": "77611e0b5664fa46fcb6ad1e350f21955c013153",
+  "implementation_commit": "508c05b61ad7d06a87c6d277d067227798df4195",
+  "dataset": {
+    "dataset_id": "abp-gate1-synthetic",
+    "dataset_version": "synthetic-matched-v1",
+    "dataset_sha256": "5d26b33ec64d1ad59ffa947b48bdd852e8b2900e4119d32513fca15a244e5387",
+    "manifest_path": "data/manifests/dataset-manifest.json",
+    "manifest_sha256": "27c55214c1660da6f083dacc825648bc3bc1cc27106ff48fbb0046db0c58d13a"
+  },
+  "world_inputs": [
+    {
+      "path": "data/world/characters.yaml",
+      "sha256": "c62cd6a8a9a916f7f6983442da65d30d1a70514fee1fb25a91a9a4821afd2c7d"
+    },
+    {
+      "path": "data/world/goals.yaml",
+      "sha256": "62dfd341396372ff13a4a3f5619aaf3eec6203ee11ee9dc30ba2dd8eec617b9c"
+    },
+    {
+      "path": "data/world/action-catalog.yaml",
+      "sha256": "75f53dae4a366ad069b8b7a1b4886b991ba75cc4ee53a8f7cceeac4baac12a6f"
+    }
+  ],
+  "contracts": {
+    "simulation_state_schema": "schemas/simulation-state.schema.json",
+    "step_record_schema": "schemas/step-record.schema.json",
+    "scenario_config": "configs/scenarios/ari_mira_v1.yaml",
+    "documentation": "docs/simulation-harness.md",
+    "decision_record": "docs/decisions/0017-deterministic-action-first-simulation.md",
+    "task_journal": "docs/implementation/issue-9-task-journal.md"
+  },
+  "acceptance_tests": {
+    "seeded_replay_matches": "passed",
+    "resources_are_conserved": "passed",
+    "forty_day_mock_trajectory_completes": "passed",
+    "phase_boundaries_are_exact": "passed",
+    "day_30_hook_precedes_action": "passed",
+    "unavailable_actions_are_rejected": "passed",
+    "consequences_are_deterministic": "passed",
+    "action_precedes_public_language": "passed",
+    "checkpoint_resume_skips_completed_effects": "passed",
+    "matched_controls_are_equal": "passed",
+    "input_hashes_fail_closed": "passed",
+    "step_provenance_is_complete": "passed"
+  },
+  "evidence": {
+    "trajectory_days": 40,
+    "step_record_count": 40,
+    "trajectory_sha256": "fa6c1cbba0a3c5102b69bd4e8aee3feb52330b818ce9fb4519f21aeb95d473ae",
+    "step_record_set_sha256": "ce3d350e4d106573e8e426718a50f3b8f61702c4b6c4ba3fc00329b9d0b94c97",
+    "final_state_sha256": "50a53a85a5ee20119f6f215f25992d592d576a0a9632ec3185a9c42484ad7a88",
+    "resumed_state_sha256": "50a53a85a5ee20119f6f215f25992d592d576a0a9632ec3185a9c42484ad7a88",
+    "replay_report_sha256": "5de0a4d9a0726ca8eb59c15acdeddde24c1a80a6604373d86953dac04331f3c5",
+    "test_count": 87,
+    "coverage_percent": 85.05,
+    "supervisor_validation": "passed"
+  },
+  "opportunity_cost_policy": {
+    "status": "raw_inputs_only",
+    "recorded_inputs": [
+      "available_action_ids",
+      "chosen_action_id",
+      "foregone_action_ids",
+      "catalog_costs",
+      "goal_ids",
+      "consequence_goal_progress",
+      "frozen_source_hashes"
+    ],
+    "numeric_q_authorized": false,
+    "reason": "Gate 1 and the frozen metric specification do not define an explicit prospective-value field or approved derivation."
+  },
+  "handoff": {
+    "downstream_task_ids": [
+      "issue-10-memory",
+      "issue-12-models",
+      "gate-2-harness"
+    ],
+    "public_language_may_change_committed_action": false,
+    "external_publication_authorized": false,
+    "human_subject_research_authorized": false
+  }
+}

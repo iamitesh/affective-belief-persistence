@@ -35,6 +35,12 @@ changes, add a new ADR that supersedes the old one instead of rewriting history.
 | [ADR-0015](0015-deterministic-matched-dataset.md) | Generate matched partitions deterministically and protect held-out content | Accepted |
 | [ADR-0016](0016-gate-1-data-freeze.md) | Freeze dataset hashes only after schema, matching, leakage, and provenance checks | Accepted |
 
+## Harness Gate 2 decisions
+
+| ADR | Decision | Status |
+| --- | --- | --- |
+| [ADR-0017](0017-deterministic-action-first-simulation.md) | Use an idempotent two-stage action-first simulation transaction | Accepted for Issue #9 implementation |
+
 ## Related sources
 
 - [Issue #2: supervisor, specialist agents, and shared-state contracts](https://github.com/iamitesh/affective-belief-persistence/issues/2)
@@ -48,3 +54,4 @@ changes, add a new ADR that supersedes the old one instead of rewriting history.
 - [Issue #7 task journal](../implementation/issue-7-task-journal.md)
 - [Issue #8 task journal](../implementation/issue-8-task-journal.md)
 - [Gate 1 task journal](../implementation/gate-1-task-journal.md)
+- [Issue #9 task journal](../implementation/issue-9-task-journal.md)

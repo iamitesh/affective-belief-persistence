@@ -6,6 +6,8 @@
 - Owner: supervisor
 - Required input: `issue-8-leakage-report`
 - Repair attempts used: 0 of 2
+- Integration PR: [#20](https://github.com/iamitesh/affective-belief-persistence/pull/20)
+- Merge SHA: `77611e0b5664fa46fcb6ad1e350f21955c013153`
 
 ## Task ledger
 

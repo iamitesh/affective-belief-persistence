@@ -1,0 +1,16 @@
+schema_version: "1.0"
+simulation_id: ari-mira-longitudinal-v1
+version: "1.0.0"
+dataset_manifest_path: data/manifests/dataset-manifest.json
+expected_dataset_sha256: 5d26b33ec64d1ad59ffa947b48bdd852e8b2900e4119d32513fca15a244e5387
+world_artifact_path: artifacts/data/issue-7-data-contracts.json
+formation_condition: memory_plus_investment
+seed: 20260815
+model_config_path: configs/models/mock.yaml
+first_day: 1
+last_day: 40
+daily_budget_id: daily-action-points
+checkpoint_cadence_steps: 1
+held_out_evaluation_authorized: true
+prompt_version: decision-v1
+decision_schema_version: "1.0"

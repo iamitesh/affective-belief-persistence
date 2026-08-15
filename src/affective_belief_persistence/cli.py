@@ -17,6 +17,12 @@ from affective_belief_persistence.orchestration.workflow import (
 )
 from affective_belief_persistence.runner import RunnerError, execute_dry_run, reproduce_run
 from affective_belief_persistence.schemas import SCHEMA_MODELS
+from affective_belief_persistence.simulation.engine import (
+    CheckpointError,
+    SimulationError,
+    run_and_write_simulation,
+)
+from affective_belief_persistence.simulation.scenario_loader import ScenarioLoadError
 
 
 def _schema_text(model: type[BaseModel]) -> str:
@@ -60,6 +66,12 @@ def build_parser() -> argparse.ArgumentParser:
     workflow.add_argument("--config", type=Path, required=True)
     workflow.add_argument("--output", type=Path, required=True)
     workflow.add_argument("--resume", action="store_true")
+
+    simulate = subparsers.add_parser("simulate")
+    simulate.add_argument("--config", type=Path, required=True)
+    simulate.add_argument("--output", type=Path, required=True)
+    simulate.add_argument("--resume", action="store_true")
+    simulate.add_argument("--max-steps", type=int)
     return parser
 
 
@@ -97,10 +109,26 @@ def main(argv: list[str] | None = None) -> int:
             summary = Supervisor(loaded_workflow, args.output, resume=args.resume).run()
             print(f"{summary.status} {summary.workflow_id}: {summary.state_sha256}")
             return 0 if summary.status == "completed" else 2
+        if args.command == "simulate":
+            simulation_manifest = run_and_write_simulation(
+                args.config,
+                args.output,
+                resume=args.resume,
+                max_steps=args.max_steps,
+            )
+            print(
+                f"{simulation_manifest.status} {simulation_manifest.simulation_id}: "
+                f"{simulation_manifest.trajectory_sha256} "
+                f"({simulation_manifest.record_count} records)"
+            )
+            return 0
     except (
+        CheckpointError,
         ConfigError,
         OrchestrationError,
         RunnerError,
+        ScenarioLoadError,
+        SimulationError,
         ValidationError,
         WorkflowDefinitionError,
         ValueError,

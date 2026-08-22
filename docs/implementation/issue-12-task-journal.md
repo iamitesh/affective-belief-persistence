@@ -6,6 +6,8 @@
 - Artifact ID: `issue-12-model-runner`
 - Dependency consumed: `issue-9-simulation-harness`
 - Issue #9 merge SHA: `a5bf3bdca8c6444dbc556e6b9dd0ca7daf5a868e`
+- Pull request: [#23](https://github.com/iamitesh/affective-belief-persistence/pull/23)
+- Merge SHA: `390fd0242eeac885f1e6322bbc80ecdf0b684bb0`
 - Implementation status: accepted
 - Live-provider pilot: blocked; no credentials or authorized budget supplied
 

@@ -1,0 +1,26 @@
+schema_version: "1.0"
+config_id: deterministic-runner-mock-v1
+adapter_version: "1.0.0"
+provider: mock
+model_id: deterministic-mock
+revision: mock-v1
+prompt_version: decision-v1
+output_schema_version: "1.0"
+inference:
+  temperature: 0.0
+  top_p: 1.0
+  max_output_tokens: 256
+  timeout_seconds: 5
+  seed_supported: true
+  structured_json: true
+retry:
+  max_transport_retries: 0
+  malformed_output_repair_attempts: 1
+cache:
+  enabled: false
+  directory: runs/local/model-cache/mock
+  preserve_raw_responses: false
+pricing:
+  input_usd_per_million_tokens: 0.0
+  output_usd_per_million_tokens: 0.0
+live_calls_enabled: false

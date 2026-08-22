@@ -1,0 +1,27 @@
+schema_version: "1.0"
+config_id: openai-compatible-transport-fixture-v1
+adapter_version: "1.0.0"
+provider: openai_compatible
+model_id: openai-compatible-fixture-model
+revision: fixture-revision-2026-08-16
+endpoint: https://example.invalid/v1/chat/completions
+prompt_version: decision-v1
+output_schema_version: "1.0"
+inference:
+  temperature: 0.0
+  top_p: 1.0
+  max_output_tokens: 512
+  timeout_seconds: 30
+  seed_supported: true
+  structured_json: true
+retry:
+  max_transport_retries: 1
+  malformed_output_repair_attempts: 1
+cache:
+  enabled: true
+  directory: runs/local/model-cache/openai-compatible
+  preserve_raw_responses: true
+pricing:
+  input_usd_per_million_tokens: 1.0
+  output_usd_per_million_tokens: 4.0
+live_calls_enabled: false

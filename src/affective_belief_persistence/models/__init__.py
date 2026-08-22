@@ -1,6 +1,7 @@
-"""Model adapter interfaces and offline implementations."""
+"""Model-runner package.
 
-from affective_belief_persistence.models.base import ModelAdapter
-from affective_belief_persistence.models.mock import DeterministicMockModel
-
-__all__ = ["DeterministicMockModel", "ModelAdapter"]
+The package initializer intentionally performs no eager imports.  Central
+schema generation imports ``models.contracts`` while the legacy adapter imports
+the root schemas, so eager re-exports here would create an initialization cycle.
+Import public APIs from their defining modules.
+"""

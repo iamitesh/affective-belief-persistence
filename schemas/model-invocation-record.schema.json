@@ -1,0 +1,209 @@
+{
+  "$defs": {
+    "InvocationProvenance": {
+      "additionalProperties": false,
+      "properties": {
+        "adapter_version": {
+          "title": "Adapter Version",
+          "type": "string"
+        },
+        "attempt": {
+          "minimum": 1,
+          "title": "Attempt",
+          "type": "integer"
+        },
+        "cache_hit": {
+          "title": "Cache Hit",
+          "type": "boolean"
+        },
+        "cache_key": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Cache Key",
+          "type": "string"
+        },
+        "call_id": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Call Id",
+          "type": "string"
+        },
+        "config_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Config Sha256",
+          "type": "string"
+        },
+        "input_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Input Sha256",
+          "type": "string"
+        },
+        "model_id": {
+          "title": "Model Id",
+          "type": "string"
+        },
+        "output_schema_version": {
+          "const": "1.0",
+          "title": "Output Schema Version",
+          "type": "string"
+        },
+        "prompt_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Prompt Sha256",
+          "type": "string"
+        },
+        "prompt_version": {
+          "title": "Prompt Version",
+          "type": "string"
+        },
+        "provider": {
+          "$ref": "#/$defs/ProviderKind"
+        },
+        "repair_attempt": {
+          "title": "Repair Attempt",
+          "type": "boolean"
+        },
+        "revision": {
+          "title": "Revision",
+          "type": "string"
+        },
+        "run_id": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Run Id",
+          "type": "string"
+        },
+        "seed": {
+          "maximum": 9223372036854775807,
+          "minimum": 0,
+          "title": "Seed",
+          "type": "integer"
+        },
+        "stage": {
+          "$ref": "#/$defs/ModelStage"
+        },
+        "token_usage": {
+          "$ref": "#/$defs/TokenUsage",
+          "default": {
+            "input_tokens": 0,
+            "output_tokens": 0
+          }
+        }
+      },
+      "required": [
+        "run_id",
+        "call_id",
+        "stage",
+        "attempt",
+        "repair_attempt",
+        "provider",
+        "adapter_version",
+        "model_id",
+        "revision",
+        "config_sha256",
+        "prompt_version",
+        "prompt_sha256",
+        "input_sha256",
+        "output_schema_version",
+        "seed",
+        "cache_key",
+        "cache_hit"
+      ],
+      "title": "InvocationProvenance",
+      "type": "object"
+    },
+    "ModelStage": {
+      "enum": [
+        "action",
+        "action_repair",
+        "public_language",
+        "public_language_repair"
+      ],
+      "title": "ModelStage",
+      "type": "string"
+    },
+    "ProviderKind": {
+      "enum": [
+        "mock",
+        "openai_compatible",
+        "hf_local_http"
+      ],
+      "title": "ProviderKind",
+      "type": "string"
+    },
+    "TokenUsage": {
+      "additionalProperties": false,
+      "properties": {
+        "input_tokens": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Input Tokens",
+          "type": "integer"
+        },
+        "output_tokens": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Output Tokens",
+          "type": "integer"
+        }
+      },
+      "title": "TokenUsage",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "failure_category": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Failure Category"
+    },
+    "provenance": {
+      "$ref": "#/$defs/InvocationProvenance"
+    },
+    "raw_response": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Raw Response"
+    },
+    "raw_response_retained": {
+      "default": false,
+      "title": "Raw Response Retained",
+      "type": "boolean"
+    },
+    "response_sha256": {
+      "anyOf": [
+        {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Response Sha256"
+    },
+    "succeeded": {
+      "title": "Succeeded",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "provenance",
+    "succeeded"
+  ],
+  "title": "InvocationRecord",
+  "type": "object"
+}

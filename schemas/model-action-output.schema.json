@@ -1,0 +1,111 @@
+{
+  "$defs": {
+    "ProposedBeliefUpdate": {
+      "additionalProperties": false,
+      "properties": {
+        "belief_id": {
+          "minLength": 1,
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+          "title": "Belief Id",
+          "type": "string"
+        },
+        "confidence": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Confidence",
+          "type": "number"
+        },
+        "evidence_ids": {
+          "default": [],
+          "items": {
+            "minLength": 1,
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+            "type": "string"
+          },
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "title": "Value"
+        }
+      },
+      "required": [
+        "belief_id",
+        "value",
+        "confidence"
+      ],
+      "title": "ProposedBeliefUpdate",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Strict action-stage output; public language is intentionally absent.",
+  "properties": {
+    "belief_updates": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/ProposedBeliefUpdate"
+      },
+      "title": "Belief Updates",
+      "type": "array"
+    },
+    "chosen_action_id": {
+      "minLength": 1,
+      "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+      "title": "Chosen Action Id",
+      "type": "string"
+    },
+    "decision_rationale": {
+      "anyOf": [
+        {
+          "maxLength": 500,
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Decision Rationale"
+    },
+    "resources_spent": {
+      "minimum": 0,
+      "title": "Resources Spent",
+      "type": "integer"
+    },
+    "retrieved_memory_ids": {
+      "default": [],
+      "items": {
+        "minLength": 1,
+        "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+        "type": "string"
+      },
+      "title": "Retrieved Memory Ids",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "chosen_action_id",
+    "resources_spent"
+  ],
+  "title": "ActionOutput",
+  "type": "object"
+}

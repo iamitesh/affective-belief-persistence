@@ -5,6 +5,10 @@
 - Task ID: `gate-2-harness`
 - Gate: `gate-2`
 - Date: 2026-08-22
+- Pull request: [#25](https://github.com/iamitesh/affective-belief-persistence/pull/25)
+- Head SHA: `5cf0518bcb6adf0d790053d52f5ef16b7c9e1ec6`
+- Merge SHA: `e851160665d9b9e3c34be13a9dc6381f86703226`
+- Status: accepted and merged
 - Scope: integrate accepted Issues 9, 10, 11, and 12 in an offline composite
   harness; do not modify frozen Issue 9 records.
 - Evidence label: deterministic mock engineering evidence
@@ -131,5 +135,6 @@
 - Diff whitespace validation: passed
 - Compact artifact-to-upstream SHA-256 validation: passed
 
-Publication and merge SHAs must be added by the supervisor after the connector
-workflow completes.
+The supervisor published PR #25 after both CI environments passed, verified that
+the review state was clean, and merged the exact accepted head SHA recorded
+above.

@@ -1,0 +1,299 @@
+{
+  "$defs": {
+    "LayerSnapshot": {
+      "additionalProperties": false,
+      "description": "Hashes and IDs required to prove which layer changed.",
+      "properties": {
+        "active_instruction_ids": {
+          "items": {
+            "minLength": 1,
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+            "type": "string"
+          },
+          "title": "Active Instruction Ids",
+          "type": "array"
+        },
+        "belief_ledger_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Belief Ledger Sha256",
+          "type": "string"
+        },
+        "blocked_condition_tags": {
+          "items": {
+            "minLength": 1,
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+            "type": "string"
+          },
+          "title": "Blocked Condition Tags",
+          "type": "array"
+        },
+        "blocked_memory_ids": {
+          "items": {
+            "minLength": 1,
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+            "type": "string"
+          },
+          "title": "Blocked Memory Ids",
+          "type": "array"
+        },
+        "interpretations_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Interpretations Sha256",
+          "type": "string"
+        },
+        "memory_ids": {
+          "items": {
+            "minLength": 1,
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+            "type": "string"
+          },
+          "title": "Memory Ids",
+          "type": "array"
+        },
+        "memory_storage_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Memory Storage Sha256",
+          "type": "string"
+        },
+        "observable_facts_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Observable Facts Sha256",
+          "type": "string"
+        },
+        "source_event_ids_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Source Event Ids Sha256",
+          "type": "string"
+        }
+      },
+      "required": [
+        "active_instruction_ids",
+        "blocked_memory_ids",
+        "blocked_condition_tags",
+        "memory_ids",
+        "memory_storage_sha256",
+        "observable_facts_sha256",
+        "source_event_ids_sha256",
+        "interpretations_sha256",
+        "belief_ledger_sha256"
+      ],
+      "title": "LayerSnapshot",
+      "type": "object"
+    },
+    "RealityShockValidation": {
+      "additionalProperties": false,
+      "description": "Evidence that day 26 was observed from the protected source, not injected.",
+      "properties": {
+        "authoritative_fact_ids": {
+          "items": {
+            "minLength": 1,
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Authoritative Fact Ids",
+          "type": "array"
+        },
+        "contradiction_evidence_ids": {
+          "items": {
+            "minLength": 1,
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Contradiction Evidence Ids",
+          "type": "array"
+        },
+        "day": {
+          "const": 26,
+          "title": "Day",
+          "type": "integer"
+        },
+        "event_id": {
+          "minLength": 1,
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+          "title": "Event Id",
+          "type": "string"
+        },
+        "event_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Event Sha256",
+          "type": "string"
+        },
+        "held_out_provenance_confirmed": {
+          "const": true,
+          "default": true,
+          "title": "Held Out Provenance Confirmed",
+          "type": "boolean"
+        },
+        "matching_group_id": {
+          "const": "heldout-shock-day-26",
+          "title": "Matching Group Id",
+          "type": "string"
+        },
+        "phase": {
+          "const": "reality_shock",
+          "title": "Phase",
+          "type": "string"
+        },
+        "provenance_source_ids": {
+          "items": {
+            "minLength": 1,
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+            "type": "string"
+          },
+          "title": "Provenance Source Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "event_id",
+        "event_sha256",
+        "day",
+        "phase",
+        "matching_group_id",
+        "provenance_source_ids",
+        "authoritative_fact_ids",
+        "contradiction_evidence_ids"
+      ],
+      "title": "RealityShockValidation",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Append-only activation record with before/after isolation evidence.",
+  "properties": {
+    "activation_day": {
+      "const": 30,
+      "title": "Activation Day",
+      "type": "integer"
+    },
+    "after": {
+      "$ref": "#/$defs/LayerSnapshot"
+    },
+    "appended_reframe_ids": {
+      "default": [],
+      "items": {
+        "pattern": "^[0-9a-f]{64}$",
+        "type": "string"
+      },
+      "title": "Appended Reframe Ids",
+      "type": "array"
+    },
+    "applied_exactly_once": {
+      "const": true,
+      "default": true,
+      "title": "Applied Exactly Once",
+      "type": "boolean"
+    },
+    "before": {
+      "$ref": "#/$defs/LayerSnapshot"
+    },
+    "changed_layers": {
+      "items": {
+        "enum": [
+          "instructions",
+          "retrieval_policy",
+          "interpretations"
+        ],
+        "type": "string"
+      },
+      "title": "Changed Layers",
+      "type": "array"
+    },
+    "intervention_condition": {
+      "enum": [
+        "none",
+        "instruction_removal",
+        "memory_blocking",
+        "memory_reframing"
+      ],
+      "title": "Intervention Condition",
+      "type": "string"
+    },
+    "intervention_config_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Intervention Config Sha256",
+      "type": "string"
+    },
+    "intervention_id": {
+      "minLength": 1,
+      "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+      "title": "Intervention Id",
+      "type": "string"
+    },
+    "no_op_reason": {
+      "anyOf": [
+        {
+          "enum": [
+            "assigned_no_treatment",
+            "target_instruction_not_active",
+            "no_eligible_pre_shock_partner_memory"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "No Op Reason"
+    },
+    "previous_record_sha256": {
+      "anyOf": [
+        {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Previous Record Sha256"
+    },
+    "record_id": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Record Id",
+      "type": "string"
+    },
+    "record_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Record Sha256",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "shock_validation": {
+      "$ref": "#/$defs/RealityShockValidation"
+    },
+    "target_ids": {
+      "items": {
+        "minLength": 1,
+        "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+        "type": "string"
+      },
+      "title": "Target Ids",
+      "type": "array"
+    }
+  },
+  "required": [
+    "record_id",
+    "intervention_id",
+    "intervention_condition",
+    "intervention_config_sha256",
+    "activation_day",
+    "shock_validation",
+    "target_ids",
+    "changed_layers",
+    "before",
+    "after",
+    "record_sha256"
+  ],
+  "title": "InterventionRecord",
+  "type": "object"
+}

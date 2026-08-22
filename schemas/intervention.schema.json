@@ -1,0 +1,102 @@
+{
+  "additionalProperties": false,
+  "description": "One preregistered treatment with exactly one writable layer.",
+  "properties": {
+    "activation_day": {
+      "const": 30,
+      "default": 30,
+      "title": "Activation Day",
+      "type": "integer"
+    },
+    "block_partner_memories_through_day": {
+      "anyOf": [
+        {
+          "const": 25,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Block Partner Memories Through Day"
+    },
+    "condition": {
+      "enum": [
+        "none",
+        "instruction_removal",
+        "memory_blocking",
+        "memory_reframing"
+      ],
+      "title": "Condition",
+      "type": "string"
+    },
+    "intervention_id": {
+      "minLength": 1,
+      "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+      "title": "Intervention Id",
+      "type": "string"
+    },
+    "reframe_partner_memories_through_day": {
+      "anyOf": [
+        {
+          "const": 25,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Reframe Partner Memories Through Day"
+    },
+    "reframe_policy_version": {
+      "anyOf": [
+        {
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Reframe Policy Version"
+    },
+    "reframe_proposition": {
+      "anyOf": [
+        {
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Reframe Proposition"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "target_instruction_ids": {
+      "default": [],
+      "items": {
+        "minLength": 1,
+        "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+        "type": "string"
+      },
+      "title": "Target Instruction Ids",
+      "type": "array"
+    }
+  },
+  "required": [
+    "intervention_id",
+    "condition"
+  ],
+  "title": "InterventionSpec",
+  "type": "object"
+}

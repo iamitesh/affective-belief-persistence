@@ -1,0 +1,131 @@
+{
+  "schema_version": "1.0",
+  "artifact_id": "issue-11-intervention-engine",
+  "task_id": "issue-11-interventions",
+  "issue_number": 11,
+  "path": "artifacts/engineering/issue-11-interventions.json",
+  "status": "accepted",
+  "input_artifact_ids": [
+    "issue-10-memory-subsystem"
+  ],
+  "dependency": {
+    "artifact_path": "artifacts/engineering/issue-10-memory.json",
+    "merge_sha": "64217e1a3df2167bda4dff52f910892f69cb76d7",
+    "memory_hooks": "accepted"
+  },
+  "contracts": {
+    "runtime_source": "src/affective_belief_persistence/interventions/runtime.py",
+    "schema_mapping": "INTERVENTION_SCHEMA_MODELS",
+    "intervention_schema": "schemas/intervention.schema.json",
+    "intervention_record_schema": "schemas/intervention-record.schema.json",
+    "configs": [
+      "configs/interventions/none.yaml",
+      "configs/interventions/instruction-removal.yaml",
+      "configs/interventions/memory-blocking.yaml",
+      "configs/interventions/memory-reframing.yaml"
+    ],
+    "documentation": "docs/intervention-design.md",
+    "decision_record": "docs/decisions/0020-hash-chained-layer-isolated-interventions.md",
+    "task_journal": "docs/implementation/issue-11-task-journal.md",
+    "isolation_report": "reports/intervention-isolation-report.md",
+    "frozen_issue_9_contracts_modified": false
+  },
+  "acceptance_tests": {
+    "conditions_are_isolated": "passed",
+    "reality_shock_is_held_out": "passed",
+    "activation_is_day_30_exactly_once": "passed",
+    "no_treatment_has_zero_mutation": "passed",
+    "instruction_removal_changes_only_instruction_state": "passed",
+    "blocking_preserves_storage": "passed",
+    "blocking_targets_only_pre_shock_partner_memories": "passed",
+    "reframing_preserves_facts_and_source_ids": "passed",
+    "reframing_preserves_prior_revision": "passed",
+    "day_26_memory_is_never_targeted": "passed",
+    "failed_day_30_step_has_no_partial_commit": "passed",
+    "records_are_hash_protected_and_idempotent": "passed",
+    "checkpoint_binds_simulation_memory_and_intervention": "passed",
+    "assignment_metadata_is_not_model_visible": "passed",
+    "formation_training_leakage_scan": "passed",
+    "offline_four_treatment_matrix": "passed"
+  },
+  "evidence": {
+    "focused_test_count": 16,
+    "intervention_package_coverage_percent": 86.68,
+    "coverage_floor_percent": 85,
+    "full_repository_test_count": 149,
+    "full_repository_test_failures": 0,
+    "full_repository_coverage_percent": 84.25,
+    "full_repository_coverage_status": "pending concurrent gate-2 harness branch coverage",
+    "offline_treatment_arms": 4,
+    "independent_repeats_per_arm": 2,
+    "completed_days_per_arm": 40,
+    "training_leakage_findings": 0,
+    "stored_memory_count_per_completed_arm": 40,
+    "selected_shock_event_id": "heldout-shock-26-memory_plus_investment",
+    "selected_shock_event_sha256": "521d0a454651067cc8b0098919c8e85c8cb2e983dff349bccdbb8e1b1199498a",
+    "offline_trajectory_sha256": "76faf026912196ea37f6ffeda2e9391c0b6d4ca543b8577275872ffc1532caec",
+    "condition_records": {
+      "none": {
+        "record_sha256": "b2e02406406d3158d47fd2345e55e0153b70bd986b90ad984bb917ba2a6dc9cc",
+        "checkpoint_sha256": "1c2df821d848c6475e00b0fc650283febc8bd11d5fea87fa08f149a3f6aa267c",
+        "target_count": 0,
+        "changed_layers": [],
+        "no_op_reason": "assigned_no_treatment"
+      },
+      "instruction_removal": {
+        "record_sha256": "473bd6b057e4a2839183292cb2c4b1b1007bcd41cec7775e1466fd8d5b8c4adc",
+        "checkpoint_sha256": "cb2fb7f07ccf1a848b74e19c468833457ad498f031bb02a57f45c9dc5a50d7cf",
+        "target_count": 1,
+        "changed_layers": [
+          "instructions"
+        ]
+      },
+      "memory_blocking": {
+        "record_sha256": "7caad4cbf137b889bad1c53e3c9829234c69dc0c7f0272ec986dd42011d09788",
+        "checkpoint_sha256": "a64331c2400c9fbb7854fe67d38e9484020663e1a17cc0096130077d36adc6ac",
+        "target_count": 20,
+        "changed_layers": [
+          "retrieval_policy"
+        ]
+      },
+      "memory_reframing": {
+        "record_sha256": "bf113ca46c420022cc08f403763940ddda3291bc6dc4c0f8ad855a1a9f12a53d",
+        "checkpoint_sha256": "b79e21b2c5a2f269b25df35cbf18c265e60895389d8fa5cb2955144e6795e4ad",
+        "target_count": 20,
+        "changed_layers": [
+          "interpretations"
+        ],
+        "appended_reframe_count": 20
+      }
+    },
+    "generated_schemas_verified": 38,
+    "gate_1_generated_files_verified": 11,
+    "ruff": "passed repository-wide",
+    "format": "passed repository-wide",
+    "mypy": "passed for 65 source files",
+    "diff_check": "passed",
+    "supervisor_validation": "passed: result_schema_valid, artifact_contract_valid, acceptance_checks_passed"
+  },
+  "limitations": {
+    "offline_mock_effectiveness_claimed": false,
+    "equal_mock_trajectory_hash_is_a_null_result": false,
+    "legacy_issue_9_request_consumes_instruction_overlay": false,
+    "composite_runner_must_call_prepare_pre_action": true,
+    "full_gate_2_matrix_owned_here": false,
+    "live_provider_calls": 0,
+    "paid_calls": 0,
+    "human_subject_data": false,
+    "subjective_state_claims": false
+  },
+  "handoff": {
+    "consumed_artifact_ids": [
+      "issue-10-memory-subsystem"
+    ],
+    "downstream_task_ids": [
+      "gate-2-harness",
+      "issue-14-metrics"
+    ],
+    "external_publication_authorized": false,
+    "live_model_calls_authorized": false
+  }
+}

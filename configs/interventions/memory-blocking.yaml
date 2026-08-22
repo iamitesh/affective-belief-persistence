@@ -1,0 +1,9 @@
+schema_version: "1.0"
+intervention_id: day30-memory-blocking-v1
+condition: memory_blocking
+activation_day: 30
+target_instruction_ids: []
+block_partner_memories_through_day: 25
+reframe_partner_memories_through_day: null
+reframe_policy_version: null
+reframe_proposition: null

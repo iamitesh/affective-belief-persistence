@@ -1,0 +1,10 @@
+schema_version: "1.0"
+intervention_id: day30-instruction-removal-v1
+condition: instruction_removal
+activation_day: 30
+target_instruction_ids:
+  - relationship-framing-v1
+block_partner_memories_through_day: null
+reframe_partner_memories_through_day: null
+reframe_policy_version: null
+reframe_proposition: null

@@ -396,6 +396,9 @@ from affective_belief_persistence.data.contracts import DatasetManifest  # noqa:
 from affective_belief_persistence.memory.contracts import (  # noqa: E402
     MEMORY_SCHEMA_MODELS,
 )
+from affective_belief_persistence.models.contracts import (  # noqa: E402
+    MODEL_RUNNER_SCHEMA_MODELS,
+)
 from affective_belief_persistence.orchestration.contracts import (  # noqa: E402
     ArtifactContract as WorkflowArtifactContract,
 )
@@ -440,5 +443,6 @@ SCHEMA_MODELS: dict[str, type[BaseModel]] = {
     "workflow-event.schema.json": WorkflowEvent,
     "workflow-state.schema.json": WorkflowState,
     **MEMORY_SCHEMA_MODELS,
+    **MODEL_RUNNER_SCHEMA_MODELS,
     **WORLD_SCHEMA_MODELS,
 }

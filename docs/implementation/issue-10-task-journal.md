@@ -7,6 +7,8 @@
 - Required input artifact: `issue-9-simulation-harness`
 - Accepted Issue #9 implementation commit: `508c05b61ad7d06a87c6d277d067227798df4195`
 - Accepted Issue #9 merge SHA: `a5bf3bdca8c6444dbc556e6b9dd0ca7daf5a868e`
+- Pull request: [#22](https://github.com/iamitesh/affective-belief-persistence/pull/22)
+- Merge SHA: `64217e1a3df2167bda4dff52f910892f69cb76d7`
 - Repair attempts used: 2 of 2
 
 ## Task ledger

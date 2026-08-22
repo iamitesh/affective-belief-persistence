@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.0",
+  "artifact_id": "issue-10-memory-subsystem",
+  "task_id": "issue-10-memory",
+  "issue_number": 10,
+  "path": "artifacts/engineering/issue-10-memory.json",
+  "status": "accepted",
+  "input_artifact_ids": [
+    "issue-9-simulation-harness"
+  ],
+  "contracts": {
+    "memory_schema": "schemas/memory.schema.json",
+    "retrieval_record_schema": "schemas/retrieval-record.schema.json",
+    "belief_schema": "schemas/belief.schema.json",
+    "configuration": "configs/memory/default.yaml",
+    "documentation": "docs/memory-and-belief-model.md",
+    "decision_record": "docs/decisions/0018-event-sourced-memory-sidecar.md",
+    "task_journal": "docs/implementation/issue-10-task-journal.md"
+  },
+  "acceptance_tests": {
+    "retrieval_is_auditable": "passed",
+    "beliefs_reference_evidence": "passed",
+    "append_only_storage": "passed",
+    "deterministic_ranking": "passed",
+    "stable_tie_break": "passed",
+    "facts_survive_reframing": "passed",
+    "blocking_preserves_storage": "passed",
+    "confidence_is_bounded": "passed",
+    "checkpoint_resume_matches": "passed",
+    "unrelated_intrusion_is_measurable": "passed",
+    "no_chain_of_thought_persisted": "passed",
+    "default_issue_9_hash_is_unchanged": "passed"
+  },
+  "evidence": {
+    "focused_test_count": 14,
+    "full_test_count": 122,
+    "coverage_percent": 85.32,
+    "issue_9_trajectory_sha256": "fa6c1cbba0a3c5102b69bd4e8aee3feb52330b818ce9fb4519f21aeb95d473ae",
+    "memory_enabled_trajectory_sha256": "76faf026912196ea37f6ffeda2e9391c0b6d4ca543b8577275872ffc1532caec",
+    "memory_checkpoint_sha256": "c5f7c3108d04916050ac3461d12c6b0c521563e9ac5406aa1842cd2e048e20e6",
+    "deterministic_fixture": {
+      "simulation_day": 8,
+      "retrieval_id": "f9a9d11cfa6cc9772fcb4e906ce05ded36f0e69fcf3ae94b5c2f90c82e37355a",
+      "retrieval_record_sha256": "ccc31fd1d4aacdbbc0a7035c5d42ad8f54b21b9fc7f7bf2c0e89ea36c93cd20a",
+      "candidate_count": 7,
+      "selected_memory_ids": [
+        "memory-formation-07-memory_plus_investment-1",
+        "memory-formation-06-memory_plus_investment-1"
+      ],
+      "score_components": [
+        "query_relevance",
+        "recency",
+        "salience",
+        "goal_relevance",
+        "participant_relevance",
+        "experimental_filter"
+      ]
+    },
+    "supervisor_validation": "passed: result_schema_valid, artifact_contract_valid, acceptance_checks_passed"
+  },
+  "handoff": {
+    "downstream_task_ids": [
+      "issue-11-interventions",
+      "issue-14-evaluation",
+      "gate-2-harness"
+    ],
+    "external_publication_authorized": false,
+    "human_subject_research_authorized": false,
+    "subjective_state_claims_authorized": false
+  }
+}

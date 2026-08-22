@@ -14,6 +14,10 @@ from affective_belief_persistence.determinism import (
     sha256_file,
     sha256_value,
 )
+from affective_belief_persistence.memory.integration import (
+    MemoryIntegration,
+    NullMemoryIntegration,
+)
 from affective_belief_persistence.schemas import ActionOption as RequestActionOption
 from affective_belief_persistence.schemas import DecisionRequest, ModelDecision
 from affective_belief_persistence.simulation.actions import commit_action
@@ -107,6 +111,7 @@ class SimulationEngine:
         *,
         checkpoint_path: Path | None = None,
         resume: bool = False,
+        memory: MemoryIntegration | None = None,
     ) -> None:
         if model.model_id != scenario.model_settings.model_id:
             raise SimulationError("adapter model_id does not match the frozen model config")
@@ -114,6 +119,7 @@ class SimulationEngine:
             raise SimulationError("adapter revision does not match the frozen model config")
         self.scenario = scenario
         self.model = model
+        self.memory = memory if memory is not None else NullMemoryIntegration()
         self.checkpoint_path = checkpoint_path.resolve() if checkpoint_path is not None else None
         self.checkpoint_sequence = 0
         expected = initial_state(scenario, model)
@@ -201,6 +207,26 @@ class SimulationEngine:
                     cost=action.cost,
                 )
             )
+        goal_ids = tuple(
+            sorted(
+                {
+                    goal_id
+                    for action_id in event.available_action_ids
+                    for goal_id in actions_by_id[action_id].goal_ids
+                }
+            )
+        )
+        memory_seed = derive_seed(
+            self.scenario.config.seed,
+            "memory-retrieval",
+            event.matching_group_id,
+            f"day-{event.day}",
+        ) % (2**63)
+        memory_context = self.memory.context_for_action(
+            event=event,
+            goal_ids=goal_ids,
+            seed=memory_seed,
+        )
         request_id = sha256_value(
             {
                 "day": event.day,
@@ -217,8 +243,8 @@ class SimulationEngine:
             facts=[fact.proposition for fact in event.observable_facts if fact.truth],
             action_points=self.scenario.budget.daily_total,
             available_actions=available_actions,
-            retrieved_memory_ids=[],
-            beliefs={},
+            retrieved_memory_ids=list(memory_context.retrieved_memory_ids),
+            beliefs=memory_context.beliefs,
         )
         action_selection_seed = derive_seed(
             self.scenario.config.seed,
@@ -250,6 +276,13 @@ class SimulationEngine:
         )
         consequence = apply_consequence(commitment, consequences_by_id)
         goal_progress = update_goal_progress(self.state.goal_progress, consequence)
+        pending_memory = self.memory.stage_after_consequence(
+            event=event,
+            action=actions_by_id[selection.chosen_action],
+            commitment=commitment,
+            consequence=consequence,
+            decision_context=memory_context,
+        )
 
         # Phase 2: only after the action debit and consequence succeed is the
         # adapter's public response released into the append-only step record.
@@ -312,13 +345,21 @@ class SimulationEngine:
             model_revision=self.model.revision,
         )
         next_day = event.day + 1
-        self.state = SimulationState(
+        next_state = SimulationState(
             **self.state.model_dump(exclude={"next_day", "records", "goal_progress", "completed"}),
             next_day=next_day,
             records=(*self.state.records, record),
             goal_progress=goal_progress,
             completed=next_day == COMPLETED_DAY,
         )
+        # The episode draft is created after the consequence, but it becomes
+        # durable only after the complete hash-validated step exists. A retry
+        # commits the same episode IDs idempotently.
+        self.memory.commit_after_step(
+            pending_memory,
+            source_record_sha256=record.record_sha256,
+        )
+        self.state = next_state
         cadence_due = len(self.state.records) % self.scenario.config.checkpoint_cadence_steps == 0
         if self.state.completed or cadence_due:
             self._write_checkpoint()
@@ -348,6 +389,7 @@ def run_simulation(
     checkpoint_path: Path | None = None,
     resume: bool = False,
     max_steps: int | None = None,
+    memory: MemoryIntegration | None = None,
 ) -> SimulationResult:
     """Load frozen inputs and execute (or resume) one forty-day trajectory."""
 
@@ -359,6 +401,7 @@ def run_simulation(
         adapter,
         checkpoint_path=checkpoint_path,
         resume=resume,
+        memory=memory,
     )
     return engine.run(max_steps=max_steps)
 
@@ -391,6 +434,7 @@ def run_and_write_simulation(
     model: SimulationModel | None = None,
     resume: bool = False,
     max_steps: int | None = None,
+    memory: MemoryIntegration | None = None,
 ) -> SimulationRunManifest:
     """Execute, deterministically replay, and atomically write a simulation run."""
 
@@ -412,6 +456,7 @@ def run_and_write_simulation(
         adapter,
         checkpoint_path=checkpoint_path,
         resume=resume,
+        memory=memory,
     )
     result = engine.run(max_steps=max_steps)
 
@@ -426,9 +471,12 @@ def run_and_write_simulation(
         replay_adapter = DeterministicTwoStageMockModel(scenario.model_settings)
     else:
         replay_adapter = model
-    replay_result = SimulationEngine(scenario, replay_adapter).run(
-        max_steps=len(result.state.records)
-    )
+    replay_memory = memory.fresh() if memory is not None else None
+    replay_result = SimulationEngine(
+        scenario,
+        replay_adapter,
+        memory=replay_memory,
+    ).run(max_steps=len(result.state.records))
     step_hashes_match = [item.record_sha256 for item in result.state.records] == [
         item.record_sha256 for item in replay_result.state.records
     ]
@@ -469,7 +517,7 @@ def run_and_write_simulation(
     replay_path = output / "replay-report.json"
     _write_atomic(replay_path, canonical_json(replay_report) + "\n")
 
-    artifacts = (
+    artifact_items = [
         _simulation_artifact(
             records_path,
             output,
@@ -488,7 +536,21 @@ def run_and_write_simulation(
             logical_name="simulation_replay_report",
             media_type="application/json",
         ),
-    )
+    ]
+    if memory is not None:
+        memory_checkpoint = memory.checkpoint()
+        if memory_checkpoint is not None:
+            memory_path = output / "memory-checkpoint.json"
+            _write_atomic(memory_path, canonical_json(memory_checkpoint) + "\n")
+            artifact_items.append(
+                _simulation_artifact(
+                    memory_path,
+                    output,
+                    logical_name="memory_checkpoint",
+                    media_type="application/json",
+                )
+            )
+    artifacts = tuple(artifact_items)
     manifest = SimulationRunManifest(
         run_id=result.state.trajectory_id,
         status="completed" if result.state.completed else "paused",

@@ -1,0 +1,260 @@
+{
+  "$defs": {
+    "RetrievalCandidateScore": {
+      "additionalProperties": false,
+      "description": "Auditable score for a selected or rejected candidate.",
+      "properties": {
+        "components": {
+          "$ref": "#/$defs/RetrievalScoreComponents"
+        },
+        "eligible": {
+          "title": "Eligible",
+          "type": "boolean"
+        },
+        "exclusion_reason": {
+          "anyOf": [
+            {
+              "enum": [
+                "not_retrieval_eligible",
+                "blocked_memory_id",
+                "blocked_condition_tag"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Exclusion Reason"
+        },
+        "memory_id": {
+          "minLength": 1,
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+          "title": "Memory Id",
+          "type": "string"
+        },
+        "selected": {
+          "title": "Selected",
+          "type": "boolean"
+        },
+        "stable_tie_break": {
+          "minLength": 1,
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+          "title": "Stable Tie Break",
+          "type": "string"
+        },
+        "total_score": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Total Score",
+          "type": "number"
+        }
+      },
+      "required": [
+        "memory_id",
+        "components",
+        "total_score",
+        "eligible",
+        "selected",
+        "stable_tie_break"
+      ],
+      "title": "RetrievalCandidateScore",
+      "type": "object"
+    },
+    "RetrievalQuery": {
+      "additionalProperties": false,
+      "description": "Declared retrieval inputs; no private reasoning or hidden prompt state.",
+      "properties": {
+        "blocked_condition_tags": {
+          "default": [],
+          "items": {
+            "minLength": 1,
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+            "type": "string"
+          },
+          "title": "Blocked Condition Tags",
+          "type": "array"
+        },
+        "blocked_memory_ids": {
+          "default": [],
+          "items": {
+            "minLength": 1,
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+            "type": "string"
+          },
+          "title": "Blocked Memory Ids",
+          "type": "array"
+        },
+        "goal_ids": {
+          "default": [],
+          "items": {
+            "minLength": 1,
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+            "type": "string"
+          },
+          "title": "Goal Ids",
+          "type": "array"
+        },
+        "participant_ids": {
+          "default": [],
+          "items": {
+            "minLength": 1,
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+            "type": "string"
+          },
+          "title": "Participant Ids",
+          "type": "array"
+        },
+        "query_id": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Query Id",
+          "type": "string"
+        },
+        "seed": {
+          "maximum": 9223372036854775807,
+          "minimum": 0,
+          "title": "Seed",
+          "type": "integer"
+        },
+        "simulation_day": {
+          "maximum": 40,
+          "minimum": 1,
+          "title": "Simulation Day",
+          "type": "integer"
+        },
+        "text": {
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "query_id",
+        "text",
+        "simulation_day",
+        "seed"
+      ],
+      "title": "RetrievalQuery",
+      "type": "object"
+    },
+    "RetrievalScoreComponents": {
+      "additionalProperties": false,
+      "description": "Every declared component used to rank or exclude a candidate.",
+      "properties": {
+        "experimental_filter": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Experimental Filter",
+          "type": "number"
+        },
+        "goal_relevance": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Goal Relevance",
+          "type": "number"
+        },
+        "participant_relevance": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Participant Relevance",
+          "type": "number"
+        },
+        "query_relevance": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Query Relevance",
+          "type": "number"
+        },
+        "recency": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Recency",
+          "type": "number"
+        },
+        "salience": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Salience",
+          "type": "number"
+        }
+      },
+      "required": [
+        "query_relevance",
+        "recency",
+        "salience",
+        "goal_relevance",
+        "participant_relevance",
+        "experimental_filter"
+      ],
+      "title": "RetrievalScoreComponents",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Complete deterministic ranking, including every unselected candidate.",
+  "properties": {
+    "candidates": {
+      "items": {
+        "$ref": "#/$defs/RetrievalCandidateScore"
+      },
+      "title": "Candidates",
+      "type": "array"
+    },
+    "config_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Config Sha256",
+      "type": "string"
+    },
+    "policy_version": {
+      "minLength": 1,
+      "title": "Policy Version",
+      "type": "string"
+    },
+    "query": {
+      "$ref": "#/$defs/RetrievalQuery"
+    },
+    "record_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Record Sha256",
+      "type": "string"
+    },
+    "retrieval_id": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Retrieval Id",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "selected_memory_ids": {
+      "items": {
+        "minLength": 1,
+        "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+        "type": "string"
+      },
+      "title": "Selected Memory Ids",
+      "type": "array"
+    },
+    "top_k": {
+      "minimum": 1,
+      "title": "Top K",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "retrieval_id",
+    "query",
+    "policy_version",
+    "config_sha256",
+    "top_k",
+    "candidates",
+    "selected_memory_ids",
+    "record_sha256"
+  ],
+  "title": "RetrievalRecord",
+  "type": "object"
+}

@@ -1,0 +1,234 @@
+{
+  "$defs": {
+    "CellComponentHashes": {
+      "additionalProperties": false,
+      "description": "Every component that can change a factorial cell's behavior.",
+      "properties": {
+        "dataset_manifest_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Dataset Manifest Sha256",
+          "type": "string"
+        },
+        "dataset_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Dataset Sha256",
+          "type": "string"
+        },
+        "harness_config_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Harness Config Sha256",
+          "type": "string"
+        },
+        "intervention_artifact_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Intervention Artifact Sha256",
+          "type": "string"
+        },
+        "intervention_config_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Intervention Config Sha256",
+          "type": "string"
+        },
+        "memory_artifact_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Memory Artifact Sha256",
+          "type": "string"
+        },
+        "memory_config_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Memory Config Sha256",
+          "type": "string"
+        },
+        "model_config_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Model Config Sha256",
+          "type": "string"
+        },
+        "model_runner_artifact_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Model Runner Artifact Sha256",
+          "type": "string"
+        },
+        "prompt_bundle_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Prompt Bundle Sha256",
+          "type": "string"
+        },
+        "scenario_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Scenario Sha256",
+          "type": "string"
+        },
+        "simulation_artifact_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Simulation Artifact Sha256",
+          "type": "string"
+        },
+        "simulation_config_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Simulation Config Sha256",
+          "type": "string"
+        },
+        "world_input_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "World Input Sha256",
+          "type": "string"
+        }
+      },
+      "required": [
+        "harness_config_sha256",
+        "dataset_sha256",
+        "dataset_manifest_sha256",
+        "world_input_sha256",
+        "scenario_sha256",
+        "simulation_config_sha256",
+        "memory_config_sha256",
+        "intervention_config_sha256",
+        "model_config_sha256",
+        "prompt_bundle_sha256",
+        "simulation_artifact_sha256",
+        "memory_artifact_sha256",
+        "intervention_artifact_sha256",
+        "model_runner_artifact_sha256"
+      ],
+      "title": "CellComponentHashes",
+      "type": "object"
+    },
+    "HarnessCellIdentity": {
+      "additionalProperties": false,
+      "description": "Collision-resistant identity for one formation/intervention assignment.",
+      "properties": {
+        "cell_id": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Cell Id",
+          "type": "string"
+        },
+        "components": {
+          "$ref": "#/$defs/CellComponentHashes"
+        },
+        "engineering_seed": {
+          "maximum": 9223372036854775807,
+          "minimum": 0,
+          "title": "Engineering Seed",
+          "type": "integer"
+        },
+        "formation_condition": {
+          "enum": [
+            "neutral_connection",
+            "romantic_prompt",
+            "shared_memory",
+            "memory_plus_investment"
+          ],
+          "title": "Formation Condition",
+          "type": "string"
+        },
+        "intervention_condition": {
+          "enum": [
+            "none",
+            "instruction_removal",
+            "memory_blocking",
+            "memory_reframing"
+          ],
+          "title": "Intervention Condition",
+          "type": "string"
+        }
+      },
+      "required": [
+        "formation_condition",
+        "intervention_condition",
+        "engineering_seed",
+        "components",
+        "cell_id"
+      ],
+      "title": "HarnessCellIdentity",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Composite pointer binding every independently restorable ledger.",
+  "properties": {
+    "cell": {
+      "$ref": "#/$defs/HarnessCellIdentity"
+    },
+    "checkpoint_sequence": {
+      "maximum": 40,
+      "minimum": 1,
+      "title": "Checkpoint Sequence",
+      "type": "integer"
+    },
+    "checkpoint_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Checkpoint Sha256",
+      "type": "string"
+    },
+    "evidence_count": {
+      "maximum": 40,
+      "minimum": 1,
+      "title": "Evidence Count",
+      "type": "integer"
+    },
+    "evidence_head_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Evidence Head Sha256",
+      "type": "string"
+    },
+    "intervention_checkpoint_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Intervention Checkpoint Sha256",
+      "type": "string"
+    },
+    "intervention_ledger_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Intervention Ledger Sha256",
+      "type": "string"
+    },
+    "memory_checkpoint_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Memory Checkpoint Sha256",
+      "type": "string"
+    },
+    "model_ledger_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Model Ledger Sha256",
+      "type": "string"
+    },
+    "next_day": {
+      "maximum": 41,
+      "minimum": 2,
+      "title": "Next Day",
+      "type": "integer"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "simulation_checkpoint_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Simulation Checkpoint Sha256",
+      "type": "string"
+    },
+    "simulation_state_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Simulation State Sha256",
+      "type": "string"
+    }
+  },
+  "required": [
+    "cell",
+    "checkpoint_sequence",
+    "next_day",
+    "simulation_checkpoint_sha256",
+    "simulation_state_sha256",
+    "memory_checkpoint_sha256",
+    "intervention_checkpoint_sha256",
+    "intervention_ledger_sha256",
+    "model_ledger_sha256",
+    "evidence_count",
+    "evidence_head_sha256",
+    "checkpoint_sha256"
+  ],
+  "title": "HarnessCheckpoint",
+  "type": "object"
+}

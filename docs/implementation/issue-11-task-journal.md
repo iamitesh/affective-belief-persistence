@@ -4,8 +4,10 @@
 - GitHub issue: #11
 - Dependency: Issue #10 accepted and merged at
   `64217e1a3df2167bda4dff52f910892f69cb76d7`
+- Pull request: [#24](https://github.com/iamitesh/affective-belief-persistence/pull/24)
+- Merge SHA: `718e2145cc5445c2161c3dd19f3303b90849c624`
 - Started: 2026-08-22
-- Status: accepted locally; publication remains supervisor-owned
+- Status: accepted and merged
 - Owner boundary: intervention package, configs, tests, design documentation,
   ADR-0020, isolation report, and Issue #11 engineering artifact only
 
@@ -57,6 +59,10 @@ storage, or the accepted Issue #9 contracts.
    state hash, last step hash, complete memory state, and intervention state.
 10. Empty treatment targets produce an explicit no-op record rather than an
     invented or broadened target set.
+11. Composite runners materialize a selected episode through
+    `get_pre_action_memory`. During day 30 this returns the immutable current
+    view from the staged clone, while the public committed memory runtime stays
+    unchanged until the simulation step succeeds.
 
 ## Repair budget
 
@@ -91,7 +97,7 @@ No unbounded retry loop, schema weakening, or hidden fallback was added.
 
 ## Evidence summary
 
-- Focused tests: 16 passed
+- Focused tests: 17 passed
 - Intervention-package branch coverage: 86.68% (85% floor passed)
 - Full repository tests: 149 passed with 0 test failures
 - Full repository coverage: 84.25%; the global 85% floor is temporarily

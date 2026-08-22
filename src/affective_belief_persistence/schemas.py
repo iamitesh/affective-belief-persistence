@@ -393,6 +393,9 @@ class RunManifest(StrictModel):
 
 
 from affective_belief_persistence.data.contracts import DatasetManifest  # noqa: E402
+from affective_belief_persistence.harness.contracts import (  # noqa: E402
+    HARNESS_SCHEMA_MODELS,
+)
 from affective_belief_persistence.interventions.contracts import (  # noqa: E402
     INTERVENTION_SCHEMA_MODELS,
 )
@@ -445,6 +448,7 @@ SCHEMA_MODELS: dict[str, type[BaseModel]] = {
     "workflow-definition.schema.json": WorkflowDefinition,
     "workflow-event.schema.json": WorkflowEvent,
     "workflow-state.schema.json": WorkflowState,
+    **HARNESS_SCHEMA_MODELS,
     **INTERVENTION_SCHEMA_MODELS,
     **MEMORY_SCHEMA_MODELS,
     **MODEL_RUNNER_SCHEMA_MODELS,

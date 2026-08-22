@@ -110,6 +110,7 @@ silently paired with a different simulation checkpoint.
 - `InterventionRuntime.context_for_action`
 - `InterventionRuntime.prepare_pre_action`
 - `InterventionRuntime.pre_action_overlay`
+- `InterventionRuntime.get_pre_action_memory`
 - `InterventionRuntime.overlay_model_input`
 - `InterventionRuntime.activate`
 - `InterventionRuntime.abort_pending_step`

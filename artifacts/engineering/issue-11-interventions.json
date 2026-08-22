@@ -45,11 +45,12 @@
     "records_are_hash_protected_and_idempotent": "passed",
     "checkpoint_binds_simulation_memory_and_intervention": "passed",
     "assignment_metadata_is_not_model_visible": "passed",
+    "staged_memory_is_materializable_before_action": "passed",
     "formation_training_leakage_scan": "passed",
     "offline_four_treatment_matrix": "passed"
   },
   "evidence": {
-    "focused_test_count": 16,
+    "focused_test_count": 17,
     "intervention_package_coverage_percent": 86.68,
     "coverage_floor_percent": 85,
     "full_repository_test_count": 149,

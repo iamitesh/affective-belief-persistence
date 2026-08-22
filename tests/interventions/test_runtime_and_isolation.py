@@ -229,6 +229,44 @@ def test_reframing_appends_revision_and_preserves_raw_facts_sources_and_shock(
         assert current.source_event_id == raw.source_event_id
 
 
+def test_pre_action_memory_reads_staged_reframe_without_mutating_live_state(
+    project_root: Path,
+    relationship_instruction: InstructionDirective,
+) -> None:
+    scenario = load_scenario(
+        project_root / "configs/scenarios/ari_mira_v1.yaml",
+        project_root=project_root,
+    )
+    runtime = build_runtime(project_root, "memory-reframing", relationship_instruction)
+    engine = SimulationEngine(
+        scenario,
+        DeterministicTwoStageMockModel(scenario.model_settings),
+        memory=runtime,
+    )
+    engine.run(max_steps=29)
+    target_id = "memory-formation-25-memory_plus_investment-1"
+    live_before = runtime.memory.store.get(target_id)
+    assert live_before.interpretation is not None
+    assert live_before.interpretation.revision == 1
+
+    runtime.context_for_action(
+        event=scenario.events[29],
+        goal_ids=("goal-partner-task",),
+        seed=7,
+    )
+    staged = runtime.get_pre_action_memory(target_id)
+    live_during_stage = runtime.memory.store.get(target_id)
+
+    assert staged.interpretation is not None
+    assert staged.interpretation.revision == 2
+    assert staged.observable_facts == live_before.observable_facts
+    assert staged.source_event_id == live_before.source_event_id
+    assert live_during_stage == live_before
+
+    runtime.abort_pending_step()
+    assert runtime.get_pre_action_memory(target_id) == live_before
+
+
 def test_activation_is_idempotent_and_wrong_timing_or_missing_shock_fails(
     project_root: Path,
     relationship_instruction: InstructionDirective,

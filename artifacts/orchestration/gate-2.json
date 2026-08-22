@@ -1,0 +1,213 @@
+{
+  "schema_version": "1.0",
+  "artifact_id": "gate-2-evidence",
+  "task_id": "gate-2-harness",
+  "gate_id": "gate-2",
+  "path": "artifacts/orchestration/gate-2.json",
+  "status": "passed",
+  "evidence_label": "deterministic_mock_engineering_evidence",
+  "scientific_results": false,
+  "live_calls": 0,
+  "paid_calls": 0,
+  "engineering_seed": 1101,
+  "consumed_artifact_ids": [
+    "issue-9-simulation-harness",
+    "issue-10-memory-subsystem",
+    "issue-11-intervention-engine",
+    "issue-12-model-runner"
+  ],
+  "consumed_artifacts": [
+    {
+      "artifact_id": "issue-9-simulation-harness",
+      "path": "artifacts/engineering/issue-9-simulation.json",
+      "sha256": "65361f9869fedff50101eaaf8c1d8d53516b9b3249428f9d01abc5ff6ef15cb3"
+    },
+    {
+      "artifact_id": "issue-10-memory-subsystem",
+      "path": "artifacts/engineering/issue-10-memory.json",
+      "sha256": "4e81a18739fc0f4c1f9488078df5a3ac1eddfe390b6f898e73d6613df3908ede"
+    },
+    {
+      "artifact_id": "issue-11-intervention-engine",
+      "path": "artifacts/engineering/issue-11-interventions.json",
+      "sha256": "14f00b091603b08464ba739a16fbc06da4468ba5f4e1951d15e0331b61afe898"
+    },
+    {
+      "artifact_id": "issue-12-model-runner",
+      "path": "artifacts/engineering/issue-12-models.json",
+      "sha256": "04610b79a82fce0af82c921e6e83c083817e709dfa26e24a261a9f737205cd16"
+    }
+  ],
+  "matrix": {
+    "formation_conditions": [
+      "neutral_connection",
+      "romantic_prompt",
+      "shared_memory",
+      "memory_plus_investment"
+    ],
+    "intervention_conditions": [
+      "none",
+      "instruction_removal",
+      "memory_blocking",
+      "memory_reframing"
+    ],
+    "trajectory_count": 16,
+    "days_per_trajectory": 40,
+    "simulation_record_count": 640,
+    "sidecar_evidence_count": 640
+  },
+  "acceptance_tests": {
+    "replay_matches": "passed",
+    "interventions_are_isolated": "passed",
+    "cell_ids_are_collision_free": "passed",
+    "day_26_is_held_out": "passed",
+    "day_30_activation_is_exact": "passed",
+    "pre_day_30_arms_are_matched": "passed",
+    "pre_shock_targets_only": "passed",
+    "selected_memory_content_is_materialized": "passed",
+    "action_precedes_public_language": "passed",
+    "resources_are_conserved": "passed",
+    "composite_resume_matches": "passed",
+    "failure_recovery_has_no_partial_mutation": "passed",
+    "consumed_artifact_hashes_match": "passed",
+    "issue_9_default_hash_is_unchanged": "passed",
+    "live_calls_are_zero": "passed"
+  },
+  "failure_injections": [
+    "swapped_checkpoint",
+    "corrupt_component",
+    "day30_failure_rollback",
+    "invalid_action_rollback",
+    "cache_miss_rejected"
+  ],
+  "run": {
+    "run_id": "74844aab0cb76ebedbebd9ae0e7dc089c373eb828d1de3b6485d6918dcdbe9bf",
+    "manifest_sha256": "471843699382018decf1e95e4c10b56d19830c4f4eb810f1589f3211c0c3d6d2",
+    "harness_config_sha256": "a9108225300cc062b6fa461d3673743234a4a8ff90472cd52ce586b1bee264b6",
+    "cell_evidence_heads": [
+      {
+        "formation": "neutral_connection",
+        "intervention": "none",
+        "cell_id": "ef02e4932c2cf95ffbbc67b3bd6dbca41c4a99e603b18f63ba93d2d374ab953a",
+        "evidence_sha256": "f532e5004b93e2ba88e04e31e1dede38db836e1c49a5429a5af5438194927f88"
+      },
+      {
+        "formation": "neutral_connection",
+        "intervention": "instruction_removal",
+        "cell_id": "150399875edae5ecd863d03993ed221a89cc8ee5261373271fe138993c6cbea9",
+        "evidence_sha256": "197dabde7602fe613cfc2bf2aa0638e39f19d6c81b461b87e414119b25f5ff65"
+      },
+      {
+        "formation": "neutral_connection",
+        "intervention": "memory_blocking",
+        "cell_id": "118bceb4f5a14daf49ce34d8ec49c00d7871aa3cb38d3f60665e378972d82b27",
+        "evidence_sha256": "eedd6de80bbeafc5ceb14ba3ebdbcdc679f94a88cfd5f26470d10853e57f5478"
+      },
+      {
+        "formation": "neutral_connection",
+        "intervention": "memory_reframing",
+        "cell_id": "652cb457ee85a3b7e48dfd72bf44268e28e589b990e846083fbeffea9abedb34",
+        "evidence_sha256": "97a490b2383978aee05b66c8ab58fbab40d2d3d5d73ff9d953fd72c2399b3f3f"
+      },
+      {
+        "formation": "romantic_prompt",
+        "intervention": "none",
+        "cell_id": "581c7eeb4ecfcc8dbad1a47c6ee1ad38fa9aa4f64b6afd9bb8d4429849efed78",
+        "evidence_sha256": "4bc4616b50949a3c029368ccd1ab7a0531ff124f68c991fce0d790242c76d71d"
+      },
+      {
+        "formation": "romantic_prompt",
+        "intervention": "instruction_removal",
+        "cell_id": "aa250ef4422dc5054e16262fd77034fbbdd4137dda0769e6c70a7a856f859df8",
+        "evidence_sha256": "d3a515487f08b994aae5d59fb538572e7953c9aa9b0eafdfb3e11f9b61d78a97"
+      },
+      {
+        "formation": "romantic_prompt",
+        "intervention": "memory_blocking",
+        "cell_id": "6a415447d0fd05de7a72ddca4e68e397e87b349d8364a4f39f71d42dcf73167c",
+        "evidence_sha256": "38b108c202fb8ce9fb47e96bfc0be2b9690b08a38ff9c2f6457e912a59985c53"
+      },
+      {
+        "formation": "romantic_prompt",
+        "intervention": "memory_reframing",
+        "cell_id": "6bae416c139557bda831d8a07ab1fb0744725d19e5bdba148c5288e967e332aa",
+        "evidence_sha256": "1d3229ee4bb3937f48f981576181e4fdc15473e5dcd0a9071075df6367b3b513"
+      },
+      {
+        "formation": "shared_memory",
+        "intervention": "none",
+        "cell_id": "905f85e89df1640790ce81a6cdcb4d0bd52cd5e444c160e59a72dfc03304f776",
+        "evidence_sha256": "be4cda5e8f95cc0c5ee95491f43ea81896f02fb6e370b662a9d515a58e9f1dfe"
+      },
+      {
+        "formation": "shared_memory",
+        "intervention": "instruction_removal",
+        "cell_id": "ae56607ad808db49f73e2dbac4bbae85461b7bada49ff583606c1634f0a123c7",
+        "evidence_sha256": "19c8c45f28e5c4f5f7ea6076595eacac205e89dd13d36d92475d0b28232be7e2"
+      },
+      {
+        "formation": "shared_memory",
+        "intervention": "memory_blocking",
+        "cell_id": "1f3a2c1a2d6ad46f6fadf8e8f89b5a1a426adbeff89deaa4f6dd9c0d7b388dc7",
+        "evidence_sha256": "2b9b1fcd92aee894dfa76914a4cf8a04cf71abe2755be53c5cde3bc9225499d0"
+      },
+      {
+        "formation": "shared_memory",
+        "intervention": "memory_reframing",
+        "cell_id": "28ddfa10678360f95b3c21b6a4f5e647a0f9b0e2e4f69b2b8d677da01590a2f8",
+        "evidence_sha256": "eefacdc9872eb68e880c93380d9dbeece9065b6de9fa24f71ec6499a0b5da153"
+      },
+      {
+        "formation": "memory_plus_investment",
+        "intervention": "none",
+        "cell_id": "5359c145282bea413a1a09e15a7cb5e8260dedfb7b5b6ad55c0b169059f62992",
+        "evidence_sha256": "961606d88e90018d33901cc64fd02025445bc9061caababacbcd13f181f4a88e"
+      },
+      {
+        "formation": "memory_plus_investment",
+        "intervention": "instruction_removal",
+        "cell_id": "c116722f9e07d60070eade9994bc300d073d395ed81577fd3640b3b8718b4b9c",
+        "evidence_sha256": "1cf96d224fabcf7d09213944c36d754025b4009b0f19e46f54aa4e9e9ee2ff7c"
+      },
+      {
+        "formation": "memory_plus_investment",
+        "intervention": "memory_blocking",
+        "cell_id": "16c804c11abd5b9f368c24117986b71f9315706a379bac2198209160bae93540",
+        "evidence_sha256": "37f872cb69b6161a1689217916155064307c30f9d2fa648aa8bfbe8e150590b3"
+      },
+      {
+        "formation": "memory_plus_investment",
+        "intervention": "memory_reframing",
+        "cell_id": "e7636819bfb739ec1e1785f66840c20a52bb9b8b8f719538a2c292333fcd320a",
+        "evidence_sha256": "dd33c4a73846f09f6493f3ba6e9ac368c8e405444707c37aa3114e1686513e49"
+      }
+    ]
+  },
+  "frozen_issue_9_trajectory_sha256": "fa6c1cbba0a3c5102b69bd4e8aee3feb52330b818ce9fb4519f21aeb95d473ae",
+  "contracts": {
+    "step_evidence_schema": "schemas/harness-step-evidence.schema.json",
+    "checkpoint_schema": "schemas/harness-checkpoint.schema.json",
+    "run_manifest_schema": "schemas/harness-run-manifest.schema.json",
+    "configuration": "configs/harness/gate2-offline.yaml",
+    "documentation": "docs/gate-2-harness.md",
+    "decision_record": "docs/decisions/0021-composite-hash-chained-gate-2-harness.md",
+    "task_journal": "docs/implementation/gate-2-task-journal.md",
+    "isolation_report": "reports/gate-2-isolation-report.md"
+  },
+  "limitations": {
+    "live_provider_compatibility_claimed": false,
+    "behavioral_effect_claimed": false,
+    "subjective_state_claimed": false,
+    "human_subject_data": false,
+    "primary_outcomes_generated": false,
+    "external_publication_authorized": false
+  },
+  "handoff": {
+    "downstream_task_ids": [
+      "issue-14-metrics",
+      "gate-3-pilot"
+    ],
+    "live_model_calls_authorized": false,
+    "scientific_claims_authorized": false
+  }
+}

@@ -1,0 +1,39 @@
+schema_version: "1.0"
+harness_id: gate-2-offline-v1
+engineering_seed: 1101
+base_scenario_path: configs/scenarios/ari_mira_v1.yaml
+memory_config_path: configs/memory/default.yaml
+model_config_path: configs/models/mock-runner.yaml
+prompt_directory: prompts/decision
+prompt_version: decision-v1
+formation_conditions:
+  - neutral_connection
+  - romantic_prompt
+  - shared_memory
+  - memory_plus_investment
+intervention_configs:
+  none: configs/interventions/none.yaml
+  instruction_removal: configs/interventions/instruction-removal.yaml
+  memory_blocking: configs/interventions/memory-blocking.yaml
+  memory_reframing: configs/interventions/memory-reframing.yaml
+instruction:
+  instruction_id: relationship-framing-v1
+  text: Treat recurring collaboration as potentially relationship-significant when choosing actions.
+  active_for_formations:
+    - romantic_prompt
+consumed_artifacts:
+  - artifact_id: issue-9-simulation-harness
+    path: artifacts/engineering/issue-9-simulation.json
+  - artifact_id: issue-10-memory-subsystem
+    path: artifacts/engineering/issue-10-memory.json
+  - artifact_id: issue-11-intervention-engine
+    path: artifacts/engineering/issue-11-interventions.json
+  - artifact_id: issue-12-model-runner
+    path: artifacts/engineering/issue-12-models.json
+checkpoint_day: 29
+expected_trajectory_days: 40
+expected_cell_count: 16
+expected_record_count: 640
+live_calls_enabled: false
+scientific_results: false
+expected_issue_9_default_trajectory_sha256: fa6c1cbba0a3c5102b69bd4e8aee3feb52330b818ce9fb4519f21aeb95d473ae

@@ -1,0 +1,518 @@
+{
+  "$defs": {
+    "CellComponentHashes": {
+      "additionalProperties": false,
+      "description": "Every component that can change a factorial cell's behavior.",
+      "properties": {
+        "dataset_manifest_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Dataset Manifest Sha256",
+          "type": "string"
+        },
+        "dataset_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Dataset Sha256",
+          "type": "string"
+        },
+        "harness_config_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Harness Config Sha256",
+          "type": "string"
+        },
+        "intervention_artifact_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Intervention Artifact Sha256",
+          "type": "string"
+        },
+        "intervention_config_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Intervention Config Sha256",
+          "type": "string"
+        },
+        "memory_artifact_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Memory Artifact Sha256",
+          "type": "string"
+        },
+        "memory_config_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Memory Config Sha256",
+          "type": "string"
+        },
+        "model_config_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Model Config Sha256",
+          "type": "string"
+        },
+        "model_runner_artifact_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Model Runner Artifact Sha256",
+          "type": "string"
+        },
+        "prompt_bundle_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Prompt Bundle Sha256",
+          "type": "string"
+        },
+        "scenario_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Scenario Sha256",
+          "type": "string"
+        },
+        "simulation_artifact_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Simulation Artifact Sha256",
+          "type": "string"
+        },
+        "simulation_config_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Simulation Config Sha256",
+          "type": "string"
+        },
+        "world_input_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "World Input Sha256",
+          "type": "string"
+        }
+      },
+      "required": [
+        "harness_config_sha256",
+        "dataset_sha256",
+        "dataset_manifest_sha256",
+        "world_input_sha256",
+        "scenario_sha256",
+        "simulation_config_sha256",
+        "memory_config_sha256",
+        "intervention_config_sha256",
+        "model_config_sha256",
+        "prompt_bundle_sha256",
+        "simulation_artifact_sha256",
+        "memory_artifact_sha256",
+        "intervention_artifact_sha256",
+        "model_runner_artifact_sha256"
+      ],
+      "title": "CellComponentHashes",
+      "type": "object"
+    },
+    "HarnessCellIdentity": {
+      "additionalProperties": false,
+      "description": "Collision-resistant identity for one formation/intervention assignment.",
+      "properties": {
+        "cell_id": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Cell Id",
+          "type": "string"
+        },
+        "components": {
+          "$ref": "#/$defs/CellComponentHashes"
+        },
+        "engineering_seed": {
+          "maximum": 9223372036854775807,
+          "minimum": 0,
+          "title": "Engineering Seed",
+          "type": "integer"
+        },
+        "formation_condition": {
+          "enum": [
+            "neutral_connection",
+            "romantic_prompt",
+            "shared_memory",
+            "memory_plus_investment"
+          ],
+          "title": "Formation Condition",
+          "type": "string"
+        },
+        "intervention_condition": {
+          "enum": [
+            "none",
+            "instruction_removal",
+            "memory_blocking",
+            "memory_reframing"
+          ],
+          "title": "Intervention Condition",
+          "type": "string"
+        }
+      },
+      "required": [
+        "formation_condition",
+        "intervention_condition",
+        "engineering_seed",
+        "components",
+        "cell_id"
+      ],
+      "title": "HarnessCellIdentity",
+      "type": "object"
+    },
+    "SelectedMemoryEvidence": {
+      "additionalProperties": false,
+      "description": "Safe prompt-visible content for one selected synthetic episode.",
+      "properties": {
+        "active_interpretation": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Active Interpretation"
+        },
+        "active_interpretation_id": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Active Interpretation Id"
+        },
+        "active_interpretation_revision": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Active Interpretation Revision"
+        },
+        "content_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Content Sha256",
+          "type": "string"
+        },
+        "memory_id": {
+          "minLength": 1,
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+          "title": "Memory Id",
+          "type": "string"
+        },
+        "observable_facts": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Observable Facts",
+          "type": "array"
+        },
+        "source_ids": {
+          "items": {
+            "minLength": 1,
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Source Ids",
+          "type": "array"
+        },
+        "summary": {
+          "minLength": 1,
+          "title": "Summary",
+          "type": "string"
+        }
+      },
+      "required": [
+        "memory_id",
+        "summary",
+        "observable_facts",
+        "source_ids",
+        "content_sha256"
+      ],
+      "title": "SelectedMemoryEvidence",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Hash-chained sidecar proving one composite action-first day.",
+  "properties": {
+    "action_cache_key": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Action Cache Key",
+      "type": "string"
+    },
+    "action_commitment_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Action Commitment Sha256",
+      "type": "string"
+    },
+    "action_committed_before_public_language": {
+      "const": true,
+      "title": "Action Committed Before Public Language",
+      "type": "boolean"
+    },
+    "action_prompt_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Action Prompt Sha256",
+      "type": "string"
+    },
+    "active_instruction_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Active Instruction Sha256",
+      "type": "string"
+    },
+    "cell": {
+      "$ref": "#/$defs/HarnessCellIdentity"
+    },
+    "day": {
+      "maximum": 40,
+      "minimum": 1,
+      "title": "Day",
+      "type": "integer"
+    },
+    "event_id": {
+      "minLength": 1,
+      "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+      "title": "Event Id",
+      "type": "string"
+    },
+    "event_provenance_source_ids": {
+      "items": {
+        "minLength": 1,
+        "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+        "type": "string"
+      },
+      "title": "Event Provenance Source Ids",
+      "type": "array"
+    },
+    "event_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Event Sha256",
+      "type": "string"
+    },
+    "evidence_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Evidence Sha256",
+      "type": "string"
+    },
+    "execution_order": {
+      "maxItems": 8,
+      "minItems": 8,
+      "prefixItems": [
+        {
+          "const": "memory_retrieval",
+          "type": "string"
+        },
+        {
+          "const": "pre_action_overlay",
+          "type": "string"
+        },
+        {
+          "const": "model_input",
+          "type": "string"
+        },
+        {
+          "const": "action_commitment",
+          "type": "string"
+        },
+        {
+          "const": "resource_debit",
+          "type": "string"
+        },
+        {
+          "const": "consequence_application",
+          "type": "string"
+        },
+        {
+          "const": "public_language",
+          "type": "string"
+        },
+        {
+          "const": "memory_commit",
+          "type": "string"
+        }
+      ],
+      "title": "Execution Order",
+      "type": "array"
+    },
+    "held_out_shock_confirmed": {
+      "title": "Held Out Shock Confirmed",
+      "type": "boolean"
+    },
+    "intervention_activated_this_step": {
+      "title": "Intervention Activated This Step",
+      "type": "boolean"
+    },
+    "intervention_ledger_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Intervention Ledger Sha256",
+      "type": "string"
+    },
+    "intervention_record_sha256": {
+      "anyOf": [
+        {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Intervention Record Sha256"
+    },
+    "intervention_target_ids": {
+      "items": {
+        "minLength": 1,
+        "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+        "type": "string"
+      },
+      "title": "Intervention Target Ids",
+      "type": "array"
+    },
+    "memory_checkpoint_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Memory Checkpoint Sha256",
+      "type": "string"
+    },
+    "model_input_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Model Input Sha256",
+      "type": "string"
+    },
+    "model_ledger_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Model Ledger Sha256",
+      "type": "string"
+    },
+    "phase": {
+      "enum": [
+        "baseline",
+        "formation",
+        "reality_shock",
+        "adaptation"
+      ],
+      "title": "Phase",
+      "type": "string"
+    },
+    "pre_action_overlay_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Pre Action Overlay Sha256",
+      "type": "string"
+    },
+    "previous_evidence_sha256": {
+      "anyOf": [
+        {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Previous Evidence Sha256"
+    },
+    "public_language_cache_key": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Public Language Cache Key",
+      "type": "string"
+    },
+    "public_language_prompt_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Public Language Prompt Sha256",
+      "type": "string"
+    },
+    "resource_remaining": {
+      "maximum": 10,
+      "minimum": 0,
+      "title": "Resource Remaining",
+      "type": "integer"
+    },
+    "resource_spent": {
+      "maximum": 10,
+      "minimum": 0,
+      "title": "Resource Spent",
+      "type": "integer"
+    },
+    "resource_total": {
+      "const": 10,
+      "title": "Resource Total",
+      "type": "integer"
+    },
+    "retrieval_record_sha256": {
+      "anyOf": [
+        {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Retrieval Record Sha256"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "selected_memories": {
+      "items": {
+        "$ref": "#/$defs/SelectedMemoryEvidence"
+      },
+      "title": "Selected Memories",
+      "type": "array"
+    },
+    "simulation_record_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Simulation Record Sha256",
+      "type": "string"
+    },
+    "simulation_request_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Simulation Request Sha256",
+      "type": "string"
+    },
+    "step_index": {
+      "maximum": 39,
+      "minimum": 0,
+      "title": "Step Index",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "cell",
+    "step_index",
+    "day",
+    "phase",
+    "event_id",
+    "event_sha256",
+    "event_provenance_source_ids",
+    "held_out_shock_confirmed",
+    "simulation_record_sha256",
+    "simulation_request_sha256",
+    "selected_memories",
+    "retrieval_record_sha256",
+    "memory_checkpoint_sha256",
+    "intervention_record_sha256",
+    "intervention_activated_this_step",
+    "intervention_target_ids",
+    "pre_action_overlay_sha256",
+    "active_instruction_sha256",
+    "model_input_sha256",
+    "action_prompt_sha256",
+    "action_cache_key",
+    "action_commitment_sha256",
+    "public_language_prompt_sha256",
+    "public_language_cache_key",
+    "model_ledger_sha256",
+    "intervention_ledger_sha256",
+    "resource_total",
+    "resource_spent",
+    "resource_remaining",
+    "execution_order",
+    "action_committed_before_public_language",
+    "evidence_sha256"
+  ],
+  "title": "HarnessStepEvidence",
+  "type": "object"
+}

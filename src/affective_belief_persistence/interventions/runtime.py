@@ -10,7 +10,12 @@ from pydantic import Field, model_validator
 
 from affective_belief_persistence.config import load_yaml
 from affective_belief_persistence.determinism import sha256_value
-from affective_belief_persistence.memory.contracts import MemoryInterpretation, MemoryModel, Sha256
+from affective_belief_persistence.memory.contracts import (
+    Memory,
+    MemoryInterpretation,
+    MemoryModel,
+    Sha256,
+)
 from affective_belief_persistence.memory.integration import (
     DecisionMemoryContext,
     MemoryRuntime,
@@ -423,6 +428,22 @@ class InterventionRuntime:
             ),
             record_sha256=(record.record_sha256 if record is not None else None),
         )
+
+    def get_pre_action_memory(self, memory_id: str) -> Memory:
+        """Return an immutable memory view from the state used for this action.
+
+        During the day-30 transaction this reads the isolated staged clone, so
+        a composite runner can serialize a reframed interpretation before the
+        treatment is committed. The live memory runtime remains unchanged until
+        ``commit_after_step`` succeeds.
+        """
+
+        source = (
+            self._pending_activation.staged_memory
+            if self._pending_activation is not None
+            else self.memory
+        )
+        return source.store.get(memory_id)
 
     def overlay_model_input(self, model_input: ModelInput) -> ModelInput:
         """Bind the active directive text into Issue #12's serialized model input."""

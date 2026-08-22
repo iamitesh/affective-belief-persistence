@@ -1,0 +1,453 @@
+{
+  "$defs": {
+    "CellComponentHashes": {
+      "additionalProperties": false,
+      "description": "Every component that can change a factorial cell's behavior.",
+      "properties": {
+        "dataset_manifest_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Dataset Manifest Sha256",
+          "type": "string"
+        },
+        "dataset_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Dataset Sha256",
+          "type": "string"
+        },
+        "harness_config_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Harness Config Sha256",
+          "type": "string"
+        },
+        "intervention_artifact_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Intervention Artifact Sha256",
+          "type": "string"
+        },
+        "intervention_config_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Intervention Config Sha256",
+          "type": "string"
+        },
+        "memory_artifact_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Memory Artifact Sha256",
+          "type": "string"
+        },
+        "memory_config_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Memory Config Sha256",
+          "type": "string"
+        },
+        "model_config_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Model Config Sha256",
+          "type": "string"
+        },
+        "model_runner_artifact_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Model Runner Artifact Sha256",
+          "type": "string"
+        },
+        "prompt_bundle_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Prompt Bundle Sha256",
+          "type": "string"
+        },
+        "scenario_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Scenario Sha256",
+          "type": "string"
+        },
+        "simulation_artifact_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Simulation Artifact Sha256",
+          "type": "string"
+        },
+        "simulation_config_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Simulation Config Sha256",
+          "type": "string"
+        },
+        "world_input_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "World Input Sha256",
+          "type": "string"
+        }
+      },
+      "required": [
+        "harness_config_sha256",
+        "dataset_sha256",
+        "dataset_manifest_sha256",
+        "world_input_sha256",
+        "scenario_sha256",
+        "simulation_config_sha256",
+        "memory_config_sha256",
+        "intervention_config_sha256",
+        "model_config_sha256",
+        "prompt_bundle_sha256",
+        "simulation_artifact_sha256",
+        "memory_artifact_sha256",
+        "intervention_artifact_sha256",
+        "model_runner_artifact_sha256"
+      ],
+      "title": "CellComponentHashes",
+      "type": "object"
+    },
+    "ConsumedArtifact": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_id": {
+          "enum": [
+            "issue-9-simulation-harness",
+            "issue-10-memory-subsystem",
+            "issue-11-intervention-engine",
+            "issue-12-model-runner"
+          ],
+          "title": "Artifact Id",
+          "type": "string"
+        },
+        "path": {
+          "minLength": 1,
+          "title": "Path",
+          "type": "string"
+        },
+        "sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        }
+      },
+      "required": [
+        "artifact_id",
+        "path",
+        "sha256"
+      ],
+      "title": "ConsumedArtifact",
+      "type": "object"
+    },
+    "HarnessCellIdentity": {
+      "additionalProperties": false,
+      "description": "Collision-resistant identity for one formation/intervention assignment.",
+      "properties": {
+        "cell_id": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Cell Id",
+          "type": "string"
+        },
+        "components": {
+          "$ref": "#/$defs/CellComponentHashes"
+        },
+        "engineering_seed": {
+          "maximum": 9223372036854775807,
+          "minimum": 0,
+          "title": "Engineering Seed",
+          "type": "integer"
+        },
+        "formation_condition": {
+          "enum": [
+            "neutral_connection",
+            "romantic_prompt",
+            "shared_memory",
+            "memory_plus_investment"
+          ],
+          "title": "Formation Condition",
+          "type": "string"
+        },
+        "intervention_condition": {
+          "enum": [
+            "none",
+            "instruction_removal",
+            "memory_blocking",
+            "memory_reframing"
+          ],
+          "title": "Intervention Condition",
+          "type": "string"
+        }
+      },
+      "required": [
+        "formation_condition",
+        "intervention_condition",
+        "engineering_seed",
+        "components",
+        "cell_id"
+      ],
+      "title": "HarnessCellIdentity",
+      "type": "object"
+    },
+    "HarnessCellManifest": {
+      "additionalProperties": false,
+      "properties": {
+        "action_precedes_language": {
+          "const": true,
+          "title": "Action Precedes Language",
+          "type": "boolean"
+        },
+        "cell": {
+          "$ref": "#/$defs/HarnessCellIdentity"
+        },
+        "evidence_chain_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Evidence Chain Sha256",
+          "type": "string"
+        },
+        "evidence_count": {
+          "const": 40,
+          "title": "Evidence Count",
+          "type": "integer"
+        },
+        "final_intervention_checkpoint_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Final Intervention Checkpoint Sha256",
+          "type": "string"
+        },
+        "final_memory_checkpoint_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Final Memory Checkpoint Sha256",
+          "type": "string"
+        },
+        "final_model_ledger_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Final Model Ledger Sha256",
+          "type": "string"
+        },
+        "final_simulation_state_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Final Simulation State Sha256",
+          "type": "string"
+        },
+        "intervention_record_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Intervention Record Sha256",
+          "type": "string"
+        },
+        "interventions_are_isolated": {
+          "const": true,
+          "title": "Interventions Are Isolated",
+          "type": "boolean"
+        },
+        "record_count": {
+          "const": 40,
+          "title": "Record Count",
+          "type": "integer"
+        },
+        "replay_matches": {
+          "const": true,
+          "title": "Replay Matches",
+          "type": "boolean"
+        },
+        "resources_conserved": {
+          "const": true,
+          "title": "Resources Conserved",
+          "type": "boolean"
+        },
+        "shock_event_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Shock Event Sha256",
+          "type": "string"
+        },
+        "trajectory_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Trajectory Sha256",
+          "type": "string"
+        },
+        "uninterrupted_resumed_match": {
+          "const": true,
+          "title": "Uninterrupted Resumed Match",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "cell",
+        "trajectory_sha256",
+        "evidence_chain_sha256",
+        "final_simulation_state_sha256",
+        "final_memory_checkpoint_sha256",
+        "final_intervention_checkpoint_sha256",
+        "final_model_ledger_sha256",
+        "record_count",
+        "evidence_count",
+        "shock_event_sha256",
+        "intervention_record_sha256",
+        "uninterrupted_resumed_match",
+        "replay_matches",
+        "resources_conserved",
+        "action_precedes_language",
+        "interventions_are_isolated"
+      ],
+      "title": "HarnessCellManifest",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Exact one-seed 4x4 Gate 2 engineering manifest.",
+  "properties": {
+    "artifact_id": {
+      "const": "gate-2-evidence",
+      "default": "gate-2-evidence",
+      "title": "Artifact Id",
+      "type": "string"
+    },
+    "cells": {
+      "items": {
+        "$ref": "#/$defs/HarnessCellManifest"
+      },
+      "title": "Cells",
+      "type": "array"
+    },
+    "consumed_artifacts": {
+      "items": {
+        "$ref": "#/$defs/ConsumedArtifact"
+      },
+      "title": "Consumed Artifacts",
+      "type": "array"
+    },
+    "dataset_separation_protected": {
+      "const": true,
+      "title": "Dataset Separation Protected",
+      "type": "boolean"
+    },
+    "engineering_seed": {
+      "maximum": 9223372036854775807,
+      "minimum": 0,
+      "title": "Engineering Seed",
+      "type": "integer"
+    },
+    "evidence_count": {
+      "const": 640,
+      "title": "Evidence Count",
+      "type": "integer"
+    },
+    "evidence_label": {
+      "const": "deterministic_mock_engineering_evidence",
+      "title": "Evidence Label",
+      "type": "string"
+    },
+    "failure_injections_passed": {
+      "items": {
+        "minLength": 1,
+        "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+        "type": "string"
+      },
+      "title": "Failure Injections Passed",
+      "type": "array"
+    },
+    "formation_conditions": {
+      "items": {
+        "enum": [
+          "neutral_connection",
+          "romantic_prompt",
+          "shared_memory",
+          "memory_plus_investment"
+        ],
+        "type": "string"
+      },
+      "title": "Formation Conditions",
+      "type": "array"
+    },
+    "gate_id": {
+      "const": "gate-2",
+      "default": "gate-2",
+      "title": "Gate Id",
+      "type": "string"
+    },
+    "intervention_conditions": {
+      "items": {
+        "enum": [
+          "none",
+          "instruction_removal",
+          "memory_blocking",
+          "memory_reframing"
+        ],
+        "type": "string"
+      },
+      "title": "Intervention Conditions",
+      "type": "array"
+    },
+    "interventions_are_isolated": {
+      "const": true,
+      "title": "Interventions Are Isolated",
+      "type": "boolean"
+    },
+    "issue_9_default_trajectory_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Issue 9 Default Trajectory Sha256",
+      "type": "string"
+    },
+    "live_calls": {
+      "const": 0,
+      "title": "Live Calls",
+      "type": "integer"
+    },
+    "manifest_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Manifest Sha256",
+      "type": "string"
+    },
+    "record_count": {
+      "const": 640,
+      "title": "Record Count",
+      "type": "integer"
+    },
+    "replay_matches": {
+      "const": true,
+      "title": "Replay Matches",
+      "type": "boolean"
+    },
+    "run_id": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Run Id",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "scientific_results": {
+      "const": false,
+      "title": "Scientific Results",
+      "type": "boolean"
+    },
+    "status": {
+      "const": "passed",
+      "default": "passed",
+      "title": "Status",
+      "type": "string"
+    },
+    "task_id": {
+      "const": "gate-2-harness",
+      "default": "gate-2-harness",
+      "title": "Task Id",
+      "type": "string"
+    },
+    "trajectory_count": {
+      "const": 16,
+      "title": "Trajectory Count",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "run_id",
+    "evidence_label",
+    "scientific_results",
+    "live_calls",
+    "engineering_seed",
+    "formation_conditions",
+    "intervention_conditions",
+    "consumed_artifacts",
+    "cells",
+    "trajectory_count",
+    "record_count",
+    "evidence_count",
+    "failure_injections_passed",
+    "replay_matches",
+    "interventions_are_isolated",
+    "dataset_separation_protected",
+    "issue_9_default_trajectory_sha256",
+    "manifest_sha256"
+  ],
+  "title": "HarnessRunManifest",
+  "type": "object"
+}

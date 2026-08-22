@@ -43,6 +43,7 @@ changes, add a new ADR that supersedes the old one instead of rewriting history.
 | [ADR-0018](0018-event-sourced-memory-sidecar.md) | Keep memory, retrieval, and belief state in an auditable event-sourced sidecar | Accepted for Issue #10 implementation |
 | [ADR-0019](0019-provider-neutral-structured-model-runner.md) | Use exact, two-stage provider adapters with immutable validated cache replay | Accepted for Issue #12 implementation |
 | [ADR-0020](0020-hash-chained-layer-isolated-interventions.md) | Keep interventions hash-chained, layer-isolated, and transaction-bound | Accepted for Issue #11 implementation |
+| [ADR-0021](0021-composite-hash-chained-gate-2-harness.md) | Bind frozen component records through a composite hash-chained Gate 2 sidecar | Accepted for Gate 2 |
 
 ## Related sources
 
@@ -61,3 +62,4 @@ changes, add a new ADR that supersedes the old one instead of rewriting history.
 - [Issue #10 task journal](../implementation/issue-10-task-journal.md)
 - [Issue #12 task journal](../implementation/issue-12-task-journal.md)
 - [Issue #11 task journal](../implementation/issue-11-task-journal.md)
+- [Gate 2 task journal](../implementation/gate-2-task-journal.md)

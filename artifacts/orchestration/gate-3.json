@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.0",
+  "artifact_id": "gate-3-evidence",
+  "task_id": "gate-3-pilot",
+  "issue_number": 27,
+  "gate_id": "gate-3",
+  "path": "artifacts/orchestration/gate-3.json",
+  "status": "blocked",
+  "evidence_label": "gate3_preflight_blocker_evidence",
+  "preflight_sha256": "b679442d0f3ea17d3a7bc0f4c93da02add061886b3c4cbec7f3fff7b337528ee",
+  "authorization_sha256": "c85304da92c38008a4d4a217fd8976dcf073c49ab8446ca44859c759c3a16d53",
+  "consumed_artifacts": [
+    {
+      "artifact_id": "issue-14-metric-spec",
+      "path": "artifacts/evaluation/issue-14-metrics.json",
+      "sha256": "218d022749c995397f32a0cd0504e1f89c9995e88a7b5b8488e91c238e736f96"
+    }
+  ],
+  "pilot_matrix_sha256": "8c1393598603473768d1d0ebafed887ea52a11e75c28de74f12dfe45b1cb5459",
+  "integrity": {
+    "assigned_trajectories": 32,
+    "started_trajectories": 0,
+    "valid_trajectories": 0,
+    "invalid_trajectories": 0,
+    "missing_trajectories": 0,
+    "model_calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "estimated_cost_usd": 0.0,
+    "malformed_output_count": 0,
+    "repaired_output_count": 0
+  },
+  "acceptance_tests": {
+    "structured_outputs_validate": "blocked",
+    "metrics_are_behavioral": "passed",
+    "language_and_action_are_separate": "passed",
+    "failures_are_quantified": "blocked",
+    "all_factorial_cells_present": "blocked",
+    "action_variance_present": "blocked",
+    "condition_isolation_passes": "blocked",
+    "safety_stops_absent": "passed",
+    "live_calls_are_authorized": "blocked"
+  },
+  "blockers": [
+    "a named, time-bounded, pilot-only supervisor authorization is required",
+    "provider, model ID, immutable revision, license and adapter config are required",
+    "adapter bytes, provider, model, revision, prompt and live-call flag must match",
+    "only credential presence is checked; secret values are never persisted",
+    "hard call, input/output token, monetary and wall-clock limits are required",
+    "the executing checkout must match the supervisor-authorized commit",
+    "the time-bounded Gate 3 authorization must be active at preflight",
+    "the selected local or remote model transport must pass a no-output capability check"
+  ],
+  "pilot_executed": false,
+  "live_calls": 0,
+  "paid_calls": 0,
+  "primary_execution_authorized": false,
+  "scientific_claims_authorized": false,
+  "external_publication_authorized": false,
+  "subjective_state_claims_authorized": false,
+  "evidence_sha256": "8c57534f9f76218f4e2d28daa10171c86f763894cc30dc288f78faa05d1562ca"
+}

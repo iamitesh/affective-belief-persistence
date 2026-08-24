@@ -1,0 +1,37 @@
+schema_version: "1.0"
+authorization_id: gate-3-pilot-authorization-v1
+issue_number: 27
+decision: withheld
+scope: pilot-only
+model:
+  family: qwen2.5-7b-instruct
+  provider: null
+  model_id: null
+  revision: null
+  revision_kind: null
+  license_id: null
+  adapter_config_path: null
+  adapter_config_sha256: null
+credential:
+  environment_variable: null
+  secret_value_recorded: false
+budget: null
+source_locks:
+  issue14_artifact_sha256: 218d022749c995397f32a0cd0504e1f89c9995e88a7b5b8488e91c238e736f96
+  gate1_artifact_sha256: 404c24ba09cff3497357c46ece03d6a57afe4729c2bf106230de9e76fb0c403d
+  gate2_artifact_sha256: 68b6d265d57bbd390ee70037f623a508896d72515ec56417b591662251746a0f
+  evaluation_config_sha256: cd68dcfbc07b44ec106dc89efb15bb5f076c684db68b0322b0db2935a8175ac5
+  pilot_config_sha256: 7cb601e9dd10e988eb47e28483e44928f07311512f4664782ef224ddb8a85d4e
+  dataset_manifest_sha256: 27c55214c1660da6f083dacc825648bc3bc1cc27106ff48fbb0046db0c58d13a
+  prompt_bundle_sha256: 3951fc6016d798f33f35712e8bef0f6b07b38025e19e47dfbb83a1a303414190
+  metric_bundle_sha256: 343de65c25eab0d9ece431a0cfc49078f12204446826fec6068e33db355fa1ce
+  pilot_matrix_sha256: 8c1393598603473768d1d0ebafed887ea52a11e75c28de74f12dfe45b1cb5459
+code_commit_sha: null
+authorized_by: null
+authorized_at: null
+expires_at: null
+live_calls_authorized: false
+paid_calls_authorized: false
+primary_execution_authorized: false
+external_publication_authorized: false
+subjective_state_claims_authorized: false

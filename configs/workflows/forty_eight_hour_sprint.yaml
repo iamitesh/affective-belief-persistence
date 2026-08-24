@@ -182,6 +182,7 @@ tasks:
     budget: {max_runtime_seconds: 7200, max_tokens: 8000}
 
   - task_id: gate-3-pilot
+    issue_number: 27
     title: Gate 3 — pilot interpretable
     owner: supervisor
     task_type: integration_gate

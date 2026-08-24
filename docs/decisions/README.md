@@ -50,6 +50,7 @@ changes, add a new ADR that supersedes the old one instead of rewriting history.
 | ADR | Decision | Status |
 | --- | --- | --- |
 | [ADR-0022](0022-versioned-missingness-explicit-evaluation.md) | Keep evaluation versioned, trajectory-first, and missingness-explicit | Accepted for Issue #14 offline implementation |
+| [ADR-0023](0023-explicit-hash-bound-gate-3-authorization.md) | Require explicit, hash-bound authorization before Gate 3 transport | Accepted for Gate 3 preflight |
 
 ## Related sources
 
@@ -70,3 +71,4 @@ changes, add a new ADR that supersedes the old one instead of rewriting history.
 - [Issue #11 task journal](../implementation/issue-11-task-journal.md)
 - [Gate 2 task journal](../implementation/gate-2-task-journal.md)
 - [Issue #14 task journal](../implementation/issue-14-task-journal.md)
+- [Gate 3 task journal](../implementation/gate-3-task-journal.md)

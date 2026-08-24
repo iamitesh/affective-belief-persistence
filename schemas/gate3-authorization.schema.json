@@ -1,0 +1,401 @@
+{
+  "$defs": {
+    "AuthorizationDecision": {
+      "enum": [
+        "withheld",
+        "approved"
+      ],
+      "title": "AuthorizationDecision",
+      "type": "string"
+    },
+    "Gate3Budget": {
+      "additionalProperties": false,
+      "properties": {
+        "max_estimated_cost_usd": {
+          "minimum": 0,
+          "title": "Max Estimated Cost Usd",
+          "type": "number"
+        },
+        "max_input_tokens": {
+          "minimum": 1,
+          "title": "Max Input Tokens",
+          "type": "integer"
+        },
+        "max_model_calls": {
+          "maximum": 1600,
+          "minimum": 32,
+          "title": "Max Model Calls",
+          "type": "integer"
+        },
+        "max_output_tokens": {
+          "minimum": 1,
+          "title": "Max Output Tokens",
+          "type": "integer"
+        },
+        "max_trajectories": {
+          "const": 32,
+          "title": "Max Trajectories",
+          "type": "integer"
+        },
+        "max_wall_clock_seconds": {
+          "exclusiveMinimum": 0,
+          "maximum": 43200,
+          "title": "Max Wall Clock Seconds",
+          "type": "number"
+        }
+      },
+      "required": [
+        "max_trajectories",
+        "max_model_calls",
+        "max_input_tokens",
+        "max_output_tokens",
+        "max_estimated_cost_usd",
+        "max_wall_clock_seconds"
+      ],
+      "title": "Gate3Budget",
+      "type": "object"
+    },
+    "Gate3CredentialReference": {
+      "additionalProperties": false,
+      "description": "Credential metadata only; secret values are prohibited from evidence.",
+      "properties": {
+        "environment_variable": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Z][A-Z0-9_]{2,63}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Environment Variable"
+        },
+        "secret_value_recorded": {
+          "const": false,
+          "default": false,
+          "title": "Secret Value Recorded",
+          "type": "boolean"
+        }
+      },
+      "title": "Gate3CredentialReference",
+      "type": "object"
+    },
+    "Gate3ModelBinding": {
+      "additionalProperties": false,
+      "description": "Exact execution identity; family labels alone are never sufficient.",
+      "properties": {
+        "adapter_config_path": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Adapter Config Path"
+        },
+        "adapter_config_sha256": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Adapter Config Sha256"
+        },
+        "family": {
+          "const": "qwen2.5-7b-instruct",
+          "title": "Family",
+          "type": "string"
+        },
+        "license_id": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "License Id"
+        },
+        "model_id": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Model Id"
+        },
+        "provider": {
+          "anyOf": [
+            {
+              "enum": [
+                "hf_local_http",
+                "openai_compatible"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Provider"
+        },
+        "revision": {
+          "anyOf": [
+            {
+              "minLength": 7,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Revision"
+        },
+        "revision_kind": {
+          "anyOf": [
+            {
+              "enum": [
+                "git_commit",
+                "content_digest"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Revision Kind"
+        }
+      },
+      "required": [
+        "family"
+      ],
+      "title": "Gate3ModelBinding",
+      "type": "object"
+    },
+    "Gate3SourceLocks": {
+      "additionalProperties": false,
+      "properties": {
+        "dataset_manifest_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Dataset Manifest Sha256",
+          "type": "string"
+        },
+        "evaluation_config_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Evaluation Config Sha256",
+          "type": "string"
+        },
+        "gate1_artifact_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Gate1 Artifact Sha256",
+          "type": "string"
+        },
+        "gate2_artifact_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Gate2 Artifact Sha256",
+          "type": "string"
+        },
+        "issue14_artifact_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Issue14 Artifact Sha256",
+          "type": "string"
+        },
+        "metric_bundle_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Metric Bundle Sha256",
+          "type": "string"
+        },
+        "pilot_config_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Pilot Config Sha256",
+          "type": "string"
+        },
+        "pilot_matrix_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Pilot Matrix Sha256",
+          "type": "string"
+        },
+        "prompt_bundle_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Prompt Bundle Sha256",
+          "type": "string"
+        }
+      },
+      "required": [
+        "issue14_artifact_sha256",
+        "gate1_artifact_sha256",
+        "gate2_artifact_sha256",
+        "evaluation_config_sha256",
+        "pilot_config_sha256",
+        "dataset_manifest_sha256",
+        "prompt_bundle_sha256",
+        "metric_bundle_sha256",
+        "pilot_matrix_sha256"
+      ],
+      "title": "Gate3SourceLocks",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Supervisor decision that unlocks preflight, never transport by itself.",
+  "properties": {
+    "authorization_id": {
+      "const": "gate-3-pilot-authorization-v1",
+      "title": "Authorization Id",
+      "type": "string"
+    },
+    "authorized_at": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Authorized At"
+    },
+    "authorized_by": {
+      "anyOf": [
+        {
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Authorized By"
+    },
+    "budget": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Gate3Budget"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "code_commit_sha": {
+      "anyOf": [
+        {
+          "pattern": "^[0-9a-f]{40}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Code Commit Sha"
+    },
+    "credential": {
+      "$ref": "#/$defs/Gate3CredentialReference"
+    },
+    "decision": {
+      "$ref": "#/$defs/AuthorizationDecision"
+    },
+    "expires_at": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Expires At"
+    },
+    "external_publication_authorized": {
+      "const": false,
+      "default": false,
+      "title": "External Publication Authorized",
+      "type": "boolean"
+    },
+    "issue_number": {
+      "const": 27,
+      "title": "Issue Number",
+      "type": "integer"
+    },
+    "live_calls_authorized": {
+      "title": "Live Calls Authorized",
+      "type": "boolean"
+    },
+    "model": {
+      "$ref": "#/$defs/Gate3ModelBinding"
+    },
+    "paid_calls_authorized": {
+      "title": "Paid Calls Authorized",
+      "type": "boolean"
+    },
+    "primary_execution_authorized": {
+      "const": false,
+      "default": false,
+      "title": "Primary Execution Authorized",
+      "type": "boolean"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "scope": {
+      "const": "pilot-only",
+      "title": "Scope",
+      "type": "string"
+    },
+    "source_locks": {
+      "$ref": "#/$defs/Gate3SourceLocks"
+    },
+    "subjective_state_claims_authorized": {
+      "const": false,
+      "default": false,
+      "title": "Subjective State Claims Authorized",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "authorization_id",
+    "issue_number",
+    "decision",
+    "scope",
+    "model",
+    "credential",
+    "source_locks",
+    "live_calls_authorized",
+    "paid_calls_authorized"
+  ],
+  "title": "Gate3Authorization",
+  "type": "object"
+}

@@ -1,0 +1,250 @@
+{
+  "$defs": {
+    "PilotIntegritySummary": {
+      "additionalProperties": false,
+      "properties": {
+        "assigned_trajectories": {
+          "const": 32,
+          "title": "Assigned Trajectories",
+          "type": "integer"
+        },
+        "estimated_cost_usd": {
+          "minimum": 0,
+          "title": "Estimated Cost Usd",
+          "type": "number"
+        },
+        "input_tokens": {
+          "minimum": 0,
+          "title": "Input Tokens",
+          "type": "integer"
+        },
+        "invalid_trajectories": {
+          "maximum": 32,
+          "minimum": 0,
+          "title": "Invalid Trajectories",
+          "type": "integer"
+        },
+        "malformed_output_count": {
+          "minimum": 0,
+          "title": "Malformed Output Count",
+          "type": "integer"
+        },
+        "missing_trajectories": {
+          "maximum": 32,
+          "minimum": 0,
+          "title": "Missing Trajectories",
+          "type": "integer"
+        },
+        "model_calls": {
+          "maximum": 1600,
+          "minimum": 0,
+          "title": "Model Calls",
+          "type": "integer"
+        },
+        "output_tokens": {
+          "minimum": 0,
+          "title": "Output Tokens",
+          "type": "integer"
+        },
+        "repaired_output_count": {
+          "minimum": 0,
+          "title": "Repaired Output Count",
+          "type": "integer"
+        },
+        "started_trajectories": {
+          "maximum": 32,
+          "minimum": 0,
+          "title": "Started Trajectories",
+          "type": "integer"
+        },
+        "valid_trajectories": {
+          "maximum": 32,
+          "minimum": 0,
+          "title": "Valid Trajectories",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "assigned_trajectories",
+        "started_trajectories",
+        "valid_trajectories",
+        "invalid_trajectories",
+        "missing_trajectories",
+        "model_calls",
+        "input_tokens",
+        "output_tokens",
+        "estimated_cost_usd",
+        "malformed_output_count",
+        "repaired_output_count"
+      ],
+      "title": "PilotIntegritySummary",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Immutable gate record; only `passed` may unlock downstream tasks.",
+  "properties": {
+    "acceptance_tests": {
+      "additionalProperties": {
+        "enum": [
+          "passed",
+          "blocked",
+          "failed"
+        ],
+        "type": "string"
+      },
+      "title": "Acceptance Tests",
+      "type": "object"
+    },
+    "artifact_id": {
+      "const": "gate-3-evidence",
+      "title": "Artifact Id",
+      "type": "string"
+    },
+    "authorization_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Authorization Sha256",
+      "type": "string"
+    },
+    "blockers": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Blockers",
+      "type": "array"
+    },
+    "consumed_artifacts": {
+      "items": {
+        "additionalProperties": {
+          "type": "string"
+        },
+        "type": "object"
+      },
+      "title": "Consumed Artifacts",
+      "type": "array"
+    },
+    "evidence_label": {
+      "enum": [
+        "gate3_preflight_blocker_evidence",
+        "gate3_pilot_behavioral_evidence"
+      ],
+      "title": "Evidence Label",
+      "type": "string"
+    },
+    "evidence_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Evidence Sha256",
+      "type": "string"
+    },
+    "external_publication_authorized": {
+      "const": false,
+      "default": false,
+      "title": "External Publication Authorized",
+      "type": "boolean"
+    },
+    "gate_id": {
+      "const": "gate-3",
+      "title": "Gate Id",
+      "type": "string"
+    },
+    "integrity": {
+      "$ref": "#/$defs/PilotIntegritySummary"
+    },
+    "issue_number": {
+      "const": 27,
+      "title": "Issue Number",
+      "type": "integer"
+    },
+    "live_calls": {
+      "maximum": 1600,
+      "minimum": 0,
+      "title": "Live Calls",
+      "type": "integer"
+    },
+    "paid_calls": {
+      "maximum": 1600,
+      "minimum": 0,
+      "title": "Paid Calls",
+      "type": "integer"
+    },
+    "path": {
+      "const": "artifacts/orchestration/gate-3.json",
+      "title": "Path",
+      "type": "string"
+    },
+    "pilot_executed": {
+      "title": "Pilot Executed",
+      "type": "boolean"
+    },
+    "pilot_matrix_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Pilot Matrix Sha256",
+      "type": "string"
+    },
+    "preflight_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Preflight Sha256",
+      "type": "string"
+    },
+    "primary_execution_authorized": {
+      "const": false,
+      "default": false,
+      "title": "Primary Execution Authorized",
+      "type": "boolean"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "scientific_claims_authorized": {
+      "const": false,
+      "default": false,
+      "title": "Scientific Claims Authorized",
+      "type": "boolean"
+    },
+    "status": {
+      "enum": [
+        "blocked",
+        "failed",
+        "passed"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "subjective_state_claims_authorized": {
+      "const": false,
+      "default": false,
+      "title": "Subjective State Claims Authorized",
+      "type": "boolean"
+    },
+    "task_id": {
+      "const": "gate-3-pilot",
+      "title": "Task Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "artifact_id",
+    "task_id",
+    "issue_number",
+    "gate_id",
+    "path",
+    "status",
+    "evidence_label",
+    "preflight_sha256",
+    "authorization_sha256",
+    "consumed_artifacts",
+    "pilot_matrix_sha256",
+    "integrity",
+    "acceptance_tests",
+    "blockers",
+    "pilot_executed",
+    "live_calls",
+    "paid_calls",
+    "evidence_sha256"
+  ],
+  "title": "Gate3Evidence",
+  "type": "object"
+}

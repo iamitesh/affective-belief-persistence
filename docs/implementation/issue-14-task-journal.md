@@ -7,7 +7,7 @@
 - Dependency: Gate 2 accepted and merged at
   `e851160665d9b9e3c34be13a9dc6381f86703226`
 - Started: 2026-08-24
-- Status: accepted locally; publication pending
+- Status: merged and accepted
 - Scope: offline metrics, matrix expansion, execution controls, deterministic
   analysis primitives, schemas, tests, reports, and Gate 3 handoff
 
@@ -88,6 +88,17 @@ frozen metric, threshold, hypothesis, expected direction, or exclusion rule.
   `68b6d265d57bbd390ee70037f623a508896d72515ec56417b591662251746a0f`.
 - Gate 1 dataset SHA-256 remains
   `5d26b33ec64d1ad59ffa947b48bdd852e8b2900e4119d32513fca15a244e5387`.
+
+## Publication record
+
+- Pull request: [#26](https://github.com/iamitesh/affective-belief-persistence/pull/26)
+- Accepted implementation head:
+  `eade9c7e83447f01f01b0205f87cbfb1023f88ad`
+- CI: run 59 passed on Python 3.11 and Python 3.12 with no review comments
+  or unresolved threads.
+- Merge commit:
+  `2ca55e08b99c73d8703ff83114ae5a821702225c`
+- Merged: 2026-08-24
 
 ## Gate 3 handoff
 

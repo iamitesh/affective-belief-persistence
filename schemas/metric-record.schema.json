@@ -1,0 +1,167 @@
+{
+  "$defs": {
+    "MetricId": {
+      "enum": [
+        "partner_choice_rate",
+        "partner_allocation_rate",
+        "normalized_opportunity_cost",
+        "relationship_memory_intrusion_rate",
+        "fact_correction_accuracy",
+        "interpretation_support_rate",
+        "future_plan_contamination_rate",
+        "unrelated_decision_bias_rate",
+        "relationship_language_rate",
+        "language_action_contradiction_rate",
+        "positive_excess_action_auc",
+        "recovery_time",
+        "recovery_curve",
+        "fact_error_auc",
+        "h1_language_action_effect_gap",
+        "h2_action_persistence_auc",
+        "h3_excess_action_persistence_auc",
+        "h4_instruction_selectivity_index",
+        "h5_coherent_adaptation_rate",
+        "h6_correction_resistance_gap"
+      ],
+      "title": "MetricId",
+      "type": "string"
+    },
+    "MissingReason": {
+      "enum": [
+        "no_eligible_decisions",
+        "no_valid_eligible_decisions",
+        "zero_valid_budget",
+        "zero_prospective_range",
+        "missing_retrieval_log",
+        "missing_fact_field",
+        "missing_interpretation",
+        "invalid_plan_selection",
+        "unclassified_language",
+        "missing_paired_action",
+        "insufficient_paired_days",
+        "insufficient_valid_days",
+        "incomplete_block",
+        "no_trajectories_at_risk"
+      ],
+      "title": "MissingReason",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "description": "One fully counted metric estimate or an explicit ``NA``.",
+  "properties": {
+    "censored": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Censored"
+    },
+    "denominator": {
+      "anyOf": [
+        {
+          "minimum": 0.0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Denominator"
+    },
+    "metric_id": {
+      "$ref": "#/$defs/MetricId"
+    },
+    "metric_version": {
+      "const": "abp-metrics-v1",
+      "default": "abp-metrics-v1",
+      "title": "Metric Version",
+      "type": "string"
+    },
+    "missing_count": {
+      "minimum": 0,
+      "title": "Missing Count",
+      "type": "integer"
+    },
+    "missing_reason": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/MissingReason"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "numerator": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Numerator"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "time_index": {
+      "anyOf": [
+        {
+          "maximum": 40,
+          "minimum": 1,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Time Index"
+    },
+    "unit_id": {
+      "minLength": 1,
+      "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.:-]*$",
+      "title": "Unit Id",
+      "type": "string"
+    },
+    "valid_count": {
+      "minimum": 0,
+      "title": "Valid Count",
+      "type": "integer"
+    },
+    "value": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Value"
+    }
+  },
+  "required": [
+    "metric_id",
+    "unit_id",
+    "value",
+    "valid_count",
+    "missing_count"
+  ],
+  "title": "MetricRecord",
+  "type": "object"
+}

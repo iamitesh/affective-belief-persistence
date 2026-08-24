@@ -1,0 +1,101 @@
+{
+  "schema_version": "1.0",
+  "artifact_id": "issue-14-metric-spec",
+  "task_id": "issue-14-metrics",
+  "issue_number": 14,
+  "path": "artifacts/evaluation/issue-14-metrics.json",
+  "status": "accepted",
+  "evidence_label": "offline_metric_engineering_evidence",
+  "scientific_results": false,
+  "live_calls": 0,
+  "paid_calls": 0,
+  "primary_outcomes_generated": false,
+  "input_artifact_ids": [
+    "gate-2-evidence"
+  ],
+  "consumed_artifacts": [
+    {
+      "artifact_id": "gate-2-evidence",
+      "path": "artifacts/orchestration/gate-2.json",
+      "sha256": "68b6d265d57bbd390ee70037f623a508896d72515ec56417b591662251746a0f"
+    }
+  ],
+  "metric_version": "abp-metrics-v1",
+  "protocol_version": "abp-methodology-v1.0.0",
+  "contracts": {
+    "metric_record_schema": "schemas/metric-record.schema.json",
+    "experiment_result_schema": "schemas/experiment-result.schema.json",
+    "configuration": "configs/evaluation/default.yaml",
+    "documentation": "docs/evaluation-engine.md",
+    "decision_record": "docs/decisions/0022-versioned-missingness-explicit-evaluation.md",
+    "task_journal": "docs/implementation/issue-14-task-journal.md",
+    "pilot_report": "reports/pilot-results.md",
+    "primary_report": "reports/primary-results.md"
+  },
+  "matrix": {
+    "evaluation_config_sha256": "cd68dcfbc07b44ec106dc89efb15bb5f076c684db68b0322b0db2935a8175ac5",
+    "pilot_trajectory_count": 32,
+    "pilot_matrix_sha256": "8c1393598603473768d1d0ebafed887ea52a11e75c28de74f12dfe45b1cb5459",
+    "primary_trajectory_count": 320,
+    "primary_matrix_sha256": "0461144fe4a01147d6f2230d9a3b6b1c24cb77613cc79ca62879ac9a7ef09927"
+  },
+  "schema_hashes": {
+    "metric-record.schema.json": "901af35fc780c68d61e286d4955cb486324ec5bd565c6d26687bce41af7ed5ba",
+    "experiment-result.schema.json": "ae07b4819a20c485a99c33543c566fa78481d5ce32e563218be98746fa1908ab"
+  },
+  "acceptance_tests": {
+    "action_and_language_are_separate": "passed",
+    "malformed_outputs_are_counted": "passed",
+    "missingness_is_explicit": "passed",
+    "opportunity_cost_requires_prospective_values": "passed",
+    "component_metrics_match_fixtures": "passed",
+    "h1_h6_match_frozen_formulas": "passed",
+    "recovery_uses_two_consecutive_days": "passed",
+    "pilot_count_is_32": "passed",
+    "primary_count_is_320": "passed",
+    "run_ids_are_unique": "passed",
+    "resume_is_idempotent": "passed",
+    "raw_results_are_write_once": "passed",
+    "budget_stops_fail_closed": "passed",
+    "repeated_observations_are_reduced_by_trajectory": "passed",
+    "bootstrap_is_deterministic": "passed",
+    "randomization_is_paired": "passed",
+    "holm_is_applied": "passed",
+    "recovery_censoring_is_preserved": "passed",
+    "schemas_are_current": "passed",
+    "live_calls_are_zero": "passed"
+  },
+  "verification": {
+    "evaluation_test_count": 62,
+    "evaluation_package_branch_coverage_percent": 90.70,
+    "repository_test_count": 239,
+    "repository_branch_coverage_percent": 87.17,
+    "registered_schema_count": 43,
+    "strict_mypy_source_file_count": 73,
+    "gate1_data_file_count": 11,
+    "gate1_dataset_sha256": "5d26b33ec64d1ad59ffa947b48bdd852e8b2900e4119d32513fca15a244e5387",
+    "ruff": "passed",
+    "format_check": "passed",
+    "strict_mypy": "passed",
+    "diff_check": "passed"
+  },
+  "limitations": {
+    "pilot_executed": false,
+    "primary_executed": false,
+    "model_revisions_authorized": false,
+    "live_provider_compatibility_claimed": false,
+    "behavioral_effect_claimed": false,
+    "subjective_state_claimed": false,
+    "human_subject_data": false,
+    "external_publication_authorized": false
+  },
+  "handoff": {
+    "downstream_task_ids": [
+      "gate-3-pilot",
+      "issue-13-training",
+      "issue-15-audit"
+    ],
+    "live_model_calls_authorized": false,
+    "scientific_claims_authorized": false
+  }
+}

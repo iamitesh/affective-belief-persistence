@@ -1,0 +1,31 @@
+schema_version: "1.0"
+evaluation_id: issue-14-offline-v1
+experiment_configs:
+  pilot: configs/experiments/pilot.yaml
+  primary: configs/experiments/primary.yaml
+model_bindings:
+  - family: qwen2.5-7b-instruct
+    revision_lock: gate3-authorization-required
+    adapter_config_path: configs/models/hf-local-fixture.yaml
+    execution_ready: false
+  - family: mistral-7b-instruct-v0.3
+    revision_lock: gate3-authorization-required
+    adapter_config_path: configs/models/openai-compatible-fixture.yaml
+    execution_ready: false
+gate2_artifact_path: artifacts/orchestration/gate-2.json
+raw_result_directory: runs/local/evaluation/raw
+budgets:
+  pilot:
+    max_trajectories: 32
+    max_model_calls: 1600
+    max_wall_clock_seconds: 43200
+    reserved_model_calls_per_trajectory: 50
+  primary:
+    max_trajectories: 320
+    max_model_calls: 16000
+    max_wall_clock_seconds: 172800
+    reserved_model_calls_per_trajectory: 50
+expected_pilot_trajectories: 32
+expected_primary_trajectories: 320
+live_calls_enabled: false
+scientific_results: false

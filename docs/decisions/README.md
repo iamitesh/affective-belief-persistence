@@ -45,6 +45,12 @@ changes, add a new ADR that supersedes the old one instead of rewriting history.
 | [ADR-0020](0020-hash-chained-layer-isolated-interventions.md) | Keep interventions hash-chained, layer-isolated, and transaction-bound | Accepted for Issue #11 implementation |
 | [ADR-0021](0021-composite-hash-chained-gate-2-harness.md) | Bind frozen component records through a composite hash-chained Gate 2 sidecar | Accepted for Gate 2 |
 
+## Evaluation Gate 3 decisions
+
+| ADR | Decision | Status |
+| --- | --- | --- |
+| [ADR-0022](0022-versioned-missingness-explicit-evaluation.md) | Keep evaluation versioned, trajectory-first, and missingness-explicit | Accepted for Issue #14 offline implementation |
+
 ## Related sources
 
 - [Issue #2: supervisor, specialist agents, and shared-state contracts](https://github.com/iamitesh/affective-belief-persistence/issues/2)
@@ -63,3 +69,4 @@ changes, add a new ADR that supersedes the old one instead of rewriting history.
 - [Issue #12 task journal](../implementation/issue-12-task-journal.md)
 - [Issue #11 task journal](../implementation/issue-11-task-journal.md)
 - [Gate 2 task journal](../implementation/gate-2-task-journal.md)
+- [Issue #14 task journal](../implementation/issue-14-task-journal.md)

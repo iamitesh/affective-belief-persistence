@@ -4,7 +4,7 @@
 
 ## Research status
 
-**Stage:** Research design and experimental harness planning  
+**Stage:** Gate 2 harness accepted; Issue #14 offline evaluation implementation
 **Working paper title:** *When the Relationship Was Never Real: Affective Belief Persistence After Separation in LLM Agents*
 
 This project does **not** claim that a language model feels love, attachment, grief, or loss. It studies observable **attachment-like behavior** in controlled simulations.
@@ -74,6 +74,26 @@ The accepted `synthetic-matched-v1` dataset SHA-256 is
 See the [Gate 1 data freeze](docs/gate-1-data-freeze.md),
 [balance report](reports/data-balance-report.md), and
 [leakage report](reports/leakage-report.md).
+
+## Gate 2 harness and offline evaluation
+
+The deterministic composite harness runs all 16 formation/intervention cells
+for 40 simulated days while preserving action-before-language order, isolated
+day-30 interventions, resumable checkpoints, and hash-chained evidence. Gate 2
+is engineering validation and makes no behavioral claim.
+
+Issue #14 implements the frozen `abp-metrics-v1` registry, the 32-assignment
+pilot and 320-assignment primary plans, explicit missingness, resumable budget
+controls, and trajectory-first statistical utilities. Live pilot and primary
+execution remain disabled until a separate Gate 3 authorization.
+
+```bash
+uv run pytest tests/harness tests/evaluation
+uv run python scripts/generate_schemas.py --check
+```
+
+See the [Gate 2 design](docs/gate-2-harness.md) and
+[evaluation engine](docs/evaluation-engine.md).
 
 ## Central research question
 

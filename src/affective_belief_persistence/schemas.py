@@ -396,6 +396,7 @@ from affective_belief_persistence.data.contracts import DatasetManifest  # noqa:
 from affective_belief_persistence.evaluation.contracts import (  # noqa: E402
     EVALUATION_SCHEMA_MODELS,
 )
+from affective_belief_persistence.gate3.contracts import GATE3_SCHEMA_MODELS  # noqa: E402
 from affective_belief_persistence.harness.contracts import (  # noqa: E402
     HARNESS_SCHEMA_MODELS,
 )
@@ -452,6 +453,7 @@ SCHEMA_MODELS: dict[str, type[BaseModel]] = {
     "workflow-event.schema.json": WorkflowEvent,
     "workflow-state.schema.json": WorkflowState,
     **EVALUATION_SCHEMA_MODELS,
+    **GATE3_SCHEMA_MODELS,
     **HARNESS_SCHEMA_MODELS,
     **INTERVENTION_SCHEMA_MODELS,
     **MEMORY_SCHEMA_MODELS,

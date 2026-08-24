@@ -2,9 +2,11 @@
 
 ## Status
 
-**Not executed.** Issue #14 validates metric arithmetic, experiment expansion,
-resume behavior, and analysis plumbing offline. No preregistered live model
-family was called, so there are no pilot behavioral estimates.
+**Blocked before transport.** Issue #14 validates metric arithmetic, experiment
+expansion, resume behavior, and analysis plumbing offline. Gate 3 now verifies
+the exact 32-assignment plan and immutable upstream hashes, but no
+preregistered live model family was called, so there are no pilot behavioral
+estimates.
 
 ## Available engineering evidence
 
@@ -22,3 +24,7 @@ The pilot requires exact model revisions, provider access, prompt and dataset
 hashes, and approved call/token/cost/time limits. The eventual report must add
 assigned/valid counts, malformed-output rates, model-family-specific estimates,
 uncertainty, null results, and the Gate 3 review decision.
+
+The current machine-readable blocker is
+`artifacts/orchestration/gate-3.json`. It records zero started trajectories,
+zero live calls, zero paid calls, and eight explicit preflight blockers.

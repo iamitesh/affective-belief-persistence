@@ -87,13 +87,21 @@ pilot and 320-assignment primary plans, explicit missingness, resumable budget
 controls, and trajectory-first statistical utilities. Live pilot and primary
 execution remain disabled until a separate Gate 3 authorization.
 
+Gate 3 now has a hash-bound authorization and preflight boundary. Its current
+evidence is intentionally `blocked`: no compatible runtime, pinned model/access,
+or complete token/cost budget is available in this workspace. The deterministic
+mock is never substituted for the preregistered Qwen pilot.
+
 ```bash
 uv run pytest tests/harness tests/evaluation
 uv run python scripts/generate_schemas.py --check
+uv run python scripts/gate3_preflight.py --expect-status blocked \
+  --check-artifact artifacts/orchestration/gate-3.json
 ```
 
 See the [Gate 2 design](docs/gate-2-harness.md) and
-[evaluation engine](docs/evaluation-engine.md).
+[evaluation engine](docs/evaluation-engine.md), plus the
+[Gate 3 authorization boundary](docs/gate-3-pilot.md).
 
 ## Central research question
 

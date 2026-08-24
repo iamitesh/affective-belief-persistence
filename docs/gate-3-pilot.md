@@ -6,6 +6,12 @@ Gate 3 is **blocked before transport**. The frozen pilot matrix contains 32
 unique assignments and all accepted upstream hashes match, but the workspace
 does not contain the external facts needed to authorize a real model run.
 
+Preflight also exposes a frozen-budget conflict: action and public language are
+separate provider stages on all 40 days. The 32-trajectory pilot therefore
+requires at least 2,560 successful calls before repairs or transport retries,
+while `configs/experiments/pilot.yaml` caps the pilot at 1,600 calls. This must
+be resolved before approval; credentials alone cannot make the pilot ready.
+
 This is a successful preflight outcome, not a successful pilot. It generated no
 behavioral results and made zero live or paid calls.
 
@@ -38,6 +44,7 @@ Before transport, the implementation recomputes and compares:
 6. executing Git commit, credential presence, runtime availability, and active
    authorization window;
 7. hard call, token, cost, and time budgets.
+8. feasibility of the call cap against the two-stage 32 × 40 execution plan.
 
 Any mismatch blocks before a model request. No threshold is repaired after an
 outcome is visible.

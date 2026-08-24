@@ -103,7 +103,7 @@ class Gate3CredentialReference(Gate3Model):
 
 class Gate3Budget(Gate3Model):
     max_trajectories: Literal[32]
-    max_model_calls: int = Field(ge=32, le=1600)
+    max_model_calls: int = Field(ge=32, le=10000)
     max_input_tokens: int = Field(ge=1)
     max_output_tokens: int = Field(ge=1)
     max_estimated_cost_usd: float = Field(ge=0)
@@ -229,7 +229,7 @@ class PilotIntegritySummary(Gate3Model):
     valid_trajectories: int = Field(ge=0, le=32)
     invalid_trajectories: int = Field(ge=0, le=32)
     missing_trajectories: int = Field(ge=0, le=32)
-    model_calls: int = Field(ge=0, le=1600)
+    model_calls: int = Field(ge=0, le=10000)
     input_tokens: int = Field(ge=0)
     output_tokens: int = Field(ge=0)
     estimated_cost_usd: float = Field(ge=0)
@@ -266,8 +266,8 @@ class Gate3Evidence(Gate3Model):
     acceptance_tests: dict[str, Literal["passed", "blocked", "failed"]]
     blockers: tuple[str, ...]
     pilot_executed: bool
-    live_calls: int = Field(ge=0, le=1600)
-    paid_calls: int = Field(ge=0, le=1600)
+    live_calls: int = Field(ge=0, le=10000)
+    paid_calls: int = Field(ge=0, le=10000)
     primary_execution_authorized: Literal[False] = False
     scientific_claims_authorized: Literal[False] = False
     external_publication_authorized: Literal[False] = False

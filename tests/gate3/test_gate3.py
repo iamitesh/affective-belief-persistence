@@ -183,7 +183,8 @@ def test_current_environment_produces_explicit_blocked_evidence(project_root: Pa
     assert checks["authorization-approved"] is CheckStatus.BLOCKED
     assert checks["model-adapter-matches"] is CheckStatus.BLOCKED
     assert checks["code-commit-matches"] is CheckStatus.BLOCKED
-    assert len(preflight.blockers) == 8
+    assert checks["pilot-call-budget-feasible"] is CheckStatus.BLOCKED
+    assert len(preflight.blockers) == 9
 
     evidence = build_blocked_evidence(preflight)
     assert evidence.status == "blocked"
@@ -227,6 +228,10 @@ def test_complete_authorization_can_become_ready_only_with_runtime(
         "affective_belief_persistence.gate3.preflight._model_adapter_ready",
         lambda authorization, root: True,
     )
+    monkeypatch.setattr(
+        "affective_belief_persistence.gate3.preflight._pilot_call_budget_feasible",
+        lambda authorization, configured_max_calls, assignment_count: True,
+    )
     ready = run_gate3_preflight(
         authorization,
         project_root=project_root,
@@ -266,6 +271,7 @@ def test_actual_fixture_adapter_cannot_unlock_live_pilot(project_root: Path) -> 
     )
     checks = {check.check_id: check.status for check in result.checks}
     assert checks["model-adapter-matches"] is CheckStatus.BLOCKED
+    assert checks["pilot-call-budget-feasible"] is CheckStatus.BLOCKED
     assert result.status == "blocked"
 
 

@@ -27,4 +27,6 @@ uncertainty, null results, and the Gate 3 review decision.
 
 The current machine-readable blocker is
 `artifacts/orchestration/gate-3.json`. It records zero started trajectories,
-zero live calls, zero paid calls, and eight explicit preflight blockers.
+zero live calls, zero paid calls, and nine explicit preflight blockers. The
+ninth is a protocol feasibility conflict: two-stage inference requires at least
+2,560 calls, above the frozen 1,600-call pilot cap.

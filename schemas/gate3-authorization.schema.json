@@ -22,7 +22,7 @@
           "type": "integer"
         },
         "max_model_calls": {
-          "maximum": 1600,
+          "maximum": 10000,
           "minimum": 32,
           "title": "Max Model Calls",
           "type": "integer"

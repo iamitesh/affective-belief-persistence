@@ -106,6 +106,17 @@ variable names only.
   `1e5a3fad4bae0c1df518c0d1b87f7479aeb788dd`
 - Merged: 2026-08-24
 
+### Budget-feasibility correction
+
+- Pull request: [#29](https://github.com/iamitesh/affective-belief-persistence/pull/29)
+- Accepted correction head:
+  `39d3f6de2f8412b8c28e80d72df1bcdaa553abf4`
+- CI: run 69 passed on Python 3.11 and Python 3.12 with no review comments
+  or unresolved threads.
+- Merge commit:
+  `3a419d3c84b749406a12dcc3b632a816bfeb1a23`
+- Merged: 2026-08-24
+
 ## Handoff
 
 When the research owner supplies the missing external decisions, update only

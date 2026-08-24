@@ -7,7 +7,7 @@
 - Dependency: Issue #14 merged at
   `2ca55e08b99c73d8703ff83114ae5a821702225c`
 - Started: 2026-08-24
-- Status: offline preflight implemented; pilot blocked before transport
+- Status: offline preflight merged; pilot blocked before transport
 - Scope: explicit authorization, immutable source locks, hard budgets, typed
   evidence, downstream stop, and pilot handoff
 
@@ -88,6 +88,17 @@ variable names only.
 6. Executing commit matching authorization.
 7. Active authorization window.
 8. Available local or remote runtime.
+
+## Publication record
+
+- Pull request: [#28](https://github.com/iamitesh/affective-belief-persistence/pull/28)
+- Accepted Phase A head:
+  `dc466b6ed74f4b5d521e67ebd9f311eef031d6ce`
+- CI: run 64 passed on Python 3.11 and Python 3.12 with no review comments
+  or unresolved threads.
+- Merge commit:
+  `1e5a3fad4bae0c1df518c0d1b87f7479aeb788dd`
+- Merged: 2026-08-24
 
 ## Handoff
 

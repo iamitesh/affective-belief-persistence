@@ -7,7 +7,7 @@
   "path": "artifacts/orchestration/gate-3.json",
   "status": "blocked",
   "evidence_label": "gate3_preflight_blocker_evidence",
-  "preflight_sha256": "b679442d0f3ea17d3a7bc0f4c93da02add061886b3c4cbec7f3fff7b337528ee",
+  "preflight_sha256": "43fc59058e598deb41715dc09acfaade0c847b7464abeee8c8e9b1e986629093",
   "authorization_sha256": "c85304da92c38008a4d4a217fd8976dcf073c49ab8446ca44859c759c3a16d53",
   "consumed_artifacts": [
     {
@@ -47,6 +47,7 @@
     "adapter bytes, provider, model, revision, prompt and live-call flag must match",
     "only credential presence is checked; secret values are never persisted",
     "hard call, input/output token, monetary and wall-clock limits are required",
+    "two-stage action/language inference needs at least 2,560 pilot calls, but the frozen experiment cap is 1,600",
     "the executing checkout must match the supervisor-authorized commit",
     "the time-bounded Gate 3 authorization must be active at preflight",
     "the selected local or remote model transport must pass a no-output capability check"
@@ -58,5 +59,5 @@
   "scientific_claims_authorized": false,
   "external_publication_authorized": false,
   "subjective_state_claims_authorized": false,
-  "evidence_sha256": "8c57534f9f76218f4e2d28daa10171c86f763894cc30dc288f78faa05d1562ca"
+  "evidence_sha256": "9e43f3f7d8f22abcf206135bfd0c1b7b9be628276ee7655963d37c2b6dae4ce3"
 }

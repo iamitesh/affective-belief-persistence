@@ -40,6 +40,8 @@ METRIC_BUNDLE_PATHS = (
     "src/affective_belief_persistence/evaluation/metrics.py",
     "src/affective_belief_persistence/evaluation/registry.py",
 )
+PILOT_TRAJECTORY_DAYS = 40
+MINIMUM_PROVIDER_CALLS_PER_DAY = 2
 
 
 def _regular_file(root: Path, relative: str) -> Path:
@@ -141,6 +143,21 @@ def _model_adapter_ready(authorization: Gate3Authorization, root: Path) -> bool:
     )
 
 
+def _pilot_call_budget_feasible(
+    authorization: Gate3Authorization,
+    *,
+    configured_max_calls: int,
+    assignment_count: int,
+) -> bool:
+    minimum_calls = assignment_count * PILOT_TRAJECTORY_DAYS * MINIMUM_PROVIDER_CALLS_PER_DAY
+    return (
+        authorization.budget is not None
+        and authorization.budget.max_model_calls >= minimum_calls
+        and configured_max_calls >= minimum_calls
+        and authorization.budget.max_model_calls <= configured_max_calls
+    )
+
+
 def run_gate3_preflight(
     authorization: Gate3Authorization,
     *,
@@ -159,6 +176,9 @@ def run_gate3_preflight(
         project_root=root,
     )
     pilot = expand_experiment_matrix(loaded, "pilot")
+    pilot_design = loaded.experiments["pilot"].design
+    if pilot_design is None:
+        raise Gate3PreflightError("pilot experiment is missing its frozen design")
     available = set(os.environ) if environment_names is None else environment_names
     credential_name = authorization.credential.environment_variable
     checked_at = datetime.now(UTC) if now is None else now
@@ -234,6 +254,22 @@ def run_gate3_preflight(
             check_id="budget-authorized",
             status=CheckStatus.PASSED if authorization.budget is not None else CheckStatus.BLOCKED,
             detail="hard call, input/output token, monetary and wall-clock limits are required",
+        ),
+        PreflightCheck(
+            check_id="pilot-call-budget-feasible",
+            status=(
+                CheckStatus.PASSED
+                if _pilot_call_budget_feasible(
+                    authorization,
+                    configured_max_calls=pilot_design.limits.max_model_calls,
+                    assignment_count=len(pilot.assignments),
+                )
+                else CheckStatus.BLOCKED
+            ),
+            detail=(
+                "two-stage action/language inference needs at least 2,560 pilot calls, "
+                "but the frozen experiment cap is 1,600"
+            ),
         ),
         PreflightCheck(
             check_id="code-commit-matches",

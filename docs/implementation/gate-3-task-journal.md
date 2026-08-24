@@ -33,7 +33,7 @@ variable names only.
 | Preflight engine | Completed | Hash, adapter, commit, credential, runtime, expiry and budget checks |
 | Pre-action budgets | Completed | Call/input/output/cost/time reservation and settlement |
 | Downstream stop | Completed | Only typed `passed` evidence is consumable |
-| Current evidence | Completed | Blocked, zero trajectories, zero calls, eight explicit blockers |
+| Current evidence | Completed | Blocked, zero trajectories, zero calls, nine explicit blockers |
 | Live pilot | Blocked | Exact model, runtime/access and budget authorization absent |
 
 ## Critical decisions
@@ -52,6 +52,10 @@ variable names only.
    existence cannot satisfy a dependency.
 8. Pilot execution will preserve failures and may fail Gate 3. A failed pilot
    is evidence, not permission to alter thresholds or replace cells silently.
+9. Two provider stages across 32 × 40 trajectory-days require at least 2,560
+   calls. The frozen 1,600-call cap is internally infeasible and must be changed
+   or the execution schedule reduced before authorization, without inspecting
+   any outcome.
 
 ## Frozen preflight evidence
 
@@ -61,22 +65,22 @@ variable names only.
 - Authorization SHA-256:
   `c85304da92c38008a4d4a217fd8976dcf073c49ab8446ca44859c759c3a16d53`
 - Preflight SHA-256:
-  `b679442d0f3ea17d3a7bc0f4c93da02add061886b3c4cbec7f3fff7b337528ee`
+  `43fc59058e598deb41715dc09acfaade0c847b7464abeee8c8e9b1e986629093`
 - Gate 3 evidence SHA-256:
-  `8c57534f9f76218f4e2d28daa10171c86f763894cc30dc288f78faa05d1562ca`
+  `9e43f3f7d8f22abcf206135bfd0c1b7b9be628276ee7655963d37c2b6dae4ce3`
 - Started/valid/invalid/missing trajectories: 0/0/0/0
 - Live calls / paid calls: 0 / 0
 
 ## Verification evidence
 
-- Gate 3 slice: 11 tests passed at 86.24% branch-aware package coverage.
+- Gate 3 slice: 11 tests passed at 86.11% branch-aware package coverage.
 - Strict MyPy: 77 source files passed.
 - Ruff formatting and linting passed.
 - Registered schemas: 45 current generated contracts, including Gate 3
   authorization and evidence schemas.
 - Smoke experiment configuration and the complete autonomous workflow validate.
 - The reproduction command regenerates the exact committed blocked evidence.
-- Repository: 250 tests passed at 87.13% branch-aware coverage.
+- Repository: 250 tests passed at 87.12% branch-aware coverage.
 
 ## Remaining blockers
 
@@ -88,6 +92,8 @@ variable names only.
 6. Executing commit matching authorization.
 7. Active authorization window.
 8. Available local or remote runtime.
+9. Outcome-blind resolution of the 2,560-minimum versus 1,600-cap call-budget
+   conflict.
 
 ## Publication record
 

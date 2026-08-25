@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from datetime import datetime
+from datetime import date, datetime
 from enum import StrEnum
 from typing import Literal
 
@@ -110,6 +110,47 @@ class Gate3Budget(Gate3Model):
     max_wall_clock_seconds: float = Field(gt=0, le=43200)
 
 
+class Gate3CallBudgetAmendment(Gate3Model):
+    """Outcome-blind approval of the pilot call ceiling, not provider transport."""
+
+    schema_version: Literal["1.0"] = "1.0"
+    amendment_id: Literal["gate-3-pilot-call-budget-amendment-v1"]
+    issue_number: Literal[27]
+    decision: Literal["approved"]
+    scope: Literal["pilot-call-cap-only"]
+    approved_by: Literal["research-owner"]
+    approved_on: date
+    previous_max_model_calls: Literal[1600]
+    approved_max_model_calls: Literal[3200]
+    assigned_trajectories: Literal[32]
+    trajectory_days: Literal[40]
+    provider_stages_per_day: Literal[2]
+    minimum_required_model_calls: Literal[2560]
+    repair_retry_reserve_calls: Literal[640]
+    reserve_fraction: float = Field(gt=0, le=1)
+    preserves_assignments: Literal[True]
+    preserves_trajectory_days: Literal[True]
+    preserves_provider_stages: Literal[True]
+    outcomes_generated_or_inspected: Literal[False]
+    live_calls_made: Literal[0]
+    paid_calls_made: Literal[0]
+    authorizes_transport: Literal[False]
+    authorizes_token_cost_runtime_budget: Literal[False]
+
+    @model_validator(mode="after")
+    def validate_call_arithmetic(self) -> Gate3CallBudgetAmendment:
+        minimum = self.assigned_trajectories * self.trajectory_days * self.provider_stages_per_day
+        if self.minimum_required_model_calls != minimum:
+            raise ValueError("minimum model calls must match trajectories x days x stages")
+        if self.approved_max_model_calls != minimum + self.repair_retry_reserve_calls:
+            raise ValueError("approved model calls must equal the minimum plus the reserve")
+        if self.repair_retry_reserve_calls / minimum != self.reserve_fraction:
+            raise ValueError("repair/retry reserve fraction does not match the approved cap")
+        if self.previous_max_model_calls >= minimum:
+            raise ValueError("call-budget amendment must document the infeasible prior cap")
+        return self
+
+
 class Gate3SourceLocks(Gate3Model):
     issue14_artifact_sha256: Sha256
     gate1_artifact_sha256: Sha256
@@ -120,6 +161,7 @@ class Gate3SourceLocks(Gate3Model):
     prompt_bundle_sha256: Sha256
     metric_bundle_sha256: Sha256
     pilot_matrix_sha256: Sha256
+    call_budget_amendment_sha256: Sha256
 
 
 class Gate3Authorization(Gate3Model):
@@ -313,5 +355,6 @@ class Gate3Evidence(Gate3Model):
 
 GATE3_SCHEMA_MODELS: dict[str, type[BaseModel]] = {
     "gate3-authorization.schema.json": Gate3Authorization,
+    "gate3-call-budget-amendment.schema.json": Gate3CallBudgetAmendment,
     "gate3-evidence.schema.json": Gate3Evidence,
 }

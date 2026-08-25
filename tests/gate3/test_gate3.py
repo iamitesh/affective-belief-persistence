@@ -19,6 +19,7 @@ from affective_belief_persistence.gate3.contracts import (
     CheckStatus,
     Gate3Authorization,
     Gate3Budget,
+    Gate3CallBudgetAmendment,
     Gate3CredentialReference,
     Gate3Evidence,
     Gate3ModelBinding,
@@ -29,6 +30,7 @@ from affective_belief_persistence.gate3.preflight import (
     build_blocked_evidence,
     collect_source_locks,
     load_gate3_authorization,
+    load_gate3_call_budget_amendment,
     require_passed_gate3_evidence,
     run_gate3_preflight,
 )
@@ -37,7 +39,7 @@ from affective_belief_persistence.gate3.preflight import (
 def _budget(**updates: object) -> Gate3Budget:
     values: dict[str, object] = {
         "max_trajectories": 32,
-        "max_model_calls": 1600,
+        "max_model_calls": 3200,
         "max_input_tokens": 100_000,
         "max_output_tokens": 50_000,
         "max_estimated_cost_usd": 0,
@@ -118,8 +120,18 @@ def _passed_evidence() -> Gate3Evidence:
 def test_schema_mapping_and_withheld_config_are_strict(project_root: Path) -> None:
     assert set(GATE3_SCHEMA_MODELS) == {
         "gate3-authorization.schema.json",
+        "gate3-call-budget-amendment.schema.json",
         "gate3-evidence.schema.json",
     }
+    amendment = load_gate3_call_budget_amendment(
+        project_root / "configs/gate3/call-budget-amendment.yaml",
+        project_root=project_root,
+    )
+    assert amendment.approved_max_model_calls == 3200
+    assert amendment.minimum_required_model_calls == 2560
+    assert amendment.repair_retry_reserve_calls == 640
+    assert amendment.authorizes_transport is False
+    assert amendment.outcomes_generated_or_inspected is False
     authorization = load_gate3_authorization(
         project_root / "configs/gate3/pilot-authorization.yaml",
         project_root=project_root,
@@ -180,6 +192,7 @@ def test_current_environment_produces_explicit_blocked_evidence(project_root: Pa
     assert checks["issue14-accepted"] is CheckStatus.PASSED
     assert checks["pilot-matrix-exact"] is CheckStatus.PASSED
     assert checks["source-locks-match"] is CheckStatus.PASSED
+    assert checks["call-budget-amendment-applies"] is CheckStatus.PASSED
     assert checks["authorization-approved"] is CheckStatus.BLOCKED
     assert checks["model-adapter-matches"] is CheckStatus.BLOCKED
     assert checks["code-commit-matches"] is CheckStatus.BLOCKED
@@ -217,6 +230,22 @@ def test_source_drift_is_a_failed_preflight_check(project_root: Path) -> None:
     assert preflight.status == "blocked"
 
 
+def test_call_budget_amendment_rejects_arithmetic_drift(project_root: Path) -> None:
+    amendment = load_gate3_call_budget_amendment(
+        project_root / "configs/gate3/call-budget-amendment.yaml",
+        project_root=project_root,
+    )
+    with pytest.raises(ValidationError):
+        Gate3CallBudgetAmendment.model_validate(
+            amendment.model_dump() | {"repair_retry_reserve_calls": 639}
+        )
+    with pytest.raises(Gate3PreflightError, match="must be the regular file"):
+        load_gate3_call_budget_amendment(
+            project_root / "configs/gate3/pilot-authorization.yaml",
+            project_root=project_root,
+        )
+
+
 def test_complete_authorization_can_become_ready_only_with_runtime(
     project_root: Path,
     monkeypatch: pytest.MonkeyPatch,
@@ -227,10 +256,6 @@ def test_complete_authorization_can_become_ready_only_with_runtime(
     monkeypatch.setattr(
         "affective_belief_persistence.gate3.preflight._model_adapter_ready",
         lambda authorization, root: True,
-    )
-    monkeypatch.setattr(
-        "affective_belief_persistence.gate3.preflight._pilot_call_budget_feasible",
-        lambda authorization, configured_max_calls, assignment_count: True,
     )
     ready = run_gate3_preflight(
         authorization,
@@ -271,7 +296,8 @@ def test_actual_fixture_adapter_cannot_unlock_live_pilot(project_root: Path) -> 
     )
     checks = {check.check_id: check.status for check in result.checks}
     assert checks["model-adapter-matches"] is CheckStatus.BLOCKED
-    assert checks["pilot-call-budget-feasible"] is CheckStatus.BLOCKED
+    assert checks["call-budget-amendment-applies"] is CheckStatus.PASSED
+    assert checks["pilot-call-budget-feasible"] is CheckStatus.PASSED
     assert result.status == "blocked"
 
 

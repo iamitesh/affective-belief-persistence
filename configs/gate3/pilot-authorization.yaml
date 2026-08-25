@@ -26,6 +26,7 @@ source_locks:
   prompt_bundle_sha256: 3951fc6016d798f33f35712e8bef0f6b07b38025e19e47dfbb83a1a303414190
   metric_bundle_sha256: 343de65c25eab0d9ece431a0cfc49078f12204446826fec6068e33db355fa1ce
   pilot_matrix_sha256: 8c1393598603473768d1d0ebafed887ea52a11e75c28de74f12dfe45b1cb5459
+  call_budget_amendment_sha256: caea86606e15f3acc2baecb0cd902b313c0b7715ee0f84b7febcefb4d3331c90
 code_commit_sha: null
 authorized_by: null
 authorized_at: null

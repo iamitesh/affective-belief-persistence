@@ -6,14 +6,15 @@ Gate 3 is **blocked before transport**. The frozen pilot matrix contains 32
 unique assignments and all accepted upstream hashes match, but the workspace
 does not contain the external facts needed to authorize a real model run.
 
-Preflight also exposes a frozen-budget conflict: action and public language are
-separate provider stages on all 40 days. The 32-trajectory pilot therefore
-requires at least 2,560 successful calls before repairs or transport retries,
-while `configs/experiments/pilot.yaml` caps the pilot at 1,600 calls. This must
-be resolved before approval; credentials alone cannot make the pilot ready.
+The research owner approved an outcome-blind operational ceiling of 3,200
+model calls on 2026-08-25. The ceiling covers the 2,560 calls required by 32
+trajectories × 40 days × two provider stages plus a 640-call, 25% repair/retry
+reserve. `configs/gate3/call-budget-amendment.yaml` records the narrow change.
+It preserves the assignments, days, provider stages, thresholds, and outcomes.
+It supersedes only the original 1,600-call pilot ceiling.
 
-This is a successful preflight outcome, not a successful pilot. It generated no
-behavioral results and made zero live or paid calls.
+This call-cap approval is not transport authorization and is not a successful
+pilot. It generated no behavioral results and made zero live or paid calls.
 
 ## Required authorization
 
@@ -25,7 +26,8 @@ record. To change its decision to `approved`, the research owner must supply:
 - a live-enabled adapter config plus its SHA-256;
 - the executing Git commit;
 - a credential environment-variable name, never its value;
-- maximum calls, input tokens, output tokens, estimated USD cost, and runtime;
+- a maximum-call budget between 2,560 and 3,200, plus input-token,
+  output-token, estimated-USD-cost, and runtime ceilings;
 - named authorizer, approval time, and expiry time.
 
 Approval authorizes only the 32-trajectory exploratory pilot. It does not
@@ -40,11 +42,12 @@ Before transport, the implementation recomputes and compares:
 2. evaluation and pilot configuration hashes;
 3. dataset-manifest, prompt-bundle, and metric-code hashes;
 4. the exact 32-assignment matrix hash;
-5. adapter bytes and provider/model/revision/prompt fields;
-6. executing Git commit, credential presence, runtime availability, and active
+5. the approved amendment bytes and its 32 × 40 × two-stage arithmetic;
+6. adapter bytes and provider/model/revision/prompt fields;
+7. executing Git commit, credential presence, runtime availability, and active
    authorization window;
-7. hard call, token, cost, and time budgets.
-8. feasibility of the call cap against the two-stage 32 × 40 execution plan.
+8. hard call, token, cost, and time budgets;
+9. feasibility of the authorized call budget against the 2,560–3,200 range.
 
 Any mismatch blocks before a model request. No threshold is repaired after an
 outcome is visible.

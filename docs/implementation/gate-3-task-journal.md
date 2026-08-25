@@ -7,7 +7,8 @@
 - Dependency: Issue #14 merged at
   `2ca55e08b99c73d8703ff83114ae5a821702225c`
 - Started: 2026-08-24
-- Status: 3,200-call ceiling approved; pilot blocked before transport
+- Status: 3,200-call ceiling approved; runtime candidate proposed; pilot blocked
+  before transport
 - Scope: explicit authorization, immutable source locks, hard budgets, typed
   evidence, downstream stop, and pilot handoff
 
@@ -35,6 +36,7 @@ variable names only.
 | Downstream stop | Completed | Only typed `passed` evidence is consumable |
 | Current evidence | Completed | Blocked, zero trajectories, zero calls, nine explicit blockers |
 | Outcome-blind call-cap amendment | Completed | 2,560 scheduled calls + 640-call reserve = 3,200 hard ceiling |
+| Runtime selection analysis | Completed | Pinned Qwen/vLLM revision-stamping gateway proposed; live calls remain disabled |
 | Live pilot | Blocked | Exact model, runtime/access and budget authorization absent |
 
 ## Critical decisions
@@ -62,6 +64,10 @@ variable names only.
 11. The call-cap amendment does not authorize transport. Provider identity,
     credential presence, token/cost/runtime budgets, time window, and executing
     commit remain separate hard preflight requirements.
+12. The recommended runtime candidate is self-hosted vLLM behind a private
+    revision-stamping gateway. Direct vLLM is insufficient because its documented
+    OpenAI-compatible response does not prove the immutable model revision required
+    by the repository adapter and Gate 3 evidence.
 
 ## Approved call-cap amendment
 
@@ -79,6 +85,23 @@ variable names only.
 - Transport, token/cost/runtime, primary, and publication authorization: false
 - Durable decision: ADR-0024
 
+## Proposed runtime candidate
+
+- Model: `Qwen/Qwen2.5-7B-Instruct`
+- Immutable revision:
+  `4709f6c0771f0185a675b046268cdc1d1f2c74ce`
+- License: `Apache-2.0`
+- Proposed runtime: self-hosted vLLM behind a private revision-stamping gateway
+- Candidate config: `configs/models/qwen25-7b-vllm-gateway-candidate.yaml`
+- Candidate config SHA-256:
+  `eac2ac4daad1e4f62ec013a5481cc9c129160e5546424aece45d0fc97b93b20f`
+- Safety state: live calls disabled; cache disabled; raw-response persistence
+  disabled; pricing absent
+- Decision record: ADR-0025 (`proposed`, not accepted or transport-authorized)
+- Analysis: `docs/gate-3-runtime-selection.md`
+- Outcomes generated/inspected: false
+- Live calls / paid calls: 0 / 0
+
 ## Frozen preflight evidence
 
 - Pilot assignments: 32
@@ -95,20 +118,21 @@ variable names only.
 
 ## Verification evidence
 
-- Gate 3 slice: 12 tests passed at 85.82% branch-aware package coverage.
+- Gate 3 slice: 13 tests passed at 85.82% branch-aware package coverage.
 - Strict MyPy: 77 source files passed.
 - Ruff formatting and linting passed.
 - Registered schemas: 46 current generated contracts, including Gate 3
   authorization, call-budget-amendment, and evidence schemas.
 - Smoke experiment configuration and the complete autonomous workflow validate.
 - The reproduction command regenerates the exact committed blocked evidence.
-- Repository: 251 tests passed at 87.10% branch-aware coverage.
+- Repository: 252 tests passed at 87.10% branch-aware coverage.
 
 ## Remaining blockers
 
 1. Named, time-bounded pilot authorization.
-2. Provider, exact model ID/revision, license, and live adapter.
-3. Adapter bytes matching the authorized identity.
+2. Acceptance and implementation of the proposed gateway, or an equivalent
+   provider path that proves the exact immutable revision on every response.
+3. Live adapter/gateway bytes matching the authorized identity.
 4. Credential presence under a named environment variable.
 5. Call, input-token, output-token, cost, and runtime limits.
 6. A complete authorization call limit between 2,560 and 3,200.

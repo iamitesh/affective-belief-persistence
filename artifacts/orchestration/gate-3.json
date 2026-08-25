@@ -7,8 +7,8 @@
   "path": "artifacts/orchestration/gate-3.json",
   "status": "blocked",
   "evidence_label": "gate3_preflight_blocker_evidence",
-  "preflight_sha256": "43fc59058e598deb41715dc09acfaade0c847b7464abeee8c8e9b1e986629093",
-  "authorization_sha256": "c85304da92c38008a4d4a217fd8976dcf073c49ab8446ca44859c759c3a16d53",
+  "preflight_sha256": "faddab7bfb52d08187aa516992fe0994f7c3dcf0f92c94430743a566be3c8506",
+  "authorization_sha256": "a0f4bc0a2f5ff4507f8fd78e1a6a83809d299961e9ce2489bd397b8a27ce6ab7",
   "consumed_artifacts": [
     {
       "artifact_id": "issue-14-metric-spec",
@@ -47,7 +47,7 @@
     "adapter bytes, provider, model, revision, prompt and live-call flag must match",
     "only credential presence is checked; secret values are never persisted",
     "hard call, input/output token, monetary and wall-clock limits are required",
-    "two-stage action/language inference needs at least 2,560 pilot calls, but the frozen experiment cap is 1,600",
+    "the complete authorization must reserve between 2,560 and 3,200 model calls under the approved pilot-only amendment",
     "the executing checkout must match the supervisor-authorized commit",
     "the time-bounded Gate 3 authorization must be active at preflight",
     "the selected local or remote model transport must pass a no-output capability check"
@@ -59,5 +59,5 @@
   "scientific_claims_authorized": false,
   "external_publication_authorized": false,
   "subjective_state_claims_authorized": false,
-  "evidence_sha256": "9e43f3f7d8f22abcf206135bfd0c1b7b9be628276ee7655963d37c2b6dae4ce3"
+  "evidence_sha256": "84cf101a0014578e2f82346de49eff5cc53eebca2375046c78607100ed8c6c44"
 }

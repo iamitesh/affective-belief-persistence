@@ -1,0 +1,149 @@
+{
+  "additionalProperties": false,
+  "description": "Outcome-blind approval of the pilot call ceiling, not provider transport.",
+  "properties": {
+    "amendment_id": {
+      "const": "gate-3-pilot-call-budget-amendment-v1",
+      "title": "Amendment Id",
+      "type": "string"
+    },
+    "approved_by": {
+      "const": "research-owner",
+      "title": "Approved By",
+      "type": "string"
+    },
+    "approved_max_model_calls": {
+      "const": 3200,
+      "title": "Approved Max Model Calls",
+      "type": "integer"
+    },
+    "approved_on": {
+      "format": "date",
+      "title": "Approved On",
+      "type": "string"
+    },
+    "assigned_trajectories": {
+      "const": 32,
+      "title": "Assigned Trajectories",
+      "type": "integer"
+    },
+    "authorizes_token_cost_runtime_budget": {
+      "const": false,
+      "title": "Authorizes Token Cost Runtime Budget",
+      "type": "boolean"
+    },
+    "authorizes_transport": {
+      "const": false,
+      "title": "Authorizes Transport",
+      "type": "boolean"
+    },
+    "decision": {
+      "const": "approved",
+      "title": "Decision",
+      "type": "string"
+    },
+    "issue_number": {
+      "const": 27,
+      "title": "Issue Number",
+      "type": "integer"
+    },
+    "live_calls_made": {
+      "const": 0,
+      "title": "Live Calls Made",
+      "type": "integer"
+    },
+    "minimum_required_model_calls": {
+      "const": 2560,
+      "title": "Minimum Required Model Calls",
+      "type": "integer"
+    },
+    "outcomes_generated_or_inspected": {
+      "const": false,
+      "title": "Outcomes Generated Or Inspected",
+      "type": "boolean"
+    },
+    "paid_calls_made": {
+      "const": 0,
+      "title": "Paid Calls Made",
+      "type": "integer"
+    },
+    "preserves_assignments": {
+      "const": true,
+      "title": "Preserves Assignments",
+      "type": "boolean"
+    },
+    "preserves_provider_stages": {
+      "const": true,
+      "title": "Preserves Provider Stages",
+      "type": "boolean"
+    },
+    "preserves_trajectory_days": {
+      "const": true,
+      "title": "Preserves Trajectory Days",
+      "type": "boolean"
+    },
+    "previous_max_model_calls": {
+      "const": 1600,
+      "title": "Previous Max Model Calls",
+      "type": "integer"
+    },
+    "provider_stages_per_day": {
+      "const": 2,
+      "title": "Provider Stages Per Day",
+      "type": "integer"
+    },
+    "repair_retry_reserve_calls": {
+      "const": 640,
+      "title": "Repair Retry Reserve Calls",
+      "type": "integer"
+    },
+    "reserve_fraction": {
+      "exclusiveMinimum": 0,
+      "maximum": 1,
+      "title": "Reserve Fraction",
+      "type": "number"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "scope": {
+      "const": "pilot-call-cap-only",
+      "title": "Scope",
+      "type": "string"
+    },
+    "trajectory_days": {
+      "const": 40,
+      "title": "Trajectory Days",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "amendment_id",
+    "issue_number",
+    "decision",
+    "scope",
+    "approved_by",
+    "approved_on",
+    "previous_max_model_calls",
+    "approved_max_model_calls",
+    "assigned_trajectories",
+    "trajectory_days",
+    "provider_stages_per_day",
+    "minimum_required_model_calls",
+    "repair_retry_reserve_calls",
+    "reserve_fraction",
+    "preserves_assignments",
+    "preserves_trajectory_days",
+    "preserves_provider_stages",
+    "outcomes_generated_or_inspected",
+    "live_calls_made",
+    "paid_calls_made",
+    "authorizes_transport",
+    "authorizes_token_cost_runtime_budget"
+  ],
+  "title": "Gate3CallBudgetAmendment",
+  "type": "object"
+}

@@ -28,5 +28,7 @@ uncertainty, null results, and the Gate 3 review decision.
 The current machine-readable blocker is
 `artifacts/orchestration/gate-3.json`. It records zero started trajectories,
 zero live calls, zero paid calls, and nine explicit preflight blockers. The
-ninth is a protocol feasibility conflict: two-stage inference requires at least
-2,560 calls, above the frozen 1,600-call pilot cap.
+original call-cap conflict is resolved outcome-blind: the approved 3,200-call
+ceiling covers 2,560 scheduled calls plus a 640-call repair/retry reserve. The
+remaining call-budget blocker requires the complete authorization to select a
+maximum between 2,560 and 3,200 and to supply token, cost, and runtime ceilings.

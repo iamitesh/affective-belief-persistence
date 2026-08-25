@@ -12,6 +12,7 @@ _EXPORTS: dict[str, str] = {
     "CheckStatus": ".contracts",
     "Gate3Authorization": ".contracts",
     "Gate3Budget": ".contracts",
+    "Gate3CallBudgetAmendment": ".contracts",
     "Gate3CredentialReference": ".contracts",
     "Gate3Evidence": ".contracts",
     "Gate3ModelBinding": ".contracts",
@@ -25,6 +26,7 @@ _EXPORTS: dict[str, str] = {
     "build_blocked_evidence": ".preflight",
     "collect_source_locks": ".preflight",
     "load_gate3_authorization": ".preflight",
+    "load_gate3_call_budget_amendment": ".preflight",
     "require_passed_gate3_evidence": ".preflight",
     "run_gate3_preflight": ".preflight",
 }

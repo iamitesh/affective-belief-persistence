@@ -17,6 +17,7 @@ from affective_belief_persistence.gate3.contracts import (
     AuthorizationDecision,
     CheckStatus,
     Gate3Authorization,
+    Gate3CallBudgetAmendment,
     Gate3Evidence,
     Gate3PreflightResult,
     Gate3SourceLocks,
@@ -42,6 +43,7 @@ METRIC_BUNDLE_PATHS = (
 )
 PILOT_TRAJECTORY_DAYS = 40
 MINIMUM_PROVIDER_CALLS_PER_DAY = 2
+CALL_BUDGET_AMENDMENT_PATH = "configs/gate3/call-budget-amendment.yaml"
 
 
 def _regular_file(root: Path, relative: str) -> Path:
@@ -88,6 +90,7 @@ def collect_source_locks(project_root: Path) -> Gate3SourceLocks:
         prompt_bundle_sha256=_bundle_sha256(root, PROMPT_BUNDLE_PATHS),
         metric_bundle_sha256=_bundle_sha256(root, METRIC_BUNDLE_PATHS),
         pilot_matrix_sha256=pilot.matrix_sha256,
+        call_budget_amendment_sha256=sha256_file(_regular_file(root, CALL_BUDGET_AMENDMENT_PATH)),
     )
 
 
@@ -101,6 +104,24 @@ def load_gate3_authorization(path: Path, *, project_root: Path) -> Gate3Authoriz
         return Gate3Authorization.model_validate(load_yaml(resolved))
     except (OSError, ValueError, ValidationError) as exc:
         raise Gate3PreflightError(f"invalid Gate 3 authorization {path}: {exc}") from exc
+
+
+def load_gate3_call_budget_amendment(
+    path: Path,
+    *,
+    project_root: Path,
+) -> Gate3CallBudgetAmendment:
+    root = project_root.resolve()
+    expected = (root / CALL_BUDGET_AMENDMENT_PATH).resolve()
+    resolved = path.resolve()
+    if path.is_symlink() or resolved != expected or not resolved.is_file():
+        raise Gate3PreflightError(
+            f"Gate 3 call-budget amendment must be the regular file {CALL_BUDGET_AMENDMENT_PATH}"
+        )
+    try:
+        return Gate3CallBudgetAmendment.model_validate(load_yaml(resolved))
+    except (OSError, ValueError, ValidationError) as exc:
+        raise Gate3PreflightError(f"invalid Gate 3 call-budget amendment {path}: {exc}") from exc
 
 
 def _accepted_issue14(root: Path) -> bool:
@@ -146,15 +167,28 @@ def _model_adapter_ready(authorization: Gate3Authorization, root: Path) -> bool:
 def _pilot_call_budget_feasible(
     authorization: Gate3Authorization,
     *,
-    configured_max_calls: int,
+    amendment: Gate3CallBudgetAmendment,
     assignment_count: int,
 ) -> bool:
     minimum_calls = assignment_count * PILOT_TRAJECTORY_DAYS * MINIMUM_PROVIDER_CALLS_PER_DAY
     return (
         authorization.budget is not None
         and authorization.budget.max_model_calls >= minimum_calls
-        and configured_max_calls >= minimum_calls
-        and authorization.budget.max_model_calls <= configured_max_calls
+        and authorization.budget.max_model_calls <= amendment.approved_max_model_calls
+    )
+
+
+def _call_budget_amendment_applies(
+    amendment: Gate3CallBudgetAmendment,
+    *,
+    configured_max_calls: int,
+    assignment_count: int,
+) -> bool:
+    return (
+        configured_max_calls == amendment.previous_max_model_calls
+        and assignment_count == amendment.assigned_trajectories
+        and PILOT_TRAJECTORY_DAYS == amendment.trajectory_days
+        and MINIMUM_PROVIDER_CALLS_PER_DAY == amendment.provider_stages_per_day
     )
 
 
@@ -170,6 +204,10 @@ def run_gate3_preflight(
     """Evaluate authorization and immutable inputs without invoking a provider."""
 
     root = project_root.resolve()
+    call_budget_amendment = load_gate3_call_budget_amendment(
+        root / CALL_BUDGET_AMENDMENT_PATH,
+        project_root=root,
+    )
     actual_locks = collect_source_locks(root)
     loaded = load_evaluation_config(
         root / "configs/evaluation/default.yaml",
@@ -213,6 +251,22 @@ def run_gate3_preflight(
                 else CheckStatus.FAILED
             ),
             detail="all Gate 1, Gate 2, Issue #14, dataset, prompt, metric and config hashes match",
+        ),
+        PreflightCheck(
+            check_id="call-budget-amendment-applies",
+            status=(
+                CheckStatus.PASSED
+                if _call_budget_amendment_applies(
+                    call_budget_amendment,
+                    configured_max_calls=pilot_design.limits.max_model_calls,
+                    assignment_count=len(pilot.assignments),
+                )
+                else CheckStatus.FAILED
+            ),
+            detail=(
+                "the outcome-blind 3,200-call amendment must match the frozen "
+                "32 x 40 x two-stage pilot"
+            ),
         ),
         PreflightCheck(
             check_id="authorization-approved",
@@ -261,14 +315,14 @@ def run_gate3_preflight(
                 CheckStatus.PASSED
                 if _pilot_call_budget_feasible(
                     authorization,
-                    configured_max_calls=pilot_design.limits.max_model_calls,
+                    amendment=call_budget_amendment,
                     assignment_count=len(pilot.assignments),
                 )
                 else CheckStatus.BLOCKED
             ),
             detail=(
-                "two-stage action/language inference needs at least 2,560 pilot calls, "
-                "but the frozen experiment cap is 1,600"
+                "the complete authorization must reserve between 2,560 and 3,200 "
+                "model calls under the approved pilot-only amendment"
             ),
         ),
         PreflightCheck(

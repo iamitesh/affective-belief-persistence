@@ -7,7 +7,7 @@
 - Dependency: Issue #14 merged at
   `2ca55e08b99c73d8703ff83114ae5a821702225c`
 - Started: 2026-08-24
-- Status: offline preflight merged; pilot blocked before transport
+- Status: 3,200-call ceiling approved; pilot blocked before transport
 - Scope: explicit authorization, immutable source locks, hard budgets, typed
   evidence, downstream stop, and pilot handoff
 
@@ -34,6 +34,7 @@ variable names only.
 | Pre-action budgets | Completed | Call/input/output/cost/time reservation and settlement |
 | Downstream stop | Completed | Only typed `passed` evidence is consumable |
 | Current evidence | Completed | Blocked, zero trajectories, zero calls, nine explicit blockers |
+| Outcome-blind call-cap amendment | Completed | 2,560 scheduled calls + 640-call reserve = 3,200 hard ceiling |
 | Live pilot | Blocked | Exact model, runtime/access and budget authorization absent |
 
 ## Critical decisions
@@ -52,10 +53,31 @@ variable names only.
    existence cannot satisfy a dependency.
 8. Pilot execution will preserve failures and may fail Gate 3. A failed pilot
    is evidence, not permission to alter thresholds or replace cells silently.
-9. Two provider stages across 32 × 40 trajectory-days require at least 2,560
-   calls. The frozen 1,600-call cap is internally infeasible and must be changed
-   or the execution schedule reduced before authorization, without inspecting
-   any outcome.
+9. Two provider stages across 32 × 40 trajectory-days require exactly 2,560
+   scheduled calls before repairs or retries.
+10. On 2026-08-25 the research owner approved a 3,200-call operational ceiling:
+    2,560 scheduled calls plus a 640-call, 25% repair/retry reserve. No outcome
+    existed or was inspected, and the 32 assignments, 40 days, two stages,
+    matrix, hypotheses, metrics, and thresholds remain unchanged.
+11. The call-cap amendment does not authorize transport. Provider identity,
+    credential presence, token/cost/runtime budgets, time window, and executing
+    commit remain separate hard preflight requirements.
+
+## Approved call-cap amendment
+
+- Decision date: 2026-08-25
+- Record: `configs/gate3/call-budget-amendment.yaml`
+- Scope: Gate 3 exploratory pilot call ceiling only
+- Previous ceiling: 1,600 calls
+- Minimum scheduled calls: 2,560
+- Repair/retry reserve: 640 calls (25%)
+- Approved hard ceiling: 3,200 calls
+- Amendment SHA-256:
+  `caea86606e15f3acc2baecb0cd902b313c0b7715ee0f84b7febcefb4d3331c90`
+- Outcomes generated/inspected: false
+- Live calls / paid calls: 0 / 0
+- Transport, token/cost/runtime, primary, and publication authorization: false
+- Durable decision: ADR-0024
 
 ## Frozen preflight evidence
 
@@ -63,24 +85,24 @@ variable names only.
 - Pilot matrix SHA-256:
   `8c1393598603473768d1d0ebafed887ea52a11e75c28de74f12dfe45b1cb5459`
 - Authorization SHA-256:
-  `c85304da92c38008a4d4a217fd8976dcf073c49ab8446ca44859c759c3a16d53`
+  `a0f4bc0a2f5ff4507f8fd78e1a6a83809d299961e9ce2489bd397b8a27ce6ab7`
 - Preflight SHA-256:
-  `43fc59058e598deb41715dc09acfaade0c847b7464abeee8c8e9b1e986629093`
+  `faddab7bfb52d08187aa516992fe0994f7c3dcf0f92c94430743a566be3c8506`
 - Gate 3 evidence SHA-256:
-  `9e43f3f7d8f22abcf206135bfd0c1b7b9be628276ee7655963d37c2b6dae4ce3`
+  `84cf101a0014578e2f82346de49eff5cc53eebca2375046c78607100ed8c6c44`
 - Started/valid/invalid/missing trajectories: 0/0/0/0
 - Live calls / paid calls: 0 / 0
 
 ## Verification evidence
 
-- Gate 3 slice: 11 tests passed at 86.11% branch-aware package coverage.
+- Gate 3 slice: 12 tests passed at 85.82% branch-aware package coverage.
 - Strict MyPy: 77 source files passed.
 - Ruff formatting and linting passed.
-- Registered schemas: 45 current generated contracts, including Gate 3
-  authorization and evidence schemas.
+- Registered schemas: 46 current generated contracts, including Gate 3
+  authorization, call-budget-amendment, and evidence schemas.
 - Smoke experiment configuration and the complete autonomous workflow validate.
 - The reproduction command regenerates the exact committed blocked evidence.
-- Repository: 250 tests passed at 87.12% branch-aware coverage.
+- Repository: 251 tests passed at 87.10% branch-aware coverage.
 
 ## Remaining blockers
 
@@ -89,11 +111,10 @@ variable names only.
 3. Adapter bytes matching the authorized identity.
 4. Credential presence under a named environment variable.
 5. Call, input-token, output-token, cost, and runtime limits.
-6. Executing commit matching authorization.
-7. Active authorization window.
-8. Available local or remote runtime.
-9. Outcome-blind resolution of the 2,560-minimum versus 1,600-cap call-budget
-   conflict.
+6. A complete authorization call limit between 2,560 and 3,200.
+7. Executing commit matching authorization.
+8. Active authorization window.
+9. Available local or remote runtime.
 
 ## Publication record
 
@@ -121,5 +142,6 @@ variable names only.
 
 When the research owner supplies the missing external decisions, update only
 the authorization and live adapter records, recompute their hashes, rerun the
-preflight, and review the `ready` record before transport. The pilot remains
+preflight, and review the `ready` record before transport. The authorization's
+call budget must be at least 2,560 and no more than 3,200. The pilot remains
 exploratory; primary execution still requires its own post-Gate-3 decision.

@@ -35,8 +35,9 @@ primary experiment to consume a false dependency.
    `passed`; existence of the file or artifact ID is insufficient.
 8. Treat call-budget feasibility as a preflight invariant. The two-stage
    action/language adapter requires at least 2,560 calls for 32 trajectories ×
-   40 days, which exceeds the frozen 1,600-call pilot cap. Gate 3 cannot become
-   ready until this conflict is resolved through outcome-blind change control.
+   40 days, which exceeded the original 1,600-call pilot cap. ADR-0024 records
+   the outcome-blind 3,200-call correction. Gate 3 still cannot become ready
+   until the complete call/token/cost/runtime authorization is supplied.
 
 ## Consequences
 
@@ -46,8 +47,8 @@ primary experiment to consume a false dependency.
 - Any input, adapter, or executing-commit drift blocks before transport.
 - Gate 3 remains open until the real 32-trajectory pilot meets every frozen
   expansion rule.
-- A credential or runtime cannot unlock an execution whose minimum call count
-  already exceeds its protocol cap.
+- A credential or runtime cannot unlock execution unless its authorized call
+  budget is at least 2,560 and no more than the amended 3,200-call ceiling.
 - Issue #15 and primary execution remain blocked; the optional Issue #13 branch
   may prepare a skip plan but cannot train without its independent budget.
 
@@ -78,3 +79,4 @@ primary experiment to consume a false dependency.
 - [Issue #14](https://github.com/iamitesh/affective-belief-persistence/issues/14)
 - [Evaluation engine](../evaluation-engine.md)
 - [Gate 3 pilot boundary](../gate-3-pilot.md)
+- [ADR-0024: pilot call-cap amendment](0024-outcome-blind-gate-3-call-cap-amendment.md)

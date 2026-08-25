@@ -198,6 +198,11 @@
     "Gate3SourceLocks": {
       "additionalProperties": false,
       "properties": {
+        "call_budget_amendment_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Call Budget Amendment Sha256",
+          "type": "string"
+        },
         "dataset_manifest_sha256": {
           "pattern": "^[0-9a-f]{64}$",
           "title": "Dataset Manifest Sha256",
@@ -253,7 +258,8 @@
         "dataset_manifest_sha256",
         "prompt_bundle_sha256",
         "metric_bundle_sha256",
-        "pilot_matrix_sha256"
+        "pilot_matrix_sha256",
+        "call_budget_amendment_sha256"
       ],
       "title": "Gate3SourceLocks",
       "type": "object"

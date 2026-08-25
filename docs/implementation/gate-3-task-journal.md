@@ -173,6 +173,19 @@ variable names only.
   `bcd90f49654886572487f8f36fe115d45f163169`
 - Merged: 2026-08-25
 
+### Runtime candidate proposal
+
+- Pull request: [#31](https://github.com/iamitesh/affective-belief-persistence/pull/31)
+- Accepted proposal head:
+  `1cdb0397f6dd9eb44310f9747ea52b4688b06a98`
+- CI: run 78 passed on Python 3.11 and Python 3.12 with no review comments,
+  review submissions, or unresolved threads.
+- Merge commit:
+  `fe9d6613a482eb280ba742eed6f4dc15de2df049`
+- Merged: 2026-08-25
+- Gate effect: none. ADR-0025 remains proposed, live transport remains disabled,
+  and Gate 3 remains blocked before transport.
+
 ## Handoff
 
 When the research owner supplies the missing external decisions, update only

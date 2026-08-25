@@ -34,6 +34,24 @@ Approval authorizes only the 32-trajectory exploratory pilot. It does not
 authorize the 320-trajectory primary batch, training, external publication, or
 subjective-state claims.
 
+## Proposed runtime candidate
+
+The current recommendation is a self-hosted vLLM server loading
+`Qwen/Qwen2.5-7B-Instruct` at immutable revision
+`4709f6c0771f0185a675b046268cdc1d1f2c74ce`, fronted by a private gateway that
+verifies a hash-bound launch manifest and adds the proven revision to every
+response. Direct vLLM is not sufficient for this repository because its
+documented OpenAI-compatible response does not prove the loaded immutable
+revision.
+
+The disabled candidate is recorded in
+`configs/models/qwen25-7b-vllm-gateway-candidate.yaml`; its SHA-256 is
+`eac2ac4daad1e4f62ec013a5481cc9c129160e5546424aece45d0fc97b93b20f`.
+`live_calls_enabled`, cache persistence, and raw-response retention are all
+false, and no pricing is asserted. ADR-0025 remains `proposed`. Selecting this
+candidate does not approve credentials, transport, compute, token/cost/runtime
+budgets, or an authorization window.
+
 ## Preflight checks
 
 Before transport, the implementation recomputes and compares:

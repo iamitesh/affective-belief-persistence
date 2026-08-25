@@ -73,3 +73,17 @@ Gate 3 live compatibility remains blocked pending:
 
 Until then, the supported claim is limited to offline transport-contract
 validation.
+
+## Gate 3 runtime candidate analysis
+
+The recommended candidate is self-hosted
+`Qwen/Qwen2.5-7B-Instruct@4709f6c0771f0185a675b046268cdc1d1f2c74ce`
+through vLLM and a private revision-stamping gateway. The disabled sidecar is
+`configs/models/qwen25-7b-vllm-gateway-candidate.yaml`.
+
+This is a proposal, not compatibility evidence. Standard vLLM chat-completions
+does not document the `model_revision` response field required by this
+repository, so direct transport remains blocked. The gateway and a
+metadata-only identity probe must be implemented and accepted before the
+candidate can enter the Gate 3 authorization. See
+`docs/gate-3-runtime-selection.md` and ADR-0025.

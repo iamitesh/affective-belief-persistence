@@ -34,6 +34,8 @@ from affective_belief_persistence.gate3.preflight import (
     require_passed_gate3_evidence,
     run_gate3_preflight,
 )
+from affective_belief_persistence.models.base import load_adapter_config
+from affective_belief_persistence.models.contracts import ProviderKind
 
 
 def _budget(**updates: object) -> Gate3Budget:
@@ -140,6 +142,22 @@ def test_schema_mapping_and_withheld_config_are_strict(project_root: Path) -> No
     assert authorization.model.resolved is False
     assert authorization.budget is None
     assert authorization.live_calls_authorized is False
+
+
+def test_pinned_vllm_gateway_candidate_is_exact_and_nonlive(project_root: Path) -> None:
+    candidate = load_adapter_config(
+        project_root / "configs/models/qwen25-7b-vllm-gateway-candidate.yaml"
+    )
+    assert candidate.provider is ProviderKind.OPENAI_COMPATIBLE
+    assert candidate.model_id == "Qwen/Qwen2.5-7B-Instruct"
+    assert candidate.revision == "4709f6c0771f0185a675b046268cdc1d1f2c74ce"
+    assert str(candidate.endpoint) == "http://127.0.0.1:8081/v1/chat/completions"
+    assert candidate.inference.temperature == 0
+    assert candidate.inference.structured_json is True
+    assert candidate.cache.enabled is False
+    assert candidate.cache.preserve_raw_responses is False
+    assert candidate.pricing is None
+    assert candidate.live_calls_enabled is False
 
 
 def test_lazy_public_boundary_is_complete_and_cycle_safe() -> None:

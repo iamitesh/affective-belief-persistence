@@ -138,6 +138,17 @@ variable names only.
   `3a419d3c84b749406a12dcc3b632a816bfeb1a23`
 - Merged: 2026-08-24
 
+### 3,200-call cap approval
+
+- Pull request: [#30](https://github.com/iamitesh/affective-belief-persistence/pull/30)
+- Accepted amendment head:
+  `b1c7d8eb2baf08fc89d63ae4c48d42cfafc4fe00`
+- CI: run 74 passed on Python 3.11 and Python 3.12 with no review comments,
+  review submissions, or unresolved threads.
+- Merge commit:
+  `bcd90f49654886572487f8f36fe115d45f163169`
+- Merged: 2026-08-25
+
 ## Handoff
 
 When the research owner supplies the missing external decisions, update only

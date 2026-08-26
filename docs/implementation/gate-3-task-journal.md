@@ -39,6 +39,7 @@ variable names only.
 | Runtime selection analysis | Completed | Pinned Qwen/vLLM revision-stamping gateway proposed; live calls remain disabled |
 | Offline gateway boundary | Completed | Exact request filtering, manifest-only stamping and live-upstream rejection |
 | Metadata-only probe | Completed offline | Hash-bound comparison implemented; unresolved candidate remains blocked with zero requests |
+| Offline gateway publication | Pending | PR #32 open; GitHub Actions has not created a workflow run for either published head |
 | Live pilot | Blocked | Exact model, runtime/access and budget authorization absent |
 
 ## Critical decisions
@@ -208,6 +209,22 @@ variable names only.
 - Merged: 2026-08-25
 - Gate effect: none. ADR-0025 remains proposed, live transport remains disabled,
   and Gate 3 remains blocked before transport.
+
+### Offline gateway boundary — pending publication
+
+- Pull request: [#32](https://github.com/iamitesh/affective-belief-persistence/pull/32)
+- Initial implementation head:
+  `d97c2c9828a584ea7b7954af877e99eac8cff0c8`
+- Verification-record head:
+  `fb482c0aacda71da9d9f59475e018bf5da5ab41e`
+- Local verification: 264 tests passed at 87.12% branch-aware coverage;
+  strict MyPy, Ruff, 48 schemas, and both blocker reproductions passed.
+- GitHub Actions observation on 2026-08-26: no workflow run was created after
+  draft creation, ready-for-review, head synchronization, or a reversible
+  close/reopen. The latest repository run remained run 80 on `main`.
+- Merge status: withheld pending the independent Python 3.11/3.12 CI jobs.
+- Gate effect: none; zero metadata requests, behavioral calls, live calls, and
+  paid calls.
 
 ## Handoff
 

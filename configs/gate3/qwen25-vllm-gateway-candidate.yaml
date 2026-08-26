@@ -1,0 +1,24 @@
+schema_version: "1.0"
+manifest_id: gate-3-qwen25-vllm-gateway-v1
+model_id: Qwen/Qwen2.5-7B-Instruct
+revision: 4709f6c0771f0185a675b046268cdc1d1f2c74ce
+revision_kind: git_commit
+license_id: Apache-2.0
+adapter_config_path: configs/models/qwen25-7b-vllm-gateway-candidate.yaml
+adapter_config_sha256: eac2ac4daad1e4f62ec013a5481cc9c129160e5546424aece45d0fc97b93b20f
+gateway_endpoint: http://127.0.0.1:8081/v1/chat/completions
+upstream_base_url: http://127.0.0.1:8000
+runtime:
+  vllm_version: null
+  runtime_image_digest: null
+  code_commit_sha: null
+  launch_arguments: []
+security:
+  max_request_bytes: 262144
+  max_response_bytes: 1048576
+  max_output_tokens: 512
+  allow_streaming: false
+  follow_redirects: false
+  trust_caller_revision: false
+  revision_stamp_source: deployment_manifest
+  live_upstream_enabled: false

@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.0",
+  "status": "blocked",
+  "manifest_sha256": "43d5350a8c84d969112a5a178f1f2f958d281afc651e7332b53153f60232eff6",
+  "snapshot_sha256": null,
+  "model_id": "Qwen/Qwen2.5-7B-Instruct",
+  "revision": "4709f6c0771f0185a675b046268cdc1d1f2c74ce",
+  "checks": [
+    {
+      "check_id": "runtime-identity-resolved",
+      "status": "blocked",
+      "detail": "vLLM version, image digest, launch arguments and code commit must be pinned"
+    },
+    {
+      "check_id": "metadata-snapshot-present",
+      "status": "blocked",
+      "detail": "a metadata-only runtime snapshot is required"
+    },
+    {
+      "check_id": "metadata-model-matches",
+      "status": "blocked",
+      "detail": "metadata must expose the exact manifest model ID"
+    },
+    {
+      "check_id": "metadata-vllm-version-matches",
+      "status": "blocked",
+      "detail": "metadata vLLM version must match the deployment manifest"
+    },
+    {
+      "check_id": "metadata-image-digest-matches",
+      "status": "blocked",
+      "detail": "metadata runtime image digest must match the deployment manifest"
+    },
+    {
+      "check_id": "metadata-code-commit-matches",
+      "status": "blocked",
+      "detail": "metadata deployment commit must match the deployment manifest"
+    },
+    {
+      "check_id": "behavioral-output-absent",
+      "status": "passed",
+      "detail": "identity probing must not request or observe behavioral model output"
+    }
+  ],
+  "blockers": [
+    "vLLM version, image digest, launch arguments and code commit must be pinned",
+    "a metadata-only runtime snapshot is required",
+    "metadata must expose the exact manifest model ID",
+    "metadata vLLM version must match the deployment manifest",
+    "metadata runtime image digest must match the deployment manifest",
+    "metadata deployment commit must match the deployment manifest"
+  ],
+  "metadata_probe_performed": false,
+  "metadata_requests": 0,
+  "behavioral_model_calls": 0,
+  "behavioral_output_observed": false,
+  "live_transport_authorized": false,
+  "probe_sha256": "02825ee24185106a32f1eaf72fcda94410f6ab04a3fc173b506e75a2320028ec"
+}

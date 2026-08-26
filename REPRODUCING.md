@@ -119,3 +119,25 @@ Copy `configs/experiments/smoke.yaml`, assign a new `experiment_id`, change `see
 ## Secrets and large artifacts
 
 Core tests must not use provider credentials. `.env` files, local databases, model weights, checkpoints, raw runs, and caches are ignored. Commit only source, schemas, configuration, small synthetic fixtures, aggregate reports, and provenance manifests that are safe for release.
+
+## Reproduce the Gate 3 blockers
+
+Verify the authorization blocker and its exact committed evidence:
+
+```bash
+uv run python scripts/gate3_preflight.py \
+  --expect-status blocked \
+  --check-artifact artifacts/orchestration/gate-3.json
+```
+
+Verify the unresolved gateway-runtime blocker without making a metadata or
+behavioral model request:
+
+```bash
+uv run python scripts/gate3_gateway_probe.py \
+  --expect-status blocked \
+  --check-artifact artifacts/orchestration/gate-3-gateway-probe.json
+```
+
+The second command reads only committed local files. It does not construct an
+HTTP client, read credentials, contact vLLM, or generate model output.

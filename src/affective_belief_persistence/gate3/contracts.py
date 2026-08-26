@@ -4,9 +4,11 @@ from __future__ import annotations
 
 from datetime import date, datetime
 from enum import StrEnum
+from ipaddress import ip_address
 from typing import Literal
+from urllib.parse import urlsplit
 
-from pydantic import BaseModel, ConfigDict, Field, model_validator
+from pydantic import BaseModel, ConfigDict, Field, HttpUrl, model_validator
 
 from affective_belief_persistence.determinism import sha256_value
 from affective_belief_persistence.harness.contracts import Sha256
@@ -233,6 +235,159 @@ class PreflightCheck(Gate3Model):
     detail: str = Field(min_length=1)
 
 
+class GatewayRuntimeIdentity(Gate3Model):
+    """Immutable runtime inputs used as the sole revision-stamp authority."""
+
+    vllm_version: str | None = Field(
+        default=None,
+        pattern=r"^[0-9]+\.[0-9]+\.[0-9]+(?:[a-zA-Z0-9_.+-]*)$",
+    )
+    runtime_image_digest: str | None = Field(
+        default=None,
+        pattern=r"^sha256:[0-9a-f]{64}$",
+    )
+    code_commit_sha: str | None = Field(default=None, pattern=r"^[0-9a-f]{40}$")
+    launch_arguments: tuple[str, ...] = ()
+
+    @property
+    def resolved(self) -> bool:
+        return (
+            self.vllm_version is not None
+            and self.runtime_image_digest is not None
+            and self.code_commit_sha is not None
+            and bool(self.launch_arguments)
+        )
+
+    @model_validator(mode="after")
+    def validate_complete_runtime(self) -> GatewayRuntimeIdentity:
+        supplied = (
+            self.vllm_version is not None,
+            self.runtime_image_digest is not None,
+            self.code_commit_sha is not None,
+            bool(self.launch_arguments),
+        )
+        if any(supplied) and not all(supplied):
+            raise ValueError("gateway runtime identity must be entirely resolved or absent")
+        if any(not argument or "\x00" in argument for argument in self.launch_arguments):
+            raise ValueError("gateway launch arguments must be non-empty text without NUL bytes")
+        return self
+
+
+class GatewaySecurityPolicy(Gate3Model):
+    max_request_bytes: int = Field(ge=1024, le=1_048_576)
+    max_response_bytes: int = Field(ge=1024, le=4_194_304)
+    max_output_tokens: int = Field(ge=1, le=8192)
+    allow_streaming: Literal[False] = False
+    follow_redirects: Literal[False] = False
+    trust_caller_revision: Literal[False] = False
+    revision_stamp_source: Literal["deployment_manifest"] = "deployment_manifest"
+    live_upstream_enabled: Literal[False] = False
+
+
+class GatewayDeploymentManifest(Gate3Model):
+    """Candidate gateway manifest; it cannot itself authorize live transport."""
+
+    schema_version: Literal["1.0"] = "1.0"
+    manifest_id: Literal["gate-3-qwen25-vllm-gateway-v1"]
+    model_id: Literal["Qwen/Qwen2.5-7B-Instruct"]
+    revision: str = Field(pattern=r"^[0-9a-f]{40}$")
+    revision_kind: Literal["git_commit"]
+    license_id: Literal["Apache-2.0"]
+    adapter_config_path: Literal["configs/models/qwen25-7b-vllm-gateway-candidate.yaml"]
+    adapter_config_sha256: Sha256
+    gateway_endpoint: HttpUrl
+    upstream_base_url: HttpUrl
+    runtime: GatewayRuntimeIdentity
+    security: GatewaySecurityPolicy
+
+    @model_validator(mode="after")
+    def validate_private_topology_and_launch(self) -> GatewayDeploymentManifest:
+        gateway = urlsplit(str(self.gateway_endpoint))
+        upstream = urlsplit(str(self.upstream_base_url))
+        for name, parsed in {"gateway": gateway, "upstream": upstream}.items():
+            if parsed.username or parsed.password or parsed.query or parsed.fragment:
+                raise ValueError(f"{name} URL cannot contain credentials, query, or fragment")
+            try:
+                address = ip_address(parsed.hostname or "")
+            except ValueError as exc:
+                raise ValueError(f"{name} URL must use an IP literal") from exc
+            if not (address.is_loopback or address.is_private):
+                raise ValueError(f"{name} URL must be loopback or private")
+        if gateway.path != "/v1/chat/completions":
+            raise ValueError("gateway endpoint must use /v1/chat/completions")
+        if upstream.path not in {"", "/"}:
+            raise ValueError("upstream base URL cannot contain an API path")
+        if self.runtime.resolved:
+            arguments = self.runtime.launch_arguments
+            if self.model_id not in arguments or self.revision not in arguments:
+                raise ValueError("resolved launch arguments must pin model ID and revision")
+            if "--revision" not in arguments:
+                raise ValueError("resolved launch arguments must include --revision")
+        return self
+
+
+class GatewayMetadataSnapshot(Gate3Model):
+    """Metadata collected without a chat-completions/model-generation request."""
+
+    schema_version: Literal["1.0"] = "1.0"
+    source: Literal["metadata_only"] = "metadata_only"
+    model_ids: tuple[str, ...] = Field(min_length=1)
+    vllm_version: str = Field(pattern=r"^[0-9]+\.[0-9]+\.[0-9]+(?:[a-zA-Z0-9_.+-]*)$")
+    runtime_image_digest: str = Field(pattern=r"^sha256:[0-9a-f]{64}$")
+    deployment_code_commit_sha: str = Field(pattern=r"^[0-9a-f]{40}$")
+    behavioral_output_observed: Literal[False] = False
+
+    @model_validator(mode="after")
+    def validate_unique_models(self) -> GatewayMetadataSnapshot:
+        if len(self.model_ids) != len(set(self.model_ids)):
+            raise ValueError("gateway metadata model IDs must be unique")
+        return self
+
+
+class GatewayProbeResult(Gate3Model):
+    """Hash-bound compatibility evidence; never a pilot authorization."""
+
+    schema_version: Literal["1.0"] = "1.0"
+    status: Literal["blocked", "verified"]
+    manifest_sha256: Sha256
+    snapshot_sha256: Sha256 | None = None
+    model_id: Literal["Qwen/Qwen2.5-7B-Instruct"]
+    revision: str = Field(pattern=r"^[0-9a-f]{40}$")
+    checks: tuple[PreflightCheck, ...]
+    blockers: tuple[str, ...]
+    metadata_probe_performed: bool
+    metadata_requests: int = Field(ge=0, le=1)
+    behavioral_model_calls: Literal[0] = 0
+    behavioral_output_observed: Literal[False] = False
+    live_transport_authorized: Literal[False] = False
+    probe_sha256: Sha256
+
+    def hash_payload(self) -> dict[str, object]:
+        return self.model_dump(mode="json", exclude={"probe_sha256"})
+
+    @model_validator(mode="after")
+    def validate_probe(self) -> GatewayProbeResult:
+        nonpassing = [check for check in self.checks if check.status is not CheckStatus.PASSED]
+        if self.status == "verified" and (nonpassing or self.blockers):
+            raise ValueError("verified gateway probe cannot retain blockers")
+        if self.status == "blocked" and (not nonpassing or not self.blockers):
+            raise ValueError("blocked gateway probe requires explicit blockers")
+        if self.metadata_probe_performed != (self.metadata_requests == 1):
+            raise ValueError("metadata request count must match probe execution")
+        if self.metadata_probe_performed != (self.snapshot_sha256 is not None):
+            raise ValueError("metadata probe execution must match snapshot presence")
+        if self.probe_sha256 != sha256_value(self.hash_payload()):
+            raise ValueError("gateway probe hash mismatch")
+        return self
+
+    @classmethod
+    def create(cls, **values: object) -> GatewayProbeResult:
+        payload = {**values, "probe_sha256": "0" * 64}
+        provisional = cls.model_construct(**payload)  # type: ignore[arg-type]
+        payload["probe_sha256"] = sha256_value(provisional.hash_payload())
+        return cls.model_validate(payload)
+
+
 class Gate3PreflightResult(Gate3Model):
     schema_version: Literal["1.0"] = "1.0"
     status: Literal["ready", "blocked"]
@@ -357,4 +512,6 @@ GATE3_SCHEMA_MODELS: dict[str, type[BaseModel]] = {
     "gate3-authorization.schema.json": Gate3Authorization,
     "gate3-call-budget-amendment.schema.json": Gate3CallBudgetAmendment,
     "gate3-evidence.schema.json": Gate3Evidence,
+    "gate3-gateway-manifest.schema.json": GatewayDeploymentManifest,
+    "gate3-gateway-probe.schema.json": GatewayProbeResult,
 }

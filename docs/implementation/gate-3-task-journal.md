@@ -7,8 +7,8 @@
 - Dependency: Issue #14 merged at
   `2ca55e08b99c73d8703ff83114ae5a821702225c`
 - Started: 2026-08-24
-- Status: 3,200-call ceiling approved; runtime candidate proposed; pilot blocked
-  before transport
+- Status: offline gateway/probe implemented; runtime candidate proposed; pilot
+  blocked before transport
 - Scope: explicit authorization, immutable source locks, hard budgets, typed
   evidence, downstream stop, and pilot handoff
 
@@ -37,6 +37,8 @@ variable names only.
 | Current evidence | Completed | Blocked, zero trajectories, zero calls, nine explicit blockers |
 | Outcome-blind call-cap amendment | Completed | 2,560 scheduled calls + 640-call reserve = 3,200 hard ceiling |
 | Runtime selection analysis | Completed | Pinned Qwen/vLLM revision-stamping gateway proposed; live calls remain disabled |
+| Offline gateway boundary | Completed | Exact request filtering, manifest-only stamping and live-upstream rejection |
+| Metadata-only probe | Completed offline | Hash-bound comparison implemented; unresolved candidate remains blocked with zero requests |
 | Live pilot | Blocked | Exact model, runtime/access and budget authorization absent |
 
 ## Critical decisions
@@ -68,6 +70,12 @@ variable names only.
     revision-stamping gateway. Direct vLLM is insufficient because its documented
     OpenAI-compatible response does not prove the immutable model revision required
     by the repository adapter and Gate 3 evidence.
+13. The first gateway slice contains no HTTP client or server and rejects every
+    live upstream. Offline request/response tests are permitted; external
+    metadata probing and behavioral transport remain separate authorizations.
+14. A revision stamp is sourced only from a complete deployment manifest. The
+    caller's revision is validated and stripped before the upstream boundary;
+    any upstream-provided revision stamp is rejected.
 
 ## Approved call-cap amendment
 
@@ -95,9 +103,21 @@ variable names only.
 - Candidate config: `configs/models/qwen25-7b-vllm-gateway-candidate.yaml`
 - Candidate config SHA-256:
   `eac2ac4daad1e4f62ec013a5481cc9c129160e5546424aece45d0fc97b93b20f`
+- Gateway candidate manifest:
+  `configs/gate3/qwen25-vllm-gateway-candidate.yaml`
+- Gateway manifest SHA-256:
+  `43d5350a8c84d969112a5a178f1f2f958d281afc651e7332b53153f60232eff6`
+- Gateway probe artifact:
+  `artifacts/orchestration/gate-3-gateway-probe.json`
+- Gateway probe SHA-256:
+  `02825ee24185106a32f1eaf72fcda94410f6ab04a3fc173b506e75a2320028ec`
+- Gateway probe artifact file SHA-256:
+  `71900c5dab8d272008edef24e510b6b4f1ad3c81b6d05cc47257d0f730ec4ad1`
+- Metadata requests / behavioral model calls: 0 / 0
 - Safety state: live calls disabled; cache disabled; raw-response persistence
   disabled; pricing absent
 - Decision record: ADR-0025 (`proposed`, not accepted or transport-authorized)
+- Offline boundary decision: ADR-0026 (`accepted` for offline implementation)
 - Analysis: `docs/gate-3-runtime-selection.md`
 - Outcomes generated/inspected: false
 - Live calls / paid calls: 0 / 0
@@ -118,21 +138,22 @@ variable names only.
 
 ## Verification evidence
 
-- Gate 3 slice: 13 tests passed at 85.82% branch-aware package coverage.
-- Strict MyPy: 77 source files passed.
+- Gate 3 slice: 25 tests passed at 86.53% branch-aware package coverage.
+- Strict MyPy: 78 source files passed.
 - Ruff formatting and linting passed.
-- Registered schemas: 46 current generated contracts, including Gate 3
-  authorization, call-budget-amendment, and evidence schemas.
+- Registered schemas: 48 current generated contracts, including Gate 3
+  gateway-manifest and gateway-probe schemas.
 - Smoke experiment configuration and the complete autonomous workflow validate.
 - The reproduction command regenerates the exact committed blocked evidence.
-- Repository: 252 tests passed at 87.10% branch-aware coverage.
+- Repository: 264 tests passed at 87.12% branch-aware coverage.
 
 ## Remaining blockers
 
 1. Named, time-bounded pilot authorization.
-2. Acceptance and implementation of the proposed gateway, or an equivalent
-   provider path that proves the exact immutable revision on every response.
-3. Live adapter/gateway bytes matching the authorized identity.
+2. Acceptance of the proposed runtime path, or an equivalent provider path
+   that proves the exact immutable revision on every response.
+3. Exact vLLM version/image digest, launch arguments, compute host, and a
+   separately reviewed live gateway/server implementation.
 4. Credential presence under a named environment variable.
 5. Call, input-token, output-token, cost, and runtime limits.
 6. A complete authorization call limit between 2,560 and 3,200.

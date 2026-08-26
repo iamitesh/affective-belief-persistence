@@ -1,0 +1,199 @@
+{
+  "$defs": {
+    "GatewayRuntimeIdentity": {
+      "additionalProperties": false,
+      "description": "Immutable runtime inputs used as the sole revision-stamp authority.",
+      "properties": {
+        "code_commit_sha": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{40}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Code Commit Sha"
+        },
+        "launch_arguments": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Launch Arguments",
+          "type": "array"
+        },
+        "runtime_image_digest": {
+          "anyOf": [
+            {
+              "pattern": "^sha256:[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Runtime Image Digest"
+        },
+        "vllm_version": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:[a-zA-Z0-9_.+-]*)$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Vllm Version"
+        }
+      },
+      "title": "GatewayRuntimeIdentity",
+      "type": "object"
+    },
+    "GatewaySecurityPolicy": {
+      "additionalProperties": false,
+      "properties": {
+        "allow_streaming": {
+          "const": false,
+          "default": false,
+          "title": "Allow Streaming",
+          "type": "boolean"
+        },
+        "follow_redirects": {
+          "const": false,
+          "default": false,
+          "title": "Follow Redirects",
+          "type": "boolean"
+        },
+        "live_upstream_enabled": {
+          "const": false,
+          "default": false,
+          "title": "Live Upstream Enabled",
+          "type": "boolean"
+        },
+        "max_output_tokens": {
+          "maximum": 8192,
+          "minimum": 1,
+          "title": "Max Output Tokens",
+          "type": "integer"
+        },
+        "max_request_bytes": {
+          "maximum": 1048576,
+          "minimum": 1024,
+          "title": "Max Request Bytes",
+          "type": "integer"
+        },
+        "max_response_bytes": {
+          "maximum": 4194304,
+          "minimum": 1024,
+          "title": "Max Response Bytes",
+          "type": "integer"
+        },
+        "revision_stamp_source": {
+          "const": "deployment_manifest",
+          "default": "deployment_manifest",
+          "title": "Revision Stamp Source",
+          "type": "string"
+        },
+        "trust_caller_revision": {
+          "const": false,
+          "default": false,
+          "title": "Trust Caller Revision",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "max_request_bytes",
+        "max_response_bytes",
+        "max_output_tokens"
+      ],
+      "title": "GatewaySecurityPolicy",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Candidate gateway manifest; it cannot itself authorize live transport.",
+  "properties": {
+    "adapter_config_path": {
+      "const": "configs/models/qwen25-7b-vllm-gateway-candidate.yaml",
+      "title": "Adapter Config Path",
+      "type": "string"
+    },
+    "adapter_config_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Adapter Config Sha256",
+      "type": "string"
+    },
+    "gateway_endpoint": {
+      "format": "uri",
+      "maxLength": 2083,
+      "minLength": 1,
+      "title": "Gateway Endpoint",
+      "type": "string"
+    },
+    "license_id": {
+      "const": "Apache-2.0",
+      "title": "License Id",
+      "type": "string"
+    },
+    "manifest_id": {
+      "const": "gate-3-qwen25-vllm-gateway-v1",
+      "title": "Manifest Id",
+      "type": "string"
+    },
+    "model_id": {
+      "const": "Qwen/Qwen2.5-7B-Instruct",
+      "title": "Model Id",
+      "type": "string"
+    },
+    "revision": {
+      "pattern": "^[0-9a-f]{40}$",
+      "title": "Revision",
+      "type": "string"
+    },
+    "revision_kind": {
+      "const": "git_commit",
+      "title": "Revision Kind",
+      "type": "string"
+    },
+    "runtime": {
+      "$ref": "#/$defs/GatewayRuntimeIdentity"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "security": {
+      "$ref": "#/$defs/GatewaySecurityPolicy"
+    },
+    "upstream_base_url": {
+      "format": "uri",
+      "maxLength": 2083,
+      "minLength": 1,
+      "title": "Upstream Base Url",
+      "type": "string"
+    }
+  },
+  "required": [
+    "manifest_id",
+    "model_id",
+    "revision",
+    "revision_kind",
+    "license_id",
+    "adapter_config_path",
+    "adapter_config_sha256",
+    "gateway_endpoint",
+    "upstream_base_url",
+    "runtime",
+    "security"
+  ],
+  "title": "GatewayDeploymentManifest",
+  "type": "object"
+}

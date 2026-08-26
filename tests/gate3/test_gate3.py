@@ -124,6 +124,8 @@ def test_schema_mapping_and_withheld_config_are_strict(project_root: Path) -> No
         "gate3-authorization.schema.json",
         "gate3-call-budget-amendment.schema.json",
         "gate3-evidence.schema.json",
+        "gate3-gateway-manifest.schema.json",
+        "gate3-gateway-probe.schema.json",
     }
     amendment = load_gate3_call_budget_amendment(
         project_root / "configs/gate3/call-budget-amendment.yaml",

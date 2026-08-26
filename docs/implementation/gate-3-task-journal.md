@@ -146,6 +146,8 @@ variable names only.
 - Smoke experiment configuration and the complete autonomous workflow validate.
 - The reproduction command regenerates the exact committed blocked evidence.
 - Repository: 264 tests passed at 87.12% branch-aware coverage.
+- Full repository verification runtime: 806.14 seconds in the implementation
+  workspace; CI runtime is recorded separately at publication.
 
 ## Remaining blockers
 

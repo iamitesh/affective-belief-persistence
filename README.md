@@ -4,7 +4,7 @@
 
 ## Research status
 
-**Stage:** Gate 2 harness accepted; Issue #14 offline evaluation implementation
+**Stage:** Gates 0–2 accepted; Gate 3 offline boundary published, pilot blocked before transport
 **Working paper title:** *When the Relationship Was Never Real: Affective Belief Persistence After Separation in LLM Agents*
 
 This project does **not** claim that a language model feels love, attachment, grief, or loss. It studies observable **attachment-like behavior** in controlled simulations.
@@ -88,20 +88,52 @@ controls, and trajectory-first statistical utilities. Live pilot and primary
 execution remain disabled until a separate Gate 3 authorization.
 
 Gate 3 now has a hash-bound authorization and preflight boundary. Its current
-evidence is intentionally `blocked`: no compatible runtime, pinned model/access,
-or complete token/cost budget is available in this workspace. The deterministic
-mock is never substituted for the preregistered Qwen pilot.
+evidence is intentionally `blocked`. The selected runtime candidate is
+`Qwen/Qwen2.5-7B-Instruct` at immutable revision
+`4709f6c0771f0185a675b046268cdc1d1f2c74ce`, proposed behind a private
+revision-stamping vLLM gateway. The offline-only gateway boundary is published
+through PR #32 and rejects live upstreams by construction; it adds no network or
+model transport capability. Compute, exact vLLM runtime identity, credentials,
+token/cost/runtime budgets, authorization window, and executing commit remain
+unresolved. The deterministic mock is never substituted for the preregistered
+Qwen pilot.
+
+The outcome-blind Gate 3 call ceiling is 3,200 calls: 2,560 scheduled calls for
+32 trajectories × 40 days × two model stages, plus a 640-call repair/retry
+reserve. This ceiling does not authorize transport or spending.
 
 ```bash
 uv run pytest tests/harness tests/evaluation
 uv run python scripts/generate_schemas.py --check
 uv run python scripts/gate3_preflight.py --expect-status blocked \
   --check-artifact artifacts/orchestration/gate-3.json
+uv run python scripts/gate3_gateway_probe.py --expect-status blocked \
+  --check-artifact artifacts/orchestration/gate-3-gateway-probe.json
 ```
 
 See the [Gate 2 design](docs/gate-2-harness.md) and
 [evaluation engine](docs/evaluation-engine.md), plus the
 [Gate 3 authorization boundary](docs/gate-3-pilot.md).
+
+## Current roadmap
+
+- Completed: Gates 0–2, simulator, memory, interventions, model runner, and the
+  offline evaluation engine with eight frozen metrics and 32/320-assignment
+  matrices.
+- Published: Gate 3 fail-closed authorization, provenance and budget controls,
+  runtime-candidate analysis, and the offline-only revision-stamping boundary.
+- Active critical path: Issue #27. Before any external model call, resolve and
+  explicitly authorize the compute host, immutable vLLM runtime, private launch
+  endpoint, credential environment-variable name, input/output token limits,
+  USD and runtime ceilings, a call limit from 2,560 through 3,200, named
+  authorizer/window, and exact executing commit.
+- Optional: Issue #13 adapter training may be formally skipped without blocking
+  the mandatory baseline.
+- Blocked downstream: Issue #15 red-team audit and Issue #16 research release;
+  parent Issue #1 closes last.
+
+No live, paid, metadata, or behavioral model call has been made, and no mock
+result is presented as scientific evidence.
 
 ## Central research question
 

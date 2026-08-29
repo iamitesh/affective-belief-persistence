@@ -87,3 +87,9 @@ repository, so direct transport remains blocked. The gateway and a
 metadata-only identity probe must be implemented and accepted before the
 candidate can enter the Gate 3 authorization. See
 `docs/gate-3-runtime-selection.md` and ADR-0025.
+
+The offline-only gateway boundary and probe comparison are now implemented
+under ADR-0026. The real candidate probe remains blocked because no exact vLLM
+version, runtime image digest, launch arguments, deployment commit, or metadata
+snapshot is authorized or available. This adds no live compatibility evidence:
+metadata requests and behavioral calls remain zero.

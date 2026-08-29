@@ -11,6 +11,28 @@ token/cost/runtime budget, and authorization window are approved.
 The disabled candidate is
 `configs/models/qwen25-7b-vllm-gateway-candidate.yaml`.
 
+## Offline gateway implementation
+
+The request/response boundary and metadata comparison are now implemented in
+`src/affective_belief_persistence/gate3/gateway.py`. This implementation is
+deliberately not an HTTP client or server. It can wrap only an injected
+`is_live=false` transport and raises a safety-policy error for every live
+upstream.
+
+The candidate deployment manifest is
+`configs/gate3/qwen25-vllm-gateway-candidate.yaml`. It binds the adapter bytes,
+exact model and revision, private endpoints, byte limits, 512-token response
+limit, non-streaming behavior, and manifest-only revision stamping. Its runtime
+identity remains unresolved, so the committed probe artifact is truthfully
+`blocked`:
+
+- manifest SHA-256:
+  `43d5350a8c84d969112a5a178f1f2f958d281afc651e7332b53153f60232eff6`;
+- probe artifact: `artifacts/orchestration/gate-3-gateway-probe.json`;
+- probe SHA-256:
+  `02825ee24185106a32f1eaf72fcda94410f6ab04a3fc173b506e75a2320028ec`;
+- metadata requests / behavioral calls: `0 / 0`.
+
 ## Evidence
 
 - The official model card identifies `Qwen/Qwen2.5-7B-Instruct` as an
@@ -78,13 +100,16 @@ revision and no silent fallback was configured.
 3. maximum input tokens, output tokens, USD cost, and wall-clock time;
 4. whether raw responses remain hash-only or may be retained after safety review;
 5. named authorizer, approval/expiry timestamps, and executing commit; and
-6. approval to implement and run the metadata-only gateway capability probe.
+6. approval to resolve the deployment manifest and run an external
+   metadata-only gateway capability probe.
 
 The 3,200-call ceiling is already approved. None of the decisions above are
 implied by that ceiling.
 
-## Next implementation slice
+## Next external decision and implementation slice
 
-Implement the revision-stamping gateway and its metadata-only capability probe
-with an injected offline upstream in tests. Do not contact vLLM or generate a
-model response until the remaining Gate 3 authorization fields are complete.
+Select the compute host, exact vLLM version/image digest and launch arguments,
+then decide whether to accept ADR-0025 and authorize one metadata-only probe.
+Only after that probe verifies the manifest may a separate live gateway/server
+integration be proposed. Do not generate a model response until the complete
+Gate 3 authorization passes.

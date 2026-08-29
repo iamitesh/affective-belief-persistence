@@ -53,6 +53,7 @@ changes, add a new ADR that supersedes the old one instead of rewriting history.
 | [ADR-0023](0023-explicit-hash-bound-gate-3-authorization.md) | Require explicit, hash-bound authorization before Gate 3 transport | Accepted for Gate 3 preflight |
 | [ADR-0024](0024-outcome-blind-gate-3-call-cap-amendment.md) | Approve an outcome-blind 3,200-call Gate 3 pilot ceiling | Accepted |
 | [ADR-0025](0025-proposed-pinned-vllm-gateway.md) | Propose a pinned self-hosted vLLM gateway for Gate 3 | Proposed; not transport-authorized |
+| [ADR-0026](0026-offline-only-gateway-boundary.md) | Keep the first revision-stamping gateway boundary offline-only | Accepted for Gate 3 offline implementation |
 
 ## Related sources
 

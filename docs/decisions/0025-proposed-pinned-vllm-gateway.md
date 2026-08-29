@@ -45,8 +45,10 @@ standard vLLM envelope does not provide.
 ## Acceptance required
 
 This ADR remains proposed until the research owner approves the runtime path
-and the repository contains tested gateway/probe code, a pinned vLLM runtime,
-complete budgets, credential reference, time window, and executing commit.
+and the repository contains a pinned vLLM runtime, complete budgets, credential
+reference, time window, and executing commit. The offline-only gateway/probe
+boundary is implemented and tested under ADR-0026; that implementation does
+not constitute runtime or transport approval.
 
 ## References
 
@@ -54,3 +56,4 @@ complete budgets, credential reference, time window, and executing commit.
 - [Gate 3 pilot boundary](../gate-3-pilot.md)
 - [ADR-0023](0023-explicit-hash-bound-gate-3-authorization.md)
 - [ADR-0024](0024-outcome-blind-gate-3-call-cap-amendment.md)
+- [ADR-0026](0026-offline-only-gateway-boundary.md)

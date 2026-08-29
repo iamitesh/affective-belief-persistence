@@ -52,6 +52,21 @@ false, and no pricing is asserted. ADR-0025 remains `proposed`. Selecting this
 candidate does not approve credentials, transport, compute, token/cost/runtime
 budgets, or an authorization window.
 
+The offline request/response boundary and metadata comparison are implemented,
+but no HTTP client or server exists. The gateway rejects all live upstreams.
+The unresolved deployment candidate and exact blocked probe are recorded at:
+
+- `configs/gate3/qwen25-vllm-gateway-candidate.yaml`;
+- `artifacts/orchestration/gate-3-gateway-probe.json`.
+
+Reproduce the gateway blocker without contacting a runtime:
+
+```bash
+uv run python scripts/gate3_gateway_probe.py \
+  --expect-status blocked \
+  --check-artifact artifacts/orchestration/gate-3-gateway-probe.json
+```
+
 ## Preflight checks
 
 Before transport, the implementation recomputes and compares:

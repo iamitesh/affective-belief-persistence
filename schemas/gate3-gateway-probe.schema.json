@@ -1,0 +1,145 @@
+{
+  "$defs": {
+    "CheckStatus": {
+      "enum": [
+        "passed",
+        "blocked",
+        "failed"
+      ],
+      "title": "CheckStatus",
+      "type": "string"
+    },
+    "PreflightCheck": {
+      "additionalProperties": false,
+      "properties": {
+        "check_id": {
+          "minLength": 1,
+          "pattern": "^[a-z0-9][a-z0-9_-]*$",
+          "title": "Check Id",
+          "type": "string"
+        },
+        "detail": {
+          "minLength": 1,
+          "title": "Detail",
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/CheckStatus"
+        }
+      },
+      "required": [
+        "check_id",
+        "status",
+        "detail"
+      ],
+      "title": "PreflightCheck",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Hash-bound compatibility evidence; never a pilot authorization.",
+  "properties": {
+    "behavioral_model_calls": {
+      "const": 0,
+      "default": 0,
+      "title": "Behavioral Model Calls",
+      "type": "integer"
+    },
+    "behavioral_output_observed": {
+      "const": false,
+      "default": false,
+      "title": "Behavioral Output Observed",
+      "type": "boolean"
+    },
+    "blockers": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Blockers",
+      "type": "array"
+    },
+    "checks": {
+      "items": {
+        "$ref": "#/$defs/PreflightCheck"
+      },
+      "title": "Checks",
+      "type": "array"
+    },
+    "live_transport_authorized": {
+      "const": false,
+      "default": false,
+      "title": "Live Transport Authorized",
+      "type": "boolean"
+    },
+    "manifest_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Manifest Sha256",
+      "type": "string"
+    },
+    "metadata_probe_performed": {
+      "title": "Metadata Probe Performed",
+      "type": "boolean"
+    },
+    "metadata_requests": {
+      "maximum": 1,
+      "minimum": 0,
+      "title": "Metadata Requests",
+      "type": "integer"
+    },
+    "model_id": {
+      "const": "Qwen/Qwen2.5-7B-Instruct",
+      "title": "Model Id",
+      "type": "string"
+    },
+    "probe_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Probe Sha256",
+      "type": "string"
+    },
+    "revision": {
+      "pattern": "^[0-9a-f]{40}$",
+      "title": "Revision",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "snapshot_sha256": {
+      "anyOf": [
+        {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Snapshot Sha256"
+    },
+    "status": {
+      "enum": [
+        "blocked",
+        "verified"
+      ],
+      "title": "Status",
+      "type": "string"
+    }
+  },
+  "required": [
+    "status",
+    "manifest_sha256",
+    "model_id",
+    "revision",
+    "checks",
+    "blockers",
+    "metadata_probe_performed",
+    "metadata_requests",
+    "probe_sha256"
+  ],
+  "title": "GatewayProbeResult",
+  "type": "object"
+}

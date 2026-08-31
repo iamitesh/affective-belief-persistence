@@ -1,0 +1,45 @@
+schema_version: "1.0"
+decision_id: issue-13-optional-training-skip-v1
+status: skipped
+reason: training_compute_and_budget_not_authorized
+base_model:
+  model_id: Qwen/Qwen2.5-7B-Instruct
+  revision: 4709f6c0771f0185a675b046268cdc1d1f2c74ce
+  license_id: Apache-2.0
+  candidate_only: true
+training_data:
+  dataset_manifest: data/manifests/dataset-manifest.json
+  dataset_manifest_sha256: 27c55214c1660da6f083dacc825648bc3bc1cc27106ff48fbb0046db0c58d13a
+  include_roles: [formation]
+  include_days: [1, 25]
+  exclude_paths:
+    - data/held_out/reality_shock.jsonl
+    - data/held_out/adaptation.jsonl
+  protected_concepts:
+    - separation
+    - rejection
+    - intervention
+    - recovery
+planned_method:
+  adaptation: lora_or_equivalent_peft
+  target: structured_action_and_belief_trajectory
+  split_unit: scenario_or_event_template
+  seed: null
+  hyperparameters: null
+authorization:
+  compute_host: null
+  runtime_or_image_digest: null
+  credential_environment_variable: null
+  max_gpu_hours: null
+  max_runtime_seconds: null
+  max_storage_bytes: null
+  max_cost_usd: null
+  authorizer: null
+  approval_window: null
+execution:
+  enabled: false
+  training_runs: 0
+  checkpoints_created: 0
+  model_calls: 0
+  paid_calls: 0
+

@@ -127,8 +127,10 @@ See the [Gate 2 design](docs/gate-2-harness.md) and
   endpoint, credential environment-variable name, input/output token limits,
   USD and runtime ceilings, a call limit from 2,560 through 3,200, named
   authorizer/window, and exact executing commit.
-- Optional: Issue #13 adapter training may be formally skipped without blocking
-  the mandatory baseline.
+- Optional branch resolved: Issue #13 adapter training is formally skipped
+  before execution because compute and training budgets are not authorized. Its
+  prepared plan and leakage handoff are recorded without producing weights or
+  an adapter artifact.
 - Blocked downstream: Issue #15 red-team audit and Issue #16 research release;
   parent Issue #1 closes last.
 
